@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/toast";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import PageTransition from "@/components/page-transition";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,7 +43,9 @@ export default function RootLayout({
             <div className="relative flex min-h-screen flex-col">
               <div className="pointer-events-none fixed inset-0 saas-mesh-bg -z-10" aria-hidden />
               <Navbar />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1">
+                <PageTransition>{children}</PageTransition>
+              </main>
               <Footer />
             </div>
           </ToastProvider>
@@ -51,3 +54,4 @@ export default function RootLayout({
     </html>
   );
 }
+
