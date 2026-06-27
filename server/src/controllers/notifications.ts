@@ -84,7 +84,7 @@ export const triggerEndingSoonAlerts = async (req: Request, res: Response): Prom
     const threeDaysLater = new Date();
     threeDaysLater.setDate(now.getDate() + 3);
 
-    // Find active rentals ending within 3 days
+
     const endingRentals = await Rental.find({
       status: 'Active',
       endDate: { $gte: now, $lte: threeDaysLater },

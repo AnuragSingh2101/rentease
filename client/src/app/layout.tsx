@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground transition-colors duration-200`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -39,9 +39,10 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <ToastProvider>
-            <div className="flex flex-col min-h-screen">
+            <div className="relative flex min-h-screen flex-col">
+              <div className="pointer-events-none fixed inset-0 saas-mesh-bg -z-10" aria-hidden />
               <Navbar />
-              <main className="flex-grow">{children}</main>
+              <main className="flex-1">{children}</main>
               <Footer />
             </div>
           </ToastProvider>
@@ -50,4 +51,3 @@ export default function RootLayout({
     </html>
   );
 }
-

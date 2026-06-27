@@ -16,7 +16,7 @@ import { protect, authorize } from '../middleware/auth';
 
 const router = Router();
 
-// Rate limit for auth endpoints — 10 requests per 15 minutes
+
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
@@ -33,7 +33,7 @@ router.post('/forgotpassword', authLimiter, forgotPassword);
 router.put('/resetpassword/:resettoken', authLimiter, resetPassword);
 router.put('/updatepassword', protect, updatePassword);
 
-// Admin user management routes
+
 router.get('/users', protect, authorize('admin'), getAllUsers);
 router.put('/users/:id/role', protect, authorize('admin'), updateUserRole);
 router.delete('/users/:id', protect, authorize('admin'), deleteUser);

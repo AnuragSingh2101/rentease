@@ -16,12 +16,12 @@ export default function ErrorBoundary({
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950 px-4">
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 rounded-3xl text-center max-w-md w-full shadow-xl space-y-5">
+      <div className="bg-card border border-border/60 p-8 rounded-3xl text-center max-w-md w-full shadow-xl space-y-5">
         <div className="h-14 w-14 rounded-2xl bg-red-50 dark:bg-red-955/20 text-red-655 dark:text-red-400 flex items-center justify-center mx-auto border border-red-100 dark:border-red-900">
           <ShieldAlert className="h-7 w-7" />
         </div>
         <div className="space-y-1">
-          <h2 className="text-lg font-extrabold text-neutral-900 dark:text-white">Something Went Wrong</h2>
+          <h2 className="text-lg font-extrabold text-foreground">Something Went Wrong</h2>
           <p className="text-xs text-neutral-500">
             An unexpected error occurred during execution. We've logged this internally.
           </p>
@@ -44,7 +44,7 @@ export default function ErrorBoundary({
           </button>
           <button
             onClick={reset}
-            className="flex-1 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-indigo-500/10 border-none"
+            className="flex-1 bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2.5 px-4 rounded-xl cursor-pointer flex items-center justify-center gap-1.5 shadow-md shadow-indigo-500/10 border-none"
           >
             <RefreshCw className="h-4 w-4" />
             Try Again

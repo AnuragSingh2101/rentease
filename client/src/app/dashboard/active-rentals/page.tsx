@@ -111,17 +111,17 @@ export default function ActiveRentalsPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Sub tab selection
+
   const [activeSubTab, setActiveSubTab] = React.useState<"rentals" | "pickups" | "claims">("rentals");
 
-  // Extension Modal State
+
   const [selectedRental, setSelectedRental] = React.useState<RentalItem | null>(null);
   const [extensionMonths, setExtensionMonths] = React.useState<number>(3);
   const [extending, setExtending] = React.useState(false);
   const [extendError, setExtendError] = React.useState<string | null>(null);
   const [extendSuccess, setExtendSuccess] = React.useState(false);
 
-  // Pickup Request Modal State
+
   const [requestPickupRental, setRequestPickupRental] = React.useState<RentalItem | null>(null);
   const [pickupDate, setPickupDate] = React.useState<string>("");
   const [pickupAddress, setPickupAddress] = React.useState<string>("");
@@ -129,7 +129,7 @@ export default function ActiveRentalsPage() {
   const [requestPickupError, setRequestPickupError] = React.useState<string | null>(null);
   const [requestPickupSuccess, setRequestPickupSuccess] = React.useState(false);
 
-  // History Modal State
+
   const [viewHistoryRental, setViewHistoryRental] = React.useState<RentalItem | null>(null);
 
   const fetchData = React.useCallback(async () => {
@@ -142,7 +142,7 @@ export default function ActiveRentalsPage() {
         return;
       }
 
-      // Fetch customer rentals, deliveries, pickups, and claims in parallel
+
       const [rentalsRes, deliveriesRes, pickupsRes, claimsRes] = await Promise.all([
         api.get<{ success: boolean; data: RentalItem[] }>("/rentals/my-rentals"),
         api.get<{ success: boolean; data: DeliveryItem[] }>("/deliveries/my-deliveries"),
@@ -174,7 +174,7 @@ export default function ActiveRentalsPage() {
     fetchData();
   }, [fetchData]);
 
-  // Calculate Days Remaining
+
   const getDaysRemaining = (endDateStr: string) => {
     const end = new Date(endDateStr);
     const today = new Date();
@@ -185,7 +185,7 @@ export default function ActiveRentalsPage() {
     return diffDays;
   };
 
-  // Associate delivery record with rental
+
   const getDeliveryForRental = (rentalId: string) => {
     return deliveries.find(d => {
       const id = typeof d.rental === "object" ? d.rental._id : d.rental;
@@ -193,7 +193,7 @@ export default function ActiveRentalsPage() {
     });
   };
 
-  // Open Extension Modal
+
   const openExtendModal = (rental: RentalItem) => {
     setSelectedRental(rental);
     setExtensionMonths(3);
@@ -201,7 +201,7 @@ export default function ActiveRentalsPage() {
     setExtendSuccess(false);
   };
 
-  // Open Pickup Request Modal
+
   const openPickupRequestModal = (rental: RentalItem) => {
     setRequestPickupRental(rental);
     setPickupDate("");
@@ -210,7 +210,7 @@ export default function ActiveRentalsPage() {
     setRequestPickupSuccess(false);
   };
 
-  // Handle Extension Submission
+
   const handleExtendLeaseSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedRental) return;
@@ -240,7 +240,7 @@ export default function ActiveRentalsPage() {
     }
   };
 
-  // Handle Return Pickup Submission
+
   const handlePickupRequestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!requestPickupRental) return;
@@ -300,7 +300,7 @@ export default function ActiveRentalsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col justify-center items-center">
-        <div className="h-10 w-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-xs text-neutral-500 font-semibold tracking-wider uppercase animate-pulse">Loading Lease Dashboard...</p>
       </div>
     );
@@ -309,26 +309,26 @@ export default function ActiveRentalsPage() {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Navigation Link */}
+
+        {}
         <div className="flex items-center justify-between">
           <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-indigo-650 dark:hover:text-violet-400 font-bold transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard Home
           </Link>
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-150 dark:border-neutral-850 bg-white dark:bg-neutral-900 px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm font-semibold">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-150 dark:border-neutral-850 bg-card px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm font-semibold">
             <Hourglass className="h-3.5 w-3.5" />
             <span>Active Subscriptions & Returns</span>
           </div>
         </div>
 
-        {/* Title */}
+        {}
         <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
             <ShoppingBag className="h-7 w-7 text-indigo-500" />
             My Active Product Rentals
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-2xl">
             Monitor lease periods, track delivery agents, schedule returns, and view damage claims.
           </p>
         </div>
@@ -340,13 +340,13 @@ export default function ActiveRentalsPage() {
           </div>
         )}
 
-        {/* Sub-Tab Navigation */}
+        {}
         <div className="flex border-b border-neutral-250 dark:border-neutral-850 gap-6">
           <button
             onClick={() => setActiveSubTab("rentals")}
             className={`pb-3.5 text-xs font-bold transition-all relative cursor-pointer ${
               activeSubTab === "rentals"
-                ? "text-indigo-600 dark:text-violet-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
+                ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
                 : "text-neutral-500 hover:text-neutral-700 dark:hover:text-white"
             }`}
           >
@@ -356,7 +356,7 @@ export default function ActiveRentalsPage() {
             onClick={() => setActiveSubTab("pickups")}
             className={`pb-3.5 text-xs font-bold transition-all relative cursor-pointer ${
               activeSubTab === "pickups"
-                ? "text-indigo-600 dark:text-violet-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
+                ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
                 : "text-neutral-500 hover:text-neutral-700 dark:hover:text-white"
             }`}
           >
@@ -366,7 +366,7 @@ export default function ActiveRentalsPage() {
             onClick={() => setActiveSubTab("claims")}
             className={`pb-3.5 text-xs font-bold transition-all relative cursor-pointer ${
               activeSubTab === "claims"
-                ? "text-indigo-600 dark:text-violet-400 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
+                ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600 dark:after:bg-violet-400"
                 : "text-neutral-500 hover:text-neutral-700 dark:hover:text-white"
             }`}
           >
@@ -374,14 +374,14 @@ export default function ActiveRentalsPage() {
           </button>
         </div>
 
-        {/* Tab 1: Rentals List */}
+        {}
         {activeSubTab === "rentals" && (
           <div>
             {rentals.length === 0 ? (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
+              <div className="bg-card border border-border/60 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
                 <ShoppingBag className="h-16 w-16 mx-auto text-neutral-350 dark:text-neutral-750" />
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No rental leases found</h3>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto">
+                <h3 className="text-lg font-bold text-foreground">No rental leases found</h3>
+                <p className="text-xs text-muted-foreground max-w-xs mx-auto">
                   You haven't ordered any physical product rentals. Browse catalog to start a subscription.
                 </p>
                 <Link
@@ -417,7 +417,7 @@ export default function ActiveRentalsPage() {
                       case 'Pending': return 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200/40';
                       case 'Approved': return 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-200/40';
                       case 'Delivered': return 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-750 dark:text-indigo-300 border border-indigo-200/40';
-                      case 'Returned': return 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-700/50';
+                      case 'Returned': return 'bg-neutral-100 dark:bg-neutral-800 text-muted-foreground border border-neutral-700/50';
                       case 'Cancelled': return 'bg-red-50 dark:bg-red-950/30 text-red-750 dark:text-red-400 border border-red-200/40';
                       default: return 'bg-neutral-50 dark:bg-neutral-800 text-neutral-650';
                     }
@@ -426,7 +426,7 @@ export default function ActiveRentalsPage() {
                   return (
                     <div
                       key={rental._id}
-                      className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-all group"
+                      className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-6 hover:shadow-md transition-all group"
                     >
                       {/* Top: Product Info & Badge */}
                       <div className="flex gap-4">
@@ -438,7 +438,7 @@ export default function ActiveRentalsPage() {
                               {getStatusText(rental.status)}
                             </span>
                           </div>
-                          <h3 className="text-sm font-bold text-neutral-900 dark:text-white truncate" title={rental.product?.name}>
+                          <h3 className="text-sm font-bold text-foreground truncate" title={rental.product?.name}>
                             {rental.product?.name || "Leased Product"}
                           </h3>
                           <p className="text-[11px] text-neutral-500 font-medium">Qty: {rental.quantity} · Tenure: {rental.tenure} Months</p>
@@ -462,7 +462,7 @@ export default function ActiveRentalsPage() {
                           </div>
                         </div>
 
-                        <div className="flex flex-col justify-center items-center border-t sm:border-t-0 sm:border-l border-neutral-200 dark:border-neutral-800 pt-3 sm:pt-0 sm:pl-4">
+                        <div className="flex flex-col justify-center items-center border-t sm:border-t-0 sm:border-l border-border/60 pt-3 sm:pt-0 sm:pl-4">
                           {rental.status === 'Active' ? (
                             <>
                               <div className="text-center">
@@ -488,7 +488,7 @@ export default function ActiveRentalsPage() {
                               <span className="font-bold text-neutral-800 dark:text-neutral-200">
                                 {new Date(rental.deliveryDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                               </span>
-                              <span className="block text-[9px] text-indigo-600 dark:text-violet-400 font-semibold uppercase">{rental.status === 'Returned' ? 'Returned' : 'Pending Delivery'}</span>
+                              <span className="block text-[9px] text-primary font-semibold uppercase">{rental.status === 'Returned' ? 'Returned' : 'Pending Delivery'}</span>
                             </div>
                           )}
                         </div>
@@ -496,7 +496,7 @@ export default function ActiveRentalsPage() {
 
                       {/* Delivery Tracking Section */}
                       {delivery && rental.status !== 'Returned' && (
-                        <div className="border-t border-neutral-200 dark:border-neutral-800 pt-4 text-xs space-y-2.5">
+                        <div className="border-t border-border/60 pt-4 text-xs space-y-2.5">
                           <h4 className="font-extrabold uppercase text-[10px] text-neutral-450 tracking-wider flex items-center gap-1.5">
                             <Truck className="h-3.5 w-3.5 text-indigo-500" />
                             Fulfillment & Tracking Log
@@ -513,7 +513,7 @@ export default function ActiveRentalsPage() {
                             </div>
                             <div className="col-span-2 space-y-0.5 border-t border-indigo-100/30 dark:border-indigo-950/50 pt-1.5 mt-0.5">
                               <span className="block text-[9px] text-neutral-455 font-bold uppercase">Status Update Notes</span>
-                              <p className="text-neutral-600 dark:text-neutral-400 italic text-[11px] font-medium leading-tight">
+                              <p className="text-muted-foreground italic text-[11px] font-medium leading-tight">
                                 "{delivery.trackingNotes || "Package is being prepared for logistics."}"
                               </p>
                             </div>
@@ -522,7 +522,7 @@ export default function ActiveRentalsPage() {
                       )}
 
                       {/* Bottom: Action Buttons */}
-                      <div className="border-t border-neutral-200 dark:border-neutral-800 pt-4 flex gap-2">
+                      <div className="border-t border-border/60 pt-4 flex gap-2">
                         <button
                           onClick={() => openExtendModal(rental)}
                           disabled={!isExtendable}
@@ -535,12 +535,12 @@ export default function ActiveRentalsPage() {
                         <button
                           onClick={() => openPickupRequestModal(rental)}
                           disabled={!isReturnable}
-                          className="flex-1 py-2.5 border border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/20 disabled:border-neutral-200 dark:disabled:border-neutral-800 disabled:text-neutral-400 disabled:cursor-not-allowed text-indigo-600 dark:text-violet-400 font-extrabold text-[11px] rounded-xl cursor-pointer transition-all text-center flex items-center justify-center gap-1"
+                          className="flex-1 py-2.5 border border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/20 disabled:border-neutral-200 dark:disabled:border-neutral-800 disabled:text-neutral-400 disabled:cursor-not-allowed text-primary font-extrabold text-[11px] rounded-xl cursor-pointer transition-all text-center flex items-center justify-center gap-1"
                         >
                           <ArrowLeft className="h-3.5 w-3.5" />
                           Return & Pickup
                         </button>
-                        
+
                         {rental.extensionHistory && rental.extensionHistory.length > 0 && (
                           <button
                             onClick={() => setViewHistoryRental(rental)}
@@ -563,10 +563,10 @@ export default function ActiveRentalsPage() {
         {activeSubTab === "pickups" && (
           <div className="space-y-6">
             {pickups.length === 0 ? (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
+              <div className="bg-card border border-border/60 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
                 <Truck className="h-16 w-16 mx-auto text-neutral-350 dark:text-neutral-750" />
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No return requests found</h3>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto">
+                <h3 className="text-lg font-bold text-foreground">No return requests found</h3>
+                <p className="text-xs text-muted-foreground max-w-xs mx-auto">
                   You haven't requested any returns. Select active items from the lease catalog and request return pickups.
                 </p>
               </div>
@@ -596,9 +596,9 @@ export default function ActiveRentalsPage() {
                   return (
                     <div
                       key={pickup._id}
-                      className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4 group hover:shadow-md transition-all"
+                      className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4 group hover:shadow-md transition-all"
                     >
-                      {/* Product Header */}
+                      {}
                       <div className="flex gap-4">
                         <div className="w-16 h-16 rounded-xl bg-neutral-100 dark:bg-neutral-950 shrink-0 overflow-hidden" style={getCoverStyle(pickup.rental?.product?.images?.[0] || "")} />
                         <div className="flex-grow min-w-0 space-y-1">
@@ -608,23 +608,23 @@ export default function ActiveRentalsPage() {
                               {getStatusText(pickup.pickupStatus)}
                             </span>
                           </div>
-                          <h3 className="text-sm font-bold text-neutral-900 dark:text-white truncate" title={pickup.rental?.product?.name}>
+                          <h3 className="text-sm font-bold text-foreground truncate" title={pickup.rental?.product?.name}>
                             {pickup.rental?.product?.name || "Return Handover"}
                           </h3>
                           <p className="text-[10px] text-neutral-500 font-medium">Pickup Date: {new Date(pickup.pickupDate).toLocaleDateString()}</p>
                         </div>
                       </div>
 
-                      {/* Return Details */}
+                      {}
                       <div className="p-3 bg-neutral-50 dark:bg-neutral-950 border border-neutral-150 dark:border-neutral-850 rounded-xl space-y-2 text-xs">
                         <div>
                           <span className="block text-[9px] text-neutral-400 uppercase font-bold">Pickup Address</span>
                           <span className="font-semibold text-neutral-800 dark:text-neutral-200 leading-tight">{pickup.pickupAddress}</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 border-t border-neutral-200 dark:border-neutral-800 pt-2">
+                        <div className="grid grid-cols-2 gap-2 border-t border-border/60 pt-2">
                           <div>
                             <span className="block text-[9px] text-neutral-400 uppercase font-bold">Carrier Assigned</span>
-                            <span className="font-semibold text-neutral-700 dark:text-neutral-300">{pickup.assignedTo || "Awaiting Logistics"}</span>
+                            <span className="font-semibold text-muted-foreground">{pickup.assignedTo || "Awaiting Logistics"}</span>
                           </div>
                           <div>
                             <span className="block text-[9px] text-neutral-400 uppercase font-bold">Created On</span>
@@ -633,7 +633,7 @@ export default function ActiveRentalsPage() {
                         </div>
                       </div>
 
-                      {/* Log Status Update */}
+                      {}
                       <div className="bg-indigo-50/20 dark:bg-indigo-950/10 border border-indigo-100/20 dark:border-indigo-900/20 p-3 rounded-xl text-xs">
                         <span className="block text-[9px] text-neutral-450 uppercase font-extrabold mb-1">Log Update Notes</span>
                         <p className="text-neutral-600 dark:text-neutral-450 italic leading-tight">
@@ -648,13 +648,13 @@ export default function ActiveRentalsPage() {
           </div>
         )}
 
-        {/* Tab 3: Damage Claims List */}
+        {}
         {activeSubTab === "claims" && (
           <div className="space-y-6">
             {claims.length === 0 ? (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
+              <div className="bg-card border border-border/60 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm animate-in fade-in duration-300">
                 <FileText className="h-16 w-16 mx-auto text-neutral-350 dark:text-neutral-750" />
-                <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No damage claims reported</h3>
+                <h3 className="text-lg font-bold text-foreground">No damage claims reported</h3>
                 <p className="text-xs text-neutral-505 dark:text-neutral-400 max-w-xs mx-auto">
                   Excellent! You do not have any registered physical damage claims or deposit deductions on your leases.
                 </p>
@@ -684,9 +684,9 @@ export default function ActiveRentalsPage() {
                   return (
                     <div
                       key={claim._id}
-                      className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4 group hover:shadow-md transition-all border-l-4 border-l-red-500"
+                      className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm flex flex-col justify-between space-y-4 group hover:shadow-md transition-all border-l-4 border-l-red-500"
                     >
-                      {/* Product Header */}
+                      {}
                       <div className="flex gap-4">
                         <div className="w-16 h-16 rounded-xl bg-neutral-100 dark:bg-neutral-950 shrink-0 overflow-hidden" style={getCoverStyle(claim.rental?.product?.images?.[0] || "")} />
                         <div className="flex-grow min-w-0 space-y-1">
@@ -698,41 +698,41 @@ export default function ActiveRentalsPage() {
                               {claim.status}
                             </span>
                           </div>
-                          <h3 className="text-sm font-bold text-neutral-900 dark:text-white truncate" title={claim.rental?.product?.name}>
+                          <h3 className="text-sm font-bold text-foreground truncate" title={claim.rental?.product?.name}>
                             {claim.rental?.product?.name || "Physical Item Damage"}
                           </h3>
                           <p className="text-[10px] text-neutral-500 font-medium">Reported by: {claim.reportedBy?.name || "Vendor"}</p>
                         </div>
                       </div>
 
-                      {/* Claim Details */}
+                      {}
                       <div className="p-3.5 bg-neutral-50 dark:bg-neutral-950 border border-neutral-150 dark:border-neutral-850 rounded-xl space-y-2.5 text-xs">
                         <div>
                           <span className="block text-[9px] text-neutral-400 uppercase font-bold">Damage Description</span>
-                          <p className="text-neutral-700 dark:text-neutral-300 font-medium text-[11px] leading-snug">
+                          <p className="text-muted-foreground font-medium text-[11px] leading-snug">
                             {claim.description}
                           </p>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-3 border-t border-neutral-200 dark:border-neutral-800 pt-2 mt-1.5">
+                        <div className="grid grid-cols-2 gap-3 border-t border-border/60 pt-2 mt-1.5">
                           <div className="bg-red-50/10 dark:bg-red-950/10 p-2 rounded-lg border border-red-200/20">
                             <span className="block text-[8px] text-red-550 dark:text-red-400 uppercase font-extrabold">Deducted Deposit</span>
-                            <span className="font-extrabold text-neutral-900 dark:text-white text-sm">₹{claim.deductedAmount}</span>
+                            <span className="font-extrabold text-foreground text-sm">₹{claim.deductedAmount}</span>
                           </div>
                           <div className="bg-amber-50/10 dark:bg-amber-950/10 p-2 rounded-lg border border-amber-200/20">
                             <span className="block text-[8px] text-amber-600 dark:text-amber-400 uppercase font-extrabold">Penalty Charge</span>
-                            <span className="font-extrabold text-neutral-900 dark:text-white text-sm">₹{claim.penaltyAmount}</span>
+                            <span className="font-extrabold text-foreground text-sm">₹{claim.penaltyAmount}</span>
                           </div>
                         </div>
                       </div>
 
-                      {/* Admin Assessment Log */}
-                      <div className="bg-neutral-50/50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 p-3 rounded-xl text-xs">
+                      {}
+                      <div className="bg-neutral-50/50 dark:bg-neutral-900/60 border border-border/60 p-3 rounded-xl text-xs">
                         <span className="block text-[9px] text-neutral-450 uppercase font-bold flex items-center gap-1">
                           <ShieldAlert className="h-3 w-3 text-indigo-500" />
                           Administrative Assessment Logs
                         </span>
-                        <p className="text-neutral-600 dark:text-neutral-400 italic leading-tight mt-1">
+                        <p className="text-muted-foreground italic leading-tight mt-1">
                           "{claim.inspectionNotes || "Review is ongoing. Pending admin verification."}"
                         </p>
                       </div>
@@ -746,13 +746,13 @@ export default function ActiveRentalsPage() {
 
       </div>
 
-      {/* EXTEND LEASE MODAL */}
+      {}
       {selectedRental && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
-            
+          <div className="w-full max-w-md bg-card border border-border/60 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
+
             <div className="flex justify-between items-center pb-2 border-b border-neutral-100 dark:border-neutral-850">
-              <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+              <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                 <Sparkles className="h-4.5 w-4.5 text-violet-500" />
                 Extend Lease Subscription
               </h3>
@@ -767,7 +767,7 @@ export default function ActiveRentalsPage() {
             {extendSuccess ? (
               <div className="py-6 text-center space-y-3 animate-in zoom-in-50 duration-200">
                 <CheckCircle className="h-14 w-14 text-emerald-500 mx-auto animate-bounce" />
-                <h4 className="text-base font-extrabold text-neutral-900 dark:text-white">Lease Extended Successfully!</h4>
+                <h4 className="text-base font-extrabold text-foreground">Lease Extended Successfully!</h4>
                 <p className="text-xs text-neutral-500">Your rental end date and calculations have been updated.</p>
               </div>
             ) : (
@@ -788,7 +788,7 @@ export default function ActiveRentalsPage() {
                     <span>Current Lease End Date</span>
                     <strong className="text-neutral-800 dark:text-neutral-200">{new Date(selectedRental.endDate).toLocaleDateString()}</strong>
                   </div>
-                  <div className="flex justify-between text-neutral-500 border-t border-neutral-200 dark:border-neutral-800 pt-2">
+                  <div className="flex justify-between text-neutral-500 border-t border-border/60 pt-2">
                     <span>Monthly Rent Rate</span>
                     <strong className="text-neutral-800 dark:text-neutral-200">₹{selectedRental.monthlyRent}/month</strong>
                   </div>
@@ -798,7 +798,7 @@ export default function ActiveRentalsPage() {
                   </div>
                 </div>
 
-                {/* Duration Picker */}
+                {}
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450 block">Select Extension Tenure</label>
                   <div className="grid grid-cols-4 gap-2">
@@ -819,7 +819,7 @@ export default function ActiveRentalsPage() {
                   </div>
                 </div>
 
-                {/* Details Preview */}
+                {}
                 <div className="border-t border-dashed border-neutral-250 dark:border-neutral-800 pt-4 space-y-2 text-xs">
                   <div className="flex justify-between text-neutral-650 dark:text-neutral-450">
                     <span>New End Date Preview</span>
@@ -849,7 +849,7 @@ export default function ActiveRentalsPage() {
                   <button
                     type="submit"
                     disabled={extending}
-                    className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
+                    className="flex-1 py-3 bg-primary hover:bg-primary/90 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
                   >
                     {extending ? "Processing..." : "Confirm Extension"}
                   </button>
@@ -861,13 +861,13 @@ export default function ActiveRentalsPage() {
         </div>
       )}
 
-      {/* REQUEST PICKUP MODAL */}
+      {}
       {requestPickupRental && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
-            
+          <div className="w-full max-w-md bg-card border border-border/60 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
+
             <div className="flex justify-between items-center pb-2 border-b border-neutral-100 dark:border-neutral-850">
-              <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+              <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                 <Truck className="h-4.5 w-4.5 text-indigo-500" />
                 Request Return Pickup
               </h3>
@@ -882,7 +882,7 @@ export default function ActiveRentalsPage() {
             {requestPickupSuccess ? (
               <div className="py-6 text-center space-y-3 animate-in zoom-in-50 duration-200">
                 <CheckCircle className="h-14 w-14 text-emerald-500 mx-auto animate-bounce" />
-                <h4 className="text-base font-extrabold text-neutral-900 dark:text-white">Return Pickup Requested!</h4>
+                <h4 className="text-base font-extrabold text-foreground">Return Pickup Requested!</h4>
                 <p className="text-xs text-neutral-505">The vendor has been notified to schedule a return pickup carrier.</p>
               </div>
             ) : (
@@ -905,7 +905,7 @@ export default function ActiveRentalsPage() {
                   </div>
                 </div>
 
-                {/* Desired Date Picker */}
+                {}
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450 block">Select Desired Return Date</label>
                   <input
@@ -914,11 +914,11 @@ export default function ActiveRentalsPage() {
                     min={new Date().toISOString().split("T")[0]}
                     value={pickupDate}
                     onChange={(e) => setPickupDate(e.target.value)}
-                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-indigo-550 focus:outline-none"
+                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-indigo-550 focus:outline-none"
                   />
                 </div>
 
-                {/* Handover Address */}
+                {}
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450 block">Pickup Location Address</label>
                   <textarea
@@ -927,7 +927,7 @@ export default function ActiveRentalsPage() {
                     placeholder="Enter full address where agent should collect the item..."
                     value={pickupAddress}
                     onChange={(e) => setPickupAddress(e.target.value)}
-                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-indigo-550 focus:outline-none resize-none"
+                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-indigo-550 focus:outline-none resize-none"
                   />
                 </div>
 
@@ -959,13 +959,13 @@ export default function ActiveRentalsPage() {
         </div>
       )}
 
-      {/* EXTENSION HISTORY MODAL */}
+      {}
       {viewHistoryRental && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
-            
+          <div className="w-full max-w-lg bg-card border border-border/60 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
+
             <div className="flex justify-between items-center pb-2 border-b border-neutral-100 dark:border-neutral-850">
-              <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+              <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                 <History className="h-4.5 w-4.5 text-violet-500" />
                 Lease Extension Log History
               </h3>
@@ -995,7 +995,7 @@ export default function ActiveRentalsPage() {
                     <span className="font-extrabold text-indigo-650 dark:text-violet-400">Extended by +{hist.extendedByMonths} Months</span>
                     <span className="text-[10px] text-neutral-400 font-semibold">{new Date(hist.createdAt).toLocaleDateString()}</span>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-2 text-[11px] text-neutral-500 border-t border-neutral-100 dark:border-neutral-800 pt-2">
                     <div>
                       <span>Previous End Date</span>

@@ -4,11 +4,7 @@ import { User } from '../models/User';
 import { Product } from '../models/Product';
 import { Maintenance } from '../models/Maintenance';
 
-/**
- * @desc    Get administrative platform analytics
- * @route   GET /api/analytics/admin
- * @access  Private (Admin only)
- */
+
 export const getAdminAnalytics = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user || req.user.role !== 'admin') {
@@ -16,16 +12,16 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // 1. Overall stats cards counts
+
     const totalUsersCount = await User.countDocuments();
     const activeRentalsCount = await Rental.countDocuments({ status: 'Active' });
     const pendingRentalsCount = await Rental.countDocuments({ status: 'Pending' });
 
-    // Calculate total revenue from all non-cancelled rentals
+
     const allRentals = await Rental.find({ status: { $ne: 'Cancelled' } });
     const totalRevenue = allRentals.reduce((sum, rental) => sum + (rental.totalPrice || 0), 0);
 
-    // 2. User role distribution (Pie Chart)
+
     const customerCount = await User.countDocuments({ role: { $in: ['customer', 'user'] } });
     const vendorCount = await User.countDocuments({ role: 'vendor' });
     const adminCount = await User.countDocuments({ role: 'admin' });
@@ -36,22 +32,22 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       { name: 'Admins', value: adminCount }
     ];
 
-    // 3. Customer Retention Rate (Users with >1 rentals vs users with >=1 rentals)
+
     const rentalUsers = await Rental.aggregate([
       { $group: { _id: '$user', count: { $sum: 1 } } }
     ]);
     const totalRentingCustomers = rentalUsers.length;
     const returningCustomers = rentalUsers.filter(ru => ru.count > 1).length;
-    const customerRetentionRate = totalRentingCustomers > 0 
-      ? Math.round((returningCustomers / totalRentingCustomers) * 100) 
+    const customerRetentionRate = totalRentingCustomers > 0
+      ? Math.round((returningCustomers / totalRentingCustomers) * 100)
       : 0;
 
-    // 4. Monthly Revenue (Last 6 Months)
+
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const monthlyRevenueMap: { [key: string]: number } = {};
     const monthlyRentalsMap: { [key: string]: number } = {};
 
-    // Initialize last 6 months
+
     const last6Months: string[] = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date();
@@ -77,8 +73,7 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       Rentals: monthlyRentalsMap[label]
     }));
 
-    // 5. Product Utilization Rate per Category
-    // Utilization = (Quantity of active rentals in category) / (Total quantity of products in category)
+
     const activeLeases = await Rental.find({ status: 'Active' }).populate({
       path: 'product',
       select: 'category'
@@ -94,7 +89,7 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       totalQtyMap[cat] = 0;
     });
 
-    // Sum active rented quantity
+
     activeLeases.forEach((rental: any) => {
       if (rental.product && rental.product.category) {
         const cat = categories.includes(rental.product.category) ? rental.product.category : 'Others';
@@ -102,7 +97,7 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       }
     });
 
-    // Sum total available stock + active rented stock per product
+
     allProducts.forEach(prod => {
       const cat = categories.includes(prod.category) ? prod.category : 'Others';
       totalQtyMap[cat] += prod.availableQuantity || 0;
@@ -110,7 +105,7 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
 
     const utilizationData = categories.map(cat => {
       const active = activeQtyMap[cat];
-      const totalStock = totalQtyMap[cat] + active; // total product supply
+      const totalStock = totalQtyMap[cat] + active;
       const rate = totalStock > 0 ? Math.round((active / totalStock) * 100) : 0;
       return {
         category: cat,
@@ -120,15 +115,15 @@ export const getAdminAnalytics = async (req: Request, res: Response): Promise<vo
       };
     });
 
-    // 6. Maintenance Resolution Time (Average hours to resolve resolved tickets)
+
     const resolvedTickets = await Maintenance.find({ status: 'Resolved' });
     let totalResolutionHours = 0;
     resolvedTickets.forEach(ticket => {
       const diffMs = ticket.updatedAt.getTime() - ticket.createdAt.getTime();
-      totalResolutionHours += diffMs / (1000 * 60 * 60); // convert to hours
+      totalResolutionHours += diffMs / (1000 * 60 * 60);
     });
-    const avgResolutionTimeHours = resolvedTickets.length > 0 
-      ? Math.round(totalResolutionHours / resolvedTickets.length) 
+    const avgResolutionTimeHours = resolvedTickets.length > 0
+      ? Math.round(totalResolutionHours / resolvedTickets.length)
       : 0;
 
     res.status(200).json({

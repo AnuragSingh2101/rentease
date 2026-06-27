@@ -4,7 +4,7 @@ import crypto from 'crypto';
 import { User } from '../models/User';
 import { sendEmail } from '../utils/sendEmail';
 
-// Helper to sign JWT token
+
 const signToken = (id: string): string => {
   return jwt.sign(
     { id },
@@ -15,7 +15,7 @@ const signToken = (id: string): string => {
   );
 };
 
-// Send response with token
+
 const sendTokenResponse = (user: any, statusCode: number, res: Response) => {
   const token = signToken(user._id);
 
@@ -45,11 +45,7 @@ const sendTokenResponse = (user: any, statusCode: number, res: Response) => {
     });
 };
 
-/**
- * @desc    Register a new user
- * @route   POST /api/auth/register
- * @access  Public
- */
+
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, phone, password, role } = req.body;
@@ -67,11 +63,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Login a user
- * @route   POST /api/auth/login
- * @access  Public
- */
+
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
@@ -99,11 +91,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Get current logged in user
- * @route   GET /api/auth/me
- * @access  Private
- */
+
 export const getMe = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -128,11 +116,7 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Log user out / clear cookie
- * @route   POST /api/auth/logout
- * @access  Public
- */
+
 export const logout = async (req: Request, res: Response): Promise<void> => {
   try {
     res.cookie('token', 'none', {
@@ -146,17 +130,13 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Forgot password — send reset email
- * @route   POST /api/auth/forgotpassword
- * @access  Public
- */
+
 export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      // Always return success to prevent email enumeration
+
       res.status(200).json({
         success: true,
         message: 'If that email is registered, a reset link has been sent.',
@@ -164,14 +144,14 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    // Get reset token
+
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
 
-    // Build reset URL
+
     const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
 
-    // Log the reset URL to console for easy local development testing
+
     console.log('\n==================================================');
     console.log(`[DEVELOPMENT] PASSWORD RESET URL for ${user.email}:`);
     console.log(resetUrl);
@@ -192,7 +172,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
       });
     } catch (emailError) {
       if (process.env.NODE_ENV === 'development') {
-        // In local development, ignore SMTP failures so you can test using the console log links
+
         console.warn('[DEVELOPMENT WARNING] SMTP Email could not be sent, but proceeding because we logged the link to the console.');
         res.status(200).json({
           success: true,
@@ -201,7 +181,7 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
         return;
       }
 
-      // Roll back token if email fails (production)
+
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
       await user.save({ validateBeforeSave: false });
@@ -213,14 +193,10 @@ export const forgotPassword = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Reset password using token
- * @route   PUT /api/auth/resetpassword/:resettoken
- * @access  Public
- */
+
 export const resetPassword = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Hash the token from the URL
+
     const resetPasswordToken = crypto
       .createHash('sha256')
       .update(req.params.resettoken)
@@ -236,7 +212,7 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Set new password
+
     user.password = req.body.password;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
@@ -248,11 +224,7 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Update password (authenticated)
- * @route   PUT /api/auth/updatepassword
- * @access  Private
- */
+
 export const updatePassword = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.user!._id).select('+password');
@@ -277,11 +249,7 @@ export const updatePassword = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Get all users
- * @route   GET /api/auth/users
- * @access  Private (Admin only)
- */
+
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 });
@@ -295,11 +263,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * @desc    Update user role
- * @route   PUT /api/auth/users/:id/role
- * @access  Private (Admin only)
- */
+
 export const updateUserRole = async (req: Request, res: Response): Promise<void> => {
   try {
     const { role } = req.body;
@@ -327,11 +291,7 @@ export const updateUserRole = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Delete user
- * @route   DELETE /api/auth/users/:id
- * @access  Private (Admin only)
- */
+
 export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.params.id);
@@ -341,7 +301,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    // Prevent admin from deleting themselves
+
     if (user._id.toString() === req.user!._id.toString()) {
       res.status(400).json({ success: false, message: 'You cannot delete your own admin account' });
       return;

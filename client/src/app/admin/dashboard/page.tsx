@@ -141,8 +141,8 @@ const GRADIENTS = [
 export default function AdminDashboard() {
   const router = useRouter();
   const [currentUser, setCurrentUser] = React.useState<UserData | null>(null);
-  
-  // Platform Data
+
+
   const [usersList, setUsersList] = React.useState<UserData[]>([]);
   const [listingsList, setListingsList] = React.useState<Listing[]>([]);
   const [productsList, setProductsList] = React.useState<Product[]>([]);
@@ -155,17 +155,17 @@ export default function AdminDashboard() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Tab State
+
   const [activeTab, setActiveTab] = React.useState<"overview" | "users" | "listings" | "products" | "rentals" | "disputes" | "service_areas">("overview");
   const [disputesSubTab, setDisputesSubTab] = React.useState<"claims" | "maintenance">("claims");
 
-  // Claims & Maintenance State
+
   const [updatingClaimId, setUpdatingClaimId] = React.useState<string | null>(null);
   const [adminInspectionNotes, setAdminInspectionNotes] = React.useState<{ [key: string]: string }>({});
   const [updatingTicketId, setUpdatingTicketId] = React.useState<string | null>(null);
   const [newCommentText, setNewCommentText] = React.useState<{ [key: string]: string }>({});
 
-  // Listing Modal State
+
   const [listingModalOpen, setListingModalOpen] = React.useState(false);
   const [listingModalMode, setListingModalMode] = React.useState<"create" | "edit">("create");
   const [editingListingId, setEditingListingId] = React.useState<string | null>(null);
@@ -181,7 +181,7 @@ export default function AdminDashboard() {
   const [listingFormError, setListingFormError] = React.useState<string | null>(null);
   const [submittingListing, setSubmittingListing] = React.useState(false);
 
-  // Product Modal State
+
   const [productModalOpen, setProductModalOpen] = React.useState(false);
   const [productModalMode, setProductModalMode] = React.useState<"create" | "edit">("create");
   const [editingProductId, setEditingProductId] = React.useState<string | null>(null);
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
   const [productFormError, setProductFormError] = React.useState<string | null>(null);
   const [submittingProduct, setSubmittingProduct] = React.useState(false);
 
-  // Service Area Modal State
+
   const [serviceAreaModalOpen, setServiceAreaModalOpen] = React.useState(false);
   const [serviceAreaModalMode, setServiceAreaModalMode] = React.useState<"create" | "edit">("create");
   const [editingServiceAreaId, setEditingServiceAreaId] = React.useState<string | null>(null);
@@ -213,7 +213,7 @@ export default function AdminDashboard() {
   const [serviceAreaFormError, setServiceAreaFormError] = React.useState<string | null>(null);
   const [submittingServiceArea, setSubmittingServiceArea] = React.useState(false);
 
-  // Rental update states
+
   const [updatingRentalId, setUpdatingRentalId] = React.useState<string | null>(null);
 
   const fetchPlatformData = React.useCallback(async () => {
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
       else router.push("/dashboard");
       return;
     }
-    
+
     setCurrentUser(parsed);
     fetchPlatformData();
   }, [router, fetchPlatformData]);
@@ -298,7 +298,7 @@ export default function AdminDashboard() {
     router.push("/login");
   };
 
-  // User Actions
+
   const handleUpdateUserRole = async (userId: string, newRole: string) => {
     try {
       await api.put(`/auth/users/${userId}/role`, { role: newRole });
@@ -322,7 +322,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Claims Actions
+
   const handleUpdateClaimStatus = async (id: string, status: 'Approved' | 'Rejected' | 'Settled') => {
     setUpdatingClaimId(id);
     try {
@@ -336,7 +336,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Maintenance Actions
+
   const handleUpdateTicketStatus = async (id: string, status: 'Open' | 'In Progress' | 'Resolved') => {
     setUpdatingTicketId(id);
     try {
@@ -361,7 +361,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Rental Status Actions
+
   const handleUpdateRentalStatus = async (rentalId: string, newStatus: string) => {
     setUpdatingRentalId(rentalId);
     try {
@@ -374,7 +374,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Listing Actions
+
   const handleOpenCreateListing = () => {
     setListingModalMode("create");
     setEditingListingId(null);
@@ -443,7 +443,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Product Actions
+
   const handleOpenCreateProduct = () => {
     setProductModalMode("create");
     setEditingProductId(null);
@@ -544,7 +544,7 @@ export default function AdminDashboard() {
     });
   };
 
-  // Service Area Actions
+
   const handleOpenCreateServiceArea = () => {
     setServiceAreaModalMode("create");
     setEditingServiceAreaId(null);
@@ -638,7 +638,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Analytics Dynamic Cards Calculations & Fallbacks
+
   const totalUsersCount = analyticsData?.cards?.totalUsers ?? usersList.length;
   const activeRentalsCount = analyticsData?.cards?.activeRentals ?? rentalsList.filter(r => r.status === "Active").length;
   const pendingRequestsCount = analyticsData?.cards?.pendingRequests ?? rentalsList.filter(r => r.status === "Pending").length;
@@ -654,30 +654,30 @@ export default function AdminDashboard() {
   if (!currentUser) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="h-8 w-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950/20 py-8">
+    <div className="min-h-screen bg-muted/20 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm">
+
+        {}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-card border border-border/60 p-6 rounded-2xl shadow-sm">
           <div className="flex items-center gap-4">
             <div className="h-14 w-14 rounded-2xl bg-gradient-to-tr from-red-600 to-orange-500 flex items-center justify-center text-white text-xl font-bold shadow-lg">
               {currentUser.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-white">Admin Control Panel</h1>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">Admin Control Panel</h1>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900">
                   <ShieldCheck className="h-3.5 w-3.5" />
                   Administrator
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">{currentUser.name} · {currentUser.email}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{currentUser.name} · {currentUser.email}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 self-start sm:self-center">
@@ -698,8 +698,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Tab Controls */}
-        <div className="flex border-b border-neutral-200 dark:border-neutral-800 gap-6 overflow-x-auto pb-0.5 scrollbar-none">
+        {}
+        <div className="flex border-b border-border/60 gap-6 overflow-x-auto pb-0.5 scrollbar-none">
           <button
             onClick={() => setActiveTab("overview")}
             className={`pb-3.5 text-xs font-bold transition-all relative cursor-pointer whitespace-nowrap ${
@@ -782,35 +782,35 @@ export default function AdminDashboard() {
           </div>
         ) : (
           <div className="space-y-6">
-            
-            {/* OVERVIEW TAB */}
+
+            {}
             {activeTab === "overview" && (
               <div className="space-y-8 animate-in fade-in duration-200">
-                {/* Stats Widgets */}
+                {}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {overviewCards.map(({ label, value, icon: Icon, color }) => (
-                    <div key={label} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
+                    <div key={label} className="bg-card border border-border/60 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
                       <div className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
                         <Icon className="h-5.5 w-5.5" />
                       </div>
                       <div>
-                        <p className="text-xl font-extrabold text-neutral-900 dark:text-white">{value}</p>
-                        <p className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-semibold">{label}</p>
+                        <p className="text-xl font-extrabold text-foreground">{value}</p>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground font-semibold">{label}</p>
                       </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Dashboard Summary Info Card */}
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
+                {}
+                <div className="bg-card border border-border/60 rounded-2xl p-6">
                   <div className="flex items-center gap-3 mb-4">
                     <ShieldCheck className="h-5 w-5 text-red-600 dark:text-red-400" />
-                    <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Platform Summary</h2>
+                    <h2 className="text-lg font-bold text-foreground">Platform Summary</h2>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/40 dark:bg-neutral-950/20 p-4 space-y-1">
                       <p className="text-xs text-neutral-400 font-medium">Platform Roles</p>
-                      <div className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 space-y-1 pt-1">
+                      <div className="text-xs font-semibold text-muted-foreground space-y-1 pt-1">
                         <div className="flex justify-between"><span>Customers</span> <span className="font-bold">{usersList.filter(u => u.role === "customer" || u.role === "user").length}</span></div>
                         <div className="flex justify-between"><span>Vendors</span> <span className="font-bold">{usersList.filter(u => u.role === "vendor").length}</span></div>
                         <div className="flex justify-between"><span>Administrators</span> <span className="font-bold">{usersList.filter(u => u.role === "admin").length}</span></div>
@@ -819,7 +819,7 @@ export default function AdminDashboard() {
 
                     <div className="rounded-xl border border-neutral-100 dark:border-neutral-800 bg-neutral-50/40 dark:bg-neutral-950/20 p-4 space-y-1">
                       <p className="text-xs text-neutral-400 font-medium">Platform Averages</p>
-                      <div className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 space-y-1 pt-1">
+                      <div className="text-xs font-semibold text-muted-foreground space-y-1 pt-1">
                         <div className="flex justify-between"><span>Avg. Prop Price</span> <span className="font-bold">₹{listingsList.length > 0 ? Math.round(listingsList.reduce((sum, item) => sum + item.price, 0) / listingsList.length).toLocaleString("en-IN") : 0}</span></div>
                         <div className="flex justify-between"><span>Avg. Prod Rent</span> <span className="font-bold">₹{productsList.length > 0 ? Math.round(productsList.reduce((sum, item) => sum + item.monthlyRent, 0) / productsList.length).toLocaleString("en-IN") : 0}</span></div>
                       </div>
@@ -850,14 +850,14 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* USERS TAB */}
+            {}
             {activeTab === "users" && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-4 animate-in fade-in duration-205">
-                <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-4 animate-in fade-in duration-205">
+                <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                   <Users className="h-4.5 w-4.5 text-red-500" />
                   Registered Platform Accounts
                 </h2>
-                
+
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
@@ -872,12 +872,12 @@ export default function AdminDashboard() {
                       {usersList.map((user) => (
                         <tr key={user._id} className="border-b border-neutral-50 dark:border-neutral-850 hover:bg-neutral-50/50 dark:hover:bg-neutral-950/40 transition-colors">
                           <td className="py-3.5 px-4 font-bold text-neutral-800 dark:text-white">{user.name}</td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400">{user.email}</td>
+                          <td className="py-3.5 px-4 text-muted-foreground">{user.email}</td>
                           <td className="py-3.5 px-4">
                             <select
                               value={user.role}
                               onChange={(e) => handleUpdateUserRole(user._id, e.target.value)}
-                              className="text-xs font-semibold border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-white rounded px-2 py-1 focus:outline-none"
+                              className="text-xs font-semibold border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-700 dark:text-white rounded px-2 py-1 focus:outline-none"
                             >
                               <option value="customer">Customer</option>
                               <option value="vendor">Vendor</option>
@@ -887,7 +887,7 @@ export default function AdminDashboard() {
                           <td className="py-3.5 px-4 text-right">
                             <button
                               onClick={() => handleDeleteUser(user._id)}
-                              className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-400 transition-colors cursor-pointer"
+                              className="p-1.5 border border-border/60 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-400 transition-colors cursor-pointer"
                               title="Delete Account"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -901,17 +901,17 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* LISTINGS TAB */}
+            {}
             {activeTab === "listings" && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
+              <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                     <Home className="h-4.5 w-4.5 text-orange-500" />
                     All Platform Listings
                   </h2>
                   <button
                     onClick={handleOpenCreateListing}
-                    className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
+                    className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
                   >
                     <Plus className="h-4 w-4" />
                     Add Listing
@@ -933,24 +933,24 @@ export default function AdminDashboard() {
                       {listingsList.map((listing) => (
                         <tr key={listing._id} className="border-b border-neutral-50 dark:border-neutral-850 hover:bg-neutral-50/50 dark:hover:bg-neutral-950/40 transition-colors">
                           <td className="py-3.5 px-4 font-bold text-neutral-800 dark:text-white">{listing.title}</td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400">{listing.location}</td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400 font-medium">
+                          <td className="py-3.5 px-4 text-muted-foreground">{listing.location}</td>
+                          <td className="py-3.5 px-4 text-muted-foreground font-medium">
                             {listing.vendor && typeof listing.vendor === "object" ? listing.vendor.name : "Platform Admin"}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-neutral-900 dark:text-white">
+                          <td className="py-3.5 px-4 font-bold text-foreground">
                             ₹{listing.price.toLocaleString("en-IN")}
                           </td>
                           <td className="py-3.5 px-4 text-right space-x-1.5">
                             <button
                               onClick={() => handleOpenEditListing(listing)}
-                              className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                              className="p-1.5 border border-border/60 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                               title="Edit Listing"
                             >
                               <Edit2 className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteListing(listing._id)}
-                              className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                              className="p-1.5 border border-border/60 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                               title="Delete Listing"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -964,17 +964,17 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* PRODUCTS TAB */}
+            {}
             {activeTab === "products" && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
+              <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                     <Package className="h-4.5 w-4.5 text-amber-500" />
                     All Catalog Products
                   </h2>
                   <button
                     onClick={handleOpenCreateProduct}
-                    className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
+                    className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
                   >
                     <Plus className="h-4 w-4" />
                     Add Product
@@ -997,11 +997,11 @@ export default function AdminDashboard() {
                       {productsList.map((product) => (
                         <tr key={product._id} className="border-b border-neutral-50 dark:border-neutral-850 hover:bg-neutral-50/50 dark:hover:bg-neutral-950/40 transition-colors">
                           <td className="py-3.5 px-4 font-bold text-neutral-800 dark:text-white">{product.name}</td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400 capitalize">{product.category}</td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400 font-medium">
+                          <td className="py-3.5 px-4 text-muted-foreground capitalize">{product.category}</td>
+                          <td className="py-3.5 px-4 text-muted-foreground font-medium">
                             {product.vendor && typeof product.vendor === "object" ? product.vendor.name : "Platform Admin"}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-neutral-900 dark:text-white">
+                          <td className="py-3.5 px-4 font-bold text-foreground">
                             ₹{product.monthlyRent.toLocaleString("en-IN")}/mo
                           </td>
                           <td className="py-3.5 px-4 text-neutral-500 font-bold">
@@ -1010,14 +1010,14 @@ export default function AdminDashboard() {
                           <td className="py-3.5 px-4 text-right space-x-1.5">
                             <button
                               onClick={() => handleOpenEditProduct(product)}
-                              className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                              className="p-1.5 border border-border/60 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                               title="Edit Product"
                             >
                               <Edit2 className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteProduct(product._id)}
-                              className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                              className="p-1.5 border border-border/60 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                               title="Delete Product"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -1031,10 +1031,10 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* RENTALS TAB */}
+            {}
             {activeTab === "rentals" && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
-                <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
+                <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                   <Clock className="h-4.5 w-4.5 text-indigo-550" />
                   Global Rental Agreements
                 </h2>
@@ -1064,19 +1064,19 @@ export default function AdminDashboard() {
                               <p className="mt-0.5 truncate max-w-[150px]" title={rental.product?.name}>{rental.product?.name || "Product Item"}</p>
                             </td>
                             <td className="py-3.5 px-4 text-neutral-500">
-                              <p className="font-bold text-neutral-700 dark:text-neutral-300">{rental.user?.name}</p>
+                              <p className="font-bold text-muted-foreground">{rental.user?.name}</p>
                               <p className="text-[10px]">{rental.user?.email}</p>
                               {rental.user?.phone && <p className="text-[10px] text-neutral-400">{rental.user?.phone}</p>}
                             </td>
                             <td className="py-3.5 px-4 text-neutral-500 space-y-0.5">
-                              <p>Start: <strong className="text-neutral-700 dark:text-neutral-300">{new Date(rental.startDate).toLocaleDateString()}</strong></p>
-                              <p>End: <strong className="text-neutral-700 dark:text-neutral-300">{new Date(rental.endDate).toLocaleDateString()}</strong></p>
+                              <p>Start: <strong className="text-muted-foreground">{new Date(rental.startDate).toLocaleDateString()}</strong></p>
+                              <p>End: <strong className="text-muted-foreground">{new Date(rental.endDate).toLocaleDateString()}</strong></p>
                               <p className="text-[10px] bg-neutral-100 dark:bg-neutral-800 inline-block px-1.5 py-0.5 rounded font-bold">{rental.tenure} months ({rental.quantity} unit{rental.quantity > 1 ? "s" : ""})</p>
                             </td>
                             <td className="py-3.5 px-4 space-y-0.5">
                               <p>Rent: <span className="font-semibold text-neutral-800 dark:text-white">₹{rental.monthlyRent}/mo</span></p>
                               <p>Deposit: <span className="font-semibold text-neutral-800 dark:text-white">₹{rental.deposit}</span></p>
-                              <p className="text-[11px] font-bold text-indigo-600 dark:text-violet-400">Total: ₹{rental.totalPrice.toLocaleString("en-IN")}</p>
+                              <p className="text-[11px] font-bold text-primary">Total: ₹{rental.totalPrice.toLocaleString("en-IN")}</p>
                             </td>
                             <td className="py-3.5 px-4">
                               <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
@@ -1095,7 +1095,7 @@ export default function AdminDashboard() {
                                 value={rental.status}
                                 disabled={updatingRentalId === rental._id}
                                 onChange={(e) => handleUpdateRentalStatus(rental._id, e.target.value)}
-                                className="text-xs font-semibold border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-white rounded px-2.5 py-1 focus:outline-none disabled:opacity-50"
+                                className="text-xs font-semibold border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-700 dark:text-white rounded px-2.5 py-1 focus:outline-none disabled:opacity-50"
                               >
                                 <option value="Pending">Pending</option>
                                 <option value="Approved">Approved</option>
@@ -1114,11 +1114,11 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* DISPUTES & TICKETS TAB */}
+            {}
             {activeTab === "disputes" && (
               <div className="space-y-6 animate-in fade-in duration-205">
-                {/* Switcher header buttons */}
-                <div className="flex border-b border-neutral-200 dark:border-neutral-800 gap-4">
+                {}
+                <div className="flex border-b border-border/60 gap-4">
                   <button
                     onClick={() => setDisputesSubTab("claims")}
                     className={`pb-2.5 text-xs font-bold transition-all relative cursor-pointer ${
@@ -1141,16 +1141,16 @@ export default function AdminDashboard() {
                   </button>
                 </div>
 
-                {/* Sub Tab Views */}
+                {}
                 {disputesSubTab === "claims" ? (
-                  <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
-                    <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
+                    <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                       <ShieldAlert className="h-4.5 w-4.5 text-red-505" />
                       Damage Claims Review & Settlement
                     </h2>
 
                     {claimsList.length === 0 ? (
-                      <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+                      <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                         <CheckCircle2 className="h-12 w-12 mx-auto text-emerald-400" />
                         <p className="font-bold text-neutral-800 dark:text-white text-sm">No active claims</p>
                         <p className="text-xs text-neutral-500">All properties and product handovers are in perfect condition.</p>
@@ -1226,7 +1226,7 @@ export default function AdminDashboard() {
                                         placeholder="Review Notes..."
                                         value={adminInspectionNotes[claim._id] || ""}
                                         onChange={(e) => setAdminInspectionNotes({ ...adminInspectionNotes, [claim._id]: e.target.value })}
-                                        className="py-1 px-2 border border-neutral-300 dark:border-neutral-850 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-[10px] rounded focus:outline-none w-[120px]"
+                                        className="py-1 px-2 border border-neutral-300 dark:border-neutral-850 bg-white dark:bg-neutral-950 text-foreground text-[10px] rounded focus:outline-none w-[120px]"
                                       />
                                     </div>
                                     <div className="flex gap-1.5">
@@ -1262,14 +1262,14 @@ export default function AdminDashboard() {
                     )}
                   </div>
                 ) : (
-                  <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
-                    <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
+                    <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                       <Wrench className="h-4.5 w-4.5 text-indigo-505" />
                       Active Maintenance & Repair Tickets
                     </h2>
 
                     {maintenanceList.length === 0 ? (
-                      <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+                      <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                         <CheckCircle2 className="h-12 w-12 mx-auto text-emerald-400" />
                         <p className="font-bold text-neutral-800 dark:text-white text-sm">No maintenance tickets</p>
                         <p className="text-xs text-neutral-500">All customer products and listing repairs are fully completed.</p>
@@ -1277,7 +1277,7 @@ export default function AdminDashboard() {
                     ) : (
                       <div className="space-y-6">
                         {maintenanceList.map((ticket) => (
-                          <div key={ticket._id} className="border border-neutral-200 dark:border-neutral-800 rounded-xl p-5 space-y-4">
+                          <div key={ticket._id} className="border border-border/60 rounded-xl p-5 space-y-4">
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-100 dark:border-neutral-850 pb-3">
                               <div>
                                 <span className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wide ${
@@ -1307,7 +1307,7 @@ export default function AdminDashboard() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-neutral-500">
                               <div>
                                 <p className="font-bold text-neutral-450 uppercase text-[9px]">Ticket Details</p>
-                                <p className="mt-1 text-neutral-700 dark:text-neutral-300 font-medium">"{ticket.description}"</p>
+                                <p className="mt-1 text-muted-foreground font-medium">"{ticket.description}"</p>
                                 <p className="mt-2 text-[10px]">Submitted By: <strong>{ticket.user?.name}</strong> ({ticket.user?.email})</p>
                                 <p className="text-[10px]">Date Filed: <strong>{new Date(ticket.createdAt).toLocaleString()}</strong></p>
                               </div>
@@ -1329,7 +1329,7 @@ export default function AdminDashboard() {
                               </div>
                             </div>
 
-                            {/* Ticket Comments Section */}
+                            {}
                             <div className="border-t border-neutral-100 dark:border-neutral-850 pt-4 space-y-3">
                               <p className="text-[10px] text-neutral-450 font-extrabold uppercase flex items-center gap-1">
                                 <MessageSquare className="h-3.5 w-3.5" />
@@ -1344,7 +1344,7 @@ export default function AdminDashboard() {
                                       <p className="text-[10px] text-neutral-400">
                                         <strong className="text-neutral-700 dark:text-neutral-200">{comment.name}</strong> · {new Date(comment.createdAt).toLocaleDateString()}
                                       </p>
-                                      <p className="text-neutral-600 dark:text-neutral-300 font-medium">"{comment.text}"</p>
+                                      <p className="text-muted-foreground font-medium">"{comment.text}"</p>
                                     </div>
                                   ))
                                 )}
@@ -1362,7 +1362,7 @@ export default function AdminDashboard() {
                                       handleAddTicketComment(ticket._id);
                                     }
                                   }}
-                                  className="flex-1 py-1.5 px-3 border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs rounded-xl focus:border-indigo-500 focus:outline-none"
+                                  className="flex-1 py-1.5 px-3 border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs rounded-xl focus:border-indigo-500 focus:outline-none"
                                 />
                                 <button
                                   type="button"
@@ -1383,17 +1383,17 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* SERVICE AREAS TAB */}
+            {}
             {activeTab === "service_areas" && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
+              <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 animate-in fade-in duration-205">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-base font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                  <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                     <MapPin className="h-4.5 w-4.5 text-orange-555" />
                     Platform Serviced Areas (Geographies)
                   </h2>
                   <button
                     onClick={handleOpenCreateServiceArea}
-                    className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
+                    className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shadow-md shadow-indigo-500/10"
                   >
                     <Plus className="h-4 w-4" />
                     New Territory
@@ -1421,8 +1421,8 @@ export default function AdminDashboard() {
                         serviceAreasList.map((area) => (
                           <tr key={area._id} className="border-b border-neutral-50 dark:border-neutral-850 hover:bg-neutral-50/50 dark:hover:bg-neutral-950/40 transition-colors">
                             <td className="py-3.5 px-4 font-bold text-neutral-800 dark:text-white">{area.name}</td>
-                            <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400 font-medium">{area.city}</td>
-                            <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400">{area.state}</td>
+                            <td className="py-3.5 px-4 text-muted-foreground font-medium">{area.city}</td>
+                            <td className="py-3.5 px-4 text-muted-foreground">{area.state}</td>
                             <td className="py-3.5 px-4 text-neutral-550 max-w-[200px] truncate" title={area.postalCodes.join(", ")}>
                               {area.postalCodes.join(", ")}
                             </td>
@@ -1430,8 +1430,8 @@ export default function AdminDashboard() {
                               <button
                                 onClick={() => handleToggleServiceAreaStatus(area)}
                                 className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase border cursor-pointer transition-colors bg-transparent ${
-                                  area.isActive 
-                                    ? "text-emerald-600 border-emerald-300 dark:text-emerald-450 dark:border-emerald-900" 
+                                  area.isActive
+                                    ? "text-emerald-600 border-emerald-300 dark:text-emerald-450 dark:border-emerald-900"
                                     : "text-neutral-400 border-neutral-300 dark:text-neutral-550 dark:border-neutral-800"
                                 }`}
                               >
@@ -1441,14 +1441,14 @@ export default function AdminDashboard() {
                             <td className="py-3.5 px-4 text-right space-x-1.5">
                               <button
                                 onClick={() => handleOpenEditServiceArea(area)}
-                                className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                                className="p-1.5 border border-border/60 hover:border-indigo-300 hover:text-indigo-600 dark:hover:hover:border-violet-650 dark:hover:text-violet-400 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                                 title="Edit Area"
                               >
                                 <Edit2 className="h-4 w-4" />
                               </button>
                               <button
                                 onClick={() => handleDeleteServiceArea(area._id)}
-                                className="p-1.5 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
+                                className="p-1.5 border border-border/60 hover:border-red-200 hover:text-red-500 rounded-lg text-neutral-450 transition-colors cursor-pointer"
                                 title="Delete Area"
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -1466,13 +1466,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Property Listing Modal */}
+        {}
         {listingModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
-              
+            <div className="w-full max-w-lg bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
+
               <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-850 flex items-center justify-between bg-neutral-50 dark:bg-neutral-950/50">
-                <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+                <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                   <Sparkles className="h-4.5 w-4.5 text-red-505" />
                   {listingModalMode === "create" ? "Admin: Post New Listing" : "Admin: Update Listing"}
                 </h3>
@@ -1492,7 +1492,7 @@ export default function AdminDashboard() {
                   </div>
                 )}
 
-                {/* Title */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450">Listing Title</label>
                   <input
@@ -1501,11 +1501,11 @@ export default function AdminDashboard() {
                     placeholder="Property title..."
                     value={listingForm.title}
                     onChange={(e) => setListingForm({ ...listingForm, title: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   />
                 </div>
 
-                {/* Description */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450">Description</label>
                   <textarea
@@ -1514,12 +1514,12 @@ export default function AdminDashboard() {
                     placeholder="Details about rooms, area features..."
                     value={listingForm.description}
                     onChange={(e) => setListingForm({ ...listingForm, description: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Location */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-450">Location</label>
                     <input
@@ -1528,11 +1528,11 @@ export default function AdminDashboard() {
                       placeholder="e.g. Goa, India"
                       value={listingForm.location}
                       onChange={(e) => setListingForm({ ...listingForm, location: e.target.value })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
 
-                  {/* Price */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Rent Price (₹/Night)</label>
                     <input
@@ -1542,19 +1542,19 @@ export default function AdminDashboard() {
                       placeholder="Rent fee"
                       value={listingForm.price}
                       onChange={(e) => setListingForm({ ...listingForm, price: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Category */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Category</label>
                     <select
                       value={listingForm.category}
                       onChange={(e) => setListingForm({ ...listingForm, category: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -1562,13 +1562,13 @@ export default function AdminDashboard() {
                     </select>
                   </div>
 
-                  {/* Theme Gradient selection */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Visual Gradient</label>
                     <select
                       value={listingForm.image}
                       onChange={(e) => setListingForm({ ...listingForm, image: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     >
                       {GRADIENTS.map((g) => (
                         <option key={g.value} value={g.value}>{g.label}</option>
@@ -1577,13 +1577,13 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Vendor selection */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455">Assign Host Account</label>
                   <select
                     value={listingForm.vendor}
                     onChange={(e) => setListingForm({ ...listingForm, vendor: e.target.value })}
-                    className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   >
                     <option value={currentUser._id}>Self (Default Admin)</option>
                     {usersList.filter(u => u.role === "vendor").map((u) => (
@@ -1592,12 +1592,12 @@ export default function AdminDashboard() {
                   </select>
                 </div>
 
-                {/* Preview cover */}
-                <div className="h-14 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden flex items-center justify-center text-white font-bold text-xs" style={{ background: listingForm.image }}>
+                {}
+                <div className="h-14 rounded-xl border border-border/60 overflow-hidden flex items-center justify-center text-white font-bold text-xs" style={{ background: listingForm.image }}>
                   {listingForm.title || "Preview title..."}
                 </div>
 
-                {/* Footer buttons */}
+                {}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-850">
                   <button
                     type="button"
@@ -1619,13 +1619,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Product Catalog Modal */}
+        {}
         {productModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
-              
+            <div className="w-full max-w-lg bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
+
               <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-850 flex items-center justify-between bg-neutral-50 dark:bg-neutral-950/50">
-                <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+                <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                   <Sparkles className="h-4.5 w-4.5 text-red-505" />
                   {productModalMode === "create" ? "Admin: Post New Product" : "Admin: Update Product"}
                 </h3>
@@ -1645,7 +1645,7 @@ export default function AdminDashboard() {
                   </div>
                 )}
 
-                {/* Name */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450">Product Name</label>
                   <input
@@ -1654,11 +1654,11 @@ export default function AdminDashboard() {
                     placeholder="Product name..."
                     value={productForm.name}
                     onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   />
                 </div>
 
-                {/* Description */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455">Description</label>
                   <textarea
@@ -1667,12 +1667,12 @@ export default function AdminDashboard() {
                     placeholder="Product details, materials..."
                     value={productForm.description}
                     onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  {/* Monthly Rent */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Rent (₹/Mo)</label>
                     <input
@@ -1682,11 +1682,11 @@ export default function AdminDashboard() {
                       placeholder="Rent fee"
                       value={productForm.monthlyRent}
                       onChange={(e) => setProductForm({ ...productForm, monthlyRent: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
 
-                  {/* Deposit */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Deposit (₹)</label>
                     <input
@@ -1696,11 +1696,11 @@ export default function AdminDashboard() {
                       placeholder="Deposit"
                       value={productForm.deposit}
                       onChange={(e) => setProductForm({ ...productForm, deposit: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
 
-                  {/* Quantity */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Available Qty</label>
                     <input
@@ -1710,19 +1710,19 @@ export default function AdminDashboard() {
                       placeholder="Units in stock"
                       value={productForm.availableQuantity}
                       onChange={(e) => setProductForm({ ...productForm, availableQuantity: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Category */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Category</label>
                     <select
                       value={productForm.category}
                       onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     >
                       {PRODUCT_CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -1730,13 +1730,13 @@ export default function AdminDashboard() {
                     </select>
                   </div>
 
-                  {/* Visual theme */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">Visual theme</label>
                     <select
                       value={productForm.image}
                       onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     >
                       {GRADIENTS.map((g) => (
                         <option key={g.value} value={g.value}>{g.label}</option>
@@ -1745,7 +1745,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Tenure Selection */}
+                {}
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455 block">Rental Tenure Options (months)</label>
                   <div className="flex flex-wrap gap-2 min-h-[32px]">
@@ -1775,7 +1775,7 @@ export default function AdminDashboard() {
                         key={months}
                         type="button"
                         onClick={() => handleAdminTenureToggle(months)}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-650 dark:hover:text-violet-400 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
+                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-650 dark:hover:text-violet-400 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
                       >
                         +{months}mo
                       </button>
@@ -1809,7 +1809,7 @@ export default function AdminDashboard() {
                             input.value = '';
                           }
                         }}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white cursor-pointer transition-colors"
+                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-primary hover:bg-primary/90 text-white cursor-pointer transition-colors"
                       >
                         Add
                       </button>
@@ -1817,13 +1817,13 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {/* Vendor selection */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455">Assign Host Account</label>
                   <select
                     value={productForm.vendor}
                     onChange={(e) => setProductForm({ ...productForm, vendor: e.target.value })}
-                    className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                    className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   >
                     <option value={currentUser._id}>Self (Default Admin)</option>
                     {usersList.filter(u => u.role === "vendor").map((u) => (
@@ -1832,12 +1832,12 @@ export default function AdminDashboard() {
                   </select>
                 </div>
 
-                {/* Preview cover */}
-                <div className="h-14 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden flex items-center justify-center text-white font-bold text-xs" style={{ background: productForm.image }}>
+                {}
+                <div className="h-14 rounded-xl border border-border/60 overflow-hidden flex items-center justify-center text-white font-bold text-xs" style={{ background: productForm.image }}>
                   {productForm.name || "Preview title..."}
                 </div>
 
-                {/* Footer buttons */}
+                {}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-850">
                   <button
                     type="button"
@@ -1859,13 +1859,13 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* Service Area CRUD Modal */}
+        {}
         {serviceAreaModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
-              
+            <div className="w-full max-w-md bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
+
               <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-850 flex items-center justify-between bg-neutral-50 dark:bg-neutral-950/50">
-                <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+                <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                   <MapPin className="h-4.5 w-4.5 text-orange-555" />
                   {serviceAreaModalMode === "create" ? "Configure Serviced Territory" : "Update Territory Details"}
                 </h3>
@@ -1885,7 +1885,7 @@ export default function AdminDashboard() {
                   </div>
                 )}
 
-                {/* Territory Name */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450">Territory Name (e.g. Mumbai South)</label>
                   <input
@@ -1894,12 +1894,12 @@ export default function AdminDashboard() {
                     placeholder="e.g. South Delhi"
                     value={serviceAreaForm.name}
                     onChange={(e) => setServiceAreaForm({ ...serviceAreaForm, name: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* City */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">City</label>
                     <input
@@ -1908,11 +1908,11 @@ export default function AdminDashboard() {
                       placeholder="e.g. Delhi"
                       value={serviceAreaForm.city}
                       onChange={(e) => setServiceAreaForm({ ...serviceAreaForm, city: e.target.value })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
 
-                  {/* State */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-455">State</label>
                     <input
@@ -1921,12 +1921,12 @@ export default function AdminDashboard() {
                       placeholder="e.g. Delhi NCR"
                       value={serviceAreaForm.state}
                       onChange={(e) => setServiceAreaForm({ ...serviceAreaForm, state: e.target.value })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                     />
                   </div>
                 </div>
 
-                {/* Postal Codes */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-450 block">Postal Codes Covered (comma separated)</label>
                   <textarea
@@ -1935,12 +1935,12 @@ export default function AdminDashboard() {
                     placeholder="e.g. 110001, 110002, 110011"
                     value={serviceAreaForm.postalCodes}
                     onChange={(e) => setServiceAreaForm({ ...serviceAreaForm, postalCodes: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors resize-none"
                   />
                   <p className="text-[10px] text-neutral-400">Specify postal zip codes this delivery network covers.</p>
                 </div>
 
-                {/* Active Checkbox */}
+                {}
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     type="checkbox"
@@ -1949,12 +1949,12 @@ export default function AdminDashboard() {
                     onChange={(e) => setServiceAreaForm({ ...serviceAreaForm, isActive: e.target.checked })}
                     className="rounded border-neutral-300 text-indigo-600 focus:ring-indigo-500 h-4 w-4"
                   />
-                  <label htmlFor="serviceAreaActive" className="text-xs font-bold text-neutral-700 dark:text-neutral-300 cursor-pointer">
+                  <label htmlFor="serviceAreaActive" className="text-xs font-bold text-muted-foreground cursor-pointer">
                     Enable service delivery inside this territory immediately
                   </label>
                 </div>
 
-                {/* Footer buttons */}
+                {}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-850">
                   <button
                     type="button"

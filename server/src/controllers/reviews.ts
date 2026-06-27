@@ -3,11 +3,7 @@ import { Review } from '../models/Review';
 import { Rental } from '../models/Rental';
 import { Product } from '../models/Product';
 
-/**
- * @desc    Create a new product review
- * @route   POST /api/reviews
- * @access  Private
- */
+
 export const createReview = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -27,14 +23,14 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // 1. Verify product exists
+
     const product = await Product.findById(productId);
     if (!product) {
       res.status(404).json({ success: false, message: 'Product not found' });
       return;
     }
 
-    // 2. Verify user has actually rented this product (status Active or Returned)
+
     const hasRented = await Rental.findOne({
       user: req.user._id,
       product: productId,
@@ -49,7 +45,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // 3. Check if user already reviewed
+
     const alreadyReviewed = await Review.findOne({
       user: req.user._id,
       product: productId
@@ -60,7 +56,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // 4. Create review
+
     const review = await Review.create({
       user: req.user._id,
       product: productId,
@@ -68,11 +64,11 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
       comment: comment.trim()
     });
 
-    // 5. Recalculate average rating for the product
+
     const productReviews = await Review.find({ product: productId });
     const avgRating = productReviews.reduce((sum, rev) => sum + rev.rating, 0) / productReviews.length;
 
-    // Save average rating back to product if rating field is supported (we'll make sure it runs fine)
+
     try {
       await Product.findByIdAndUpdate(productId, { rating: Math.round(avgRating * 10) / 10 });
     } catch (dbErr) {
@@ -88,11 +84,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-/**
- * @desc    Get all reviews for a product
- * @route   GET /api/reviews/product/:productId
- * @access  Public
- */
+
 export const getProductReviews = async (req: Request, res: Response): Promise<void> => {
   try {
     const { productId } = req.params;

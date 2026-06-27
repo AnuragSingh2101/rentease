@@ -4,7 +4,7 @@ import { protect, authorize } from '../middleware/auth';
 
 const router = Router();
 
-// Secure routes to Admin role
+
 router.use(protect);
 router.use(authorize('admin'));
 

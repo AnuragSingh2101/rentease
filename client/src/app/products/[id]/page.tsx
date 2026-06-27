@@ -58,22 +58,22 @@ export default function ProductDetailPage({ params }: PageProps) {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Gallery slider state
+
   const [activeImageIndex, setActiveImageIndex] = React.useState(0);
 
-  // Tenure & Quantity State
+
   const [selectedTenure, setSelectedTenure] = React.useState<number>(3);
   const [quantity, setQuantity] = React.useState(1);
 
-  // Reservation details simulation
+
   const [bookingLoading, setBookingLoading] = React.useState(false);
 
-  // Cart states
+
   const [cartAdding, setCartAdding] = React.useState(false);
   const [cartSuccess, setCartSuccess] = React.useState(false);
   const [cartError, setCartError] = React.useState<string | null>(null);
 
-  // Review states
+
   const [reviewsList, setReviewsList] = React.useState<any[]>([]);
   const [reviewsLoading, setReviewsLoading] = React.useState(true);
   const [canReview, setCanReview] = React.useState(false);
@@ -245,7 +245,7 @@ export default function ProductDetailPage({ params }: PageProps) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-950">
-        <div className="h-10 w-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -253,9 +253,9 @@ export default function ProductDetailPage({ params }: PageProps) {
   if (error || !product) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-neutral-50 dark:bg-neutral-950 px-4">
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-8 rounded-2xl text-center max-w-md w-full shadow-sm space-y-4">
+        <div className="bg-card border border-border/60 p-8 rounded-2xl text-center max-w-md w-full shadow-sm space-y-4">
           <Package className="h-12 w-12 mx-auto text-red-500 animate-pulse" />
-          <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Product Not Found</h3>
+          <h3 className="text-lg font-bold text-foreground">Product Not Found</h3>
           <p className="text-xs text-neutral-500">{error || "The requested item does not exist or has been removed."}</p>
           <div className="flex gap-3 justify-center">
             <button
@@ -289,8 +289,8 @@ export default function ProductDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Back Button */}
+
+        {}
         <div>
           <Link
             href="/products"
@@ -301,22 +301,22 @@ export default function ProductDetailPage({ params }: PageProps) {
           </Link>
         </div>
 
-        {/* Product Details Section Grid */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Block: Image Gallery (5 cols) */}
+
+          {}
           <div className="lg:col-span-5 space-y-4">
-            <div className="bg-white dark:bg-neutral-900 border border-neutral-250/70 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-md relative group">
-              
-              {/* Main Image Slider Panel */}
+            <div className="bg-card border border-neutral-250/70 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-md relative group">
+
+              {}
               <div
                 className="w-full h-80 sm:h-96 transition-all duration-500 ease-in-out flex items-center justify-center text-white relative"
                 style={getCoverStyle(activeGradient)}
               >
                 <div className="absolute inset-0 bg-neutral-950/10" />
                 <Store className="h-20 w-20 text-white/30 drop-shadow-lg" />
-                
-                {/* Arrow Navigation */}
+
+                {}
                 {product.images && product.images.length > 1 && (
                   <>
                     <button
@@ -333,15 +333,15 @@ export default function ProductDetailPage({ params }: PageProps) {
                     </button>
                   </>
                 )}
-                
-                {/* Image counter bubble */}
+
+                {}
                 <div className="absolute bottom-4 right-4 bg-neutral-950/70 text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
                   Image {activeImageIndex + 1} of {product.images?.length || 1}
                 </div>
               </div>
             </div>
 
-            {/* Gallery Thumbnail dots */}
+            {}
             {product.images && product.images.length > 1 && (
               <div className="flex justify-center gap-2.5">
                 {product.images.map((img, idx) => (
@@ -360,17 +360,17 @@ export default function ProductDetailPage({ params }: PageProps) {
             )}
           </div>
 
-          {/* Right Block: Content Details & Customizations (7 cols) */}
+          {}
           <div className="lg:col-span-7 space-y-6">
-            
-            {/* Title, Category & Availability */}
-            <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-3xl shadow-sm space-y-4">
+
+            {}
+            <div className="bg-card border border-border/60 p-6 rounded-3xl shadow-sm space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-750 dark:text-violet-400 text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider border border-indigo-100/50 dark:border-violet-900/55">
                     {product.category}
                   </span>
-                  
+
                   {product.rating !== undefined && product.rating > 0 && (
                     <span className="bg-amber-50 dark:bg-amber-955/20 text-amber-600 dark:text-amber-400 text-[10px] font-extrabold px-3 py-1.5 rounded-full border border-amber-100/50 dark:border-amber-900">
                       ★ {product.rating} / 5
@@ -390,26 +390,26 @@ export default function ProductDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight">
                 {product.name}
               </h1>
 
               <div className="pt-2 border-t border-neutral-100 dark:border-neutral-850">
                 <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider block mb-1">Product Description</label>
-                <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {product.description}
                 </p>
               </div>
             </div>
 
-            {/* Selection Options & Calculations */}
+            {}
             {!isOutofStock && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-3xl shadow-sm space-y-6">
-                
-                {/* Customizations parameters */}
+              <div className="bg-card border border-border/60 p-6 rounded-3xl shadow-sm space-y-6">
+
+                {}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-5 border-b border-neutral-150 dark:border-neutral-850">
-                  
-                  {/* Tenure Selection */}
+
+                  {}
                   <div className="space-y-3">
                     <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles className="h-4 w-4 text-indigo-500" />
@@ -423,7 +423,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                           className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
                             selectedTenure === m
                               ? "bg-indigo-650 dark:bg-violet-600 text-white shadow-md shadow-indigo-500/10"
-                              : "bg-neutral-50 dark:bg-neutral-950 text-neutral-650 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-850"
+                              : "bg-neutral-50 dark:bg-neutral-950 text-neutral-650 dark:text-neutral-400 border border-border/60 hover:bg-neutral-100 dark:hover:bg-neutral-850"
                           }`}
                         >
                           {m} Months
@@ -432,7 +432,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  {/* Quantity selector */}
+                  {}
                   <div className="space-y-3">
                     <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider block">Quantity</label>
                     <div className="flex items-center gap-3">
@@ -443,7 +443,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                       >
                         -
                       </button>
-                      <span className="text-sm font-extrabold text-neutral-900 dark:text-white w-8 text-center">
+                      <span className="text-sm font-extrabold text-foreground w-8 text-center">
                         {quantity}
                       </span>
                       <button
@@ -457,21 +457,21 @@ export default function ProductDetailPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {/* Price Breakdown Calculation panel */}
+                {}
                 <div className="bg-neutral-50 dark:bg-neutral-950 p-5 rounded-2xl border border-neutral-200/50 dark:border-neutral-850 space-y-3">
                   <h4 className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Pricing Breakdown</h4>
-                  
+
                   <div className="space-y-2.5 text-xs">
-                    <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Monthly Rent (₹{monthlyRate.toLocaleString("en-IN")} × {quantity} item{quantity > 1 ? "s" : ""})</span>
                       <span className="font-bold text-neutral-800 dark:text-white">₹{totalMonthlyCost.toLocaleString("en-IN")}/mo</span>
                     </div>
-                    <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
+                    <div className="flex justify-between text-muted-foreground">
                       <span>Refundable Security Deposit (₹{product.deposit.toLocaleString("en-IN")} × {quantity})</span>
                       <span className="font-bold text-neutral-800 dark:text-white">₹{totalSecurityDeposit.toLocaleString("en-IN")}</span>
                     </div>
 
-                    <div className="border-t border-neutral-200 dark:border-neutral-800 pt-2.5 flex justify-between items-baseline">
+                    <div className="border-t border-border/60 pt-2.5 flex justify-between items-baseline">
                       <span className="font-bold text-neutral-850 dark:text-neutral-200 text-sm">Due Now (Deposit + 1st Month Rent)</span>
                       <div className="text-right">
                         <p className="text-lg font-extrabold text-indigo-650 dark:text-violet-400">
@@ -482,7 +482,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                   </div>
                 </div>
 
-                {/* Booking Trigger Buttons */}
+                {}
                 <div className="flex flex-col gap-3 pt-2 w-full">
                   {cartError && (
                     <div className="flex items-start gap-2 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/40 rounded-xl px-4 py-3 text-xs text-red-655 dark:text-red-400 font-medium">
@@ -506,7 +506,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                     <button
                       onClick={handleRentNow}
                       disabled={bookingLoading}
-                      className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white text-xs font-bold px-8 py-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-indigo-500/10"
+                      className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white text-xs font-bold px-8 py-3 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 shadow-md shadow-indigo-500/10"
                     >
                       <ShoppingBag className="h-4.5 w-4.5" />
                       {bookingLoading ? "Processing..." : "Rent This Item"}
@@ -516,16 +516,16 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Vendor Information Card */}
+            {}
             {product.vendor && (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-5 rounded-3xl shadow-sm space-y-3.5">
+              <div className="bg-card border border-border/60 p-5 rounded-3xl shadow-sm space-y-3.5">
                 <div className="flex items-center gap-2">
                   <User className="h-4.5 w-4.5 text-indigo-500" />
-                  <h4 className="text-xs font-bold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
                     Listed By Vendor
                   </h4>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-neutral-500 dark:text-neutral-400">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-emerald-505" />
                     <span>Vendor: <strong className="text-neutral-700 dark:text-white">{product.vendor.name}</strong></span>
@@ -542,14 +542,14 @@ export default function ProductDetailPage({ params }: PageProps) {
 
         </div>
 
-        {/* Reviews Section */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-3xl shadow-sm space-y-6">
-          <h2 className="text-base font-extrabold text-neutral-900 dark:text-white flex items-center gap-2">
+        {}
+        <div className="bg-card border border-border/60 p-6 rounded-3xl shadow-sm space-y-6">
+          <h2 className="text-base font-extrabold text-foreground flex items-center gap-2">
             ★ Verified Reviews ({reviewsList.length})
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Reviews display list */}
+            {}
             <div className="lg:col-span-8 space-y-4">
               {reviewsLoading ? (
                 <div className="space-y-4 animate-pulse">
@@ -557,7 +557,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                   <div className="h-16 bg-neutral-200 dark:bg-neutral-800 rounded-xl" />
                 </div>
               ) : reviewsList.length === 0 ? (
-                <div className="text-center py-10 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-2xl">
+                <div className="text-center py-10 border border-dashed border-border/60 rounded-2xl">
                   <p className="text-xs text-neutral-400 italic">No feedback reviews posted for this item yet.</p>
                 </div>
               ) : (
@@ -572,7 +572,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                           ))}
                         </div>
                       </div>
-                      <p className="text-xs text-neutral-600 dark:text-neutral-300 font-medium">"{rev.comment}"</p>
+                      <p className="text-xs text-muted-foreground font-medium">"{rev.comment}"</p>
                       <p className="text-[9px] text-neutral-400">{new Date(rev.createdAt).toLocaleDateString()}</p>
                     </div>
                   ))}
@@ -580,9 +580,9 @@ export default function ProductDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Write a review */}
+            {}
             <div className="lg:col-span-4 bg-neutral-50/50 dark:bg-neutral-950/20 p-5 rounded-2xl border border-neutral-250/60 dark:border-neutral-800 space-y-4">
-              <h3 className="text-xs font-extrabold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider">
+              <h3 className="text-xs font-extrabold text-muted-foreground uppercase tracking-wider">
                 Write a Review
               </h3>
 
@@ -597,7 +597,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                     <select
                       value={ratingInput}
                       onChange={(e) => setRatingInput(Number(e.target.value))}
-                      className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:outline-none dark:text-white"
+                      className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:outline-none dark:text-white"
                     >
                       <option value={5}>★★★★★ (5 Stars)</option>
                       <option value={4}>★★★★☆ (4 Stars)</option>
@@ -615,7 +615,7 @@ export default function ProductDetailPage({ params }: PageProps) {
                       placeholder="How was the product quality, shipping, and vendor service?..."
                       value={commentInput}
                       onChange={(e) => setCommentInput(e.target.value)}
-                      className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 text-xs focus:outline-none dark:text-white resize-none"
+                      className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:outline-none dark:text-white resize-none"
                     />
                   </div>
 

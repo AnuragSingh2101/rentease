@@ -64,20 +64,20 @@ export default function UserMaintenanceDashboard() {
   const [tickets, setTickets] = React.useState<MaintenanceTicket[]>([]);
   const [activeBookings, setActiveBookings] = React.useState<BookingItem[]>([]);
   const [activeRentals, setActiveRentals] = React.useState<RentalItem[]>([]);
-  
+
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Modal / Detail States
+
   const [selectedTicket, setSelectedTicket] = React.useState<MaintenanceTicket | null>(null);
   const [newTicketOpen, setNewTicketOpen] = React.useState(false);
   const [newCommentText, setNewCommentText] = React.useState("");
   const [submittingComment, setSubmittingComment] = React.useState(false);
 
-  // New Ticket Form State
+
   const [formTitle, setFormTitle] = React.useState("");
   const [formDescription, setFormDescription] = React.useState("");
-  const [selectedContext, setSelectedContext] = React.useState(""); // formats: booking:ID or rental:ID
+  const [selectedContext, setSelectedContext] = React.useState("");
   const [formImages, setFormImages] = React.useState<string[]>([]);
   const [submittingTicket, setSubmittingTicket] = React.useState(false);
   const [formError, setFormError] = React.useState<string | null>(null);
@@ -87,7 +87,7 @@ export default function UserMaintenanceDashboard() {
       const res = await api.get<{ success: boolean; data: MaintenanceTicket[] }>("/maintenance/my-requests");
       if (res.success) {
         setTickets(res.data || []);
-        // If details modal is open, refresh its data too
+
         if (selectedTicket) {
           const updated = (res.data || []).find(t => t._id === selectedTicket._id);
           if (updated) setSelectedTicket(updated);
@@ -135,7 +135,7 @@ export default function UserMaintenanceDashboard() {
     init();
   }, [router, fetchTickets, fetchContextItems]);
 
-  // Handle image conversion to Base64
+
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -155,7 +155,7 @@ export default function UserMaintenanceDashboard() {
     setFormImages((prev) => prev.filter((_, idx) => idx !== index));
   };
 
-  // Submit Ticket Form
+
   const handleNewTicketSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formTitle.trim() || !formDescription.trim() || !selectedContext) {
@@ -199,7 +199,7 @@ export default function UserMaintenanceDashboard() {
     }
   };
 
-  // Submit Comments
+
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedTicket || !newCommentText.trim()) return;
@@ -242,27 +242,27 @@ export default function UserMaintenanceDashboard() {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-10 px-4 sm:px-6 lg:px-8 animate-in fade-in duration-200">
       <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Navigation Link */}
+
+        {}
         <div className="flex items-center justify-between">
           <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-indigo-650 dark:hover:text-violet-400 font-bold transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard Home
           </Link>
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-150 dark:border-neutral-850 bg-white dark:bg-neutral-900 px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm font-semibold">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-150 dark:border-neutral-850 bg-card px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm font-semibold">
             <Wrench className="h-3.5 w-3.5" />
             <span>Support & Repair System</span>
           </div>
         </div>
 
-        {/* Title */}
+        {}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
               <Wrench className="h-7 w-7 text-indigo-500" />
               Maintenance Requests
             </h1>
-            <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-xl">
               File tickets for repairs, exchange faulty electronics/appliances, or notify about property issues.
             </p>
           </div>
@@ -285,19 +285,19 @@ export default function UserMaintenanceDashboard() {
           </div>
         )}
 
-        {/* Tickets Tracker Grid */}
+        {}
         {tickets.length === 0 ? (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
             <Wrench className="h-16 w-16 mx-auto text-neutral-350 dark:text-neutral-750" />
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No maintenance tickets filed</h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto">
+            <h3 className="text-lg font-bold text-foreground">No maintenance tickets filed</h3>
+            <p className="text-xs text-muted-foreground max-w-xs mx-auto">
               If any of your properties or physical rentals have repair requirements, submit a support ticket above.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            
-            {/* Left: Tickets List (1 col) */}
+
+            {}
             <div className="md:col-span-1 space-y-4 max-h-[70vh] overflow-y-auto pr-1">
               <span className="text-[10px] font-extrabold uppercase text-neutral-400 tracking-wider block">My Tickets ({tickets.length})</span>
               {tickets.map((t) => (
@@ -306,8 +306,8 @@ export default function UserMaintenanceDashboard() {
                   onClick={() => setSelectedTicket(t)}
                   className={`w-full text-left p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 ${
                     selectedTicket?._id === t._id
-                      ? "bg-white dark:bg-neutral-900 border-indigo-505 dark:border-violet-505 shadow-md"
-                      : "bg-white dark:bg-neutral-900/80 border-neutral-200 dark:border-neutral-800 hover:bg-white hover:shadow-sm"
+                      ? "bg-card border-indigo-505 dark:border-violet-505 shadow-md"
+                      : "bg-card/80 border-border/60 hover:bg-white hover:shadow-sm"
                   }`}
                 >
                   <div className="space-y-1">
@@ -317,7 +317,7 @@ export default function UserMaintenanceDashboard() {
                       </span>
                       <span className="text-[9px] text-neutral-400 font-semibold">{new Date(t.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <h4 className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1">{t.title}</h4>
+                    <h4 className="text-xs font-bold text-foreground line-clamp-1">{t.title}</h4>
                     <p className="text-[11px] text-neutral-505 line-clamp-1 font-semibold">
                       For: {t.itemType === 'listing' ? t.listing?.title : t.product?.name || "Rental Item"}
                     </p>
@@ -333,12 +333,12 @@ export default function UserMaintenanceDashboard() {
               ))}
             </div>
 
-            {/* Right: Active Ticket Details / Replies (2 cols) */}
+            {}
             <div className="md:col-span-2">
               {selectedTicket ? (
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 shadow-sm space-y-6">
-                  
-                  {/* Header */}
+                <div className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm space-y-6">
+
+                  {}
                   <div className="border-b border-neutral-150 dark:border-neutral-850 pb-4 space-y-2">
                     <div className="flex justify-between items-center gap-4">
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${getStatusBadge(selectedTicket.status)}`}>
@@ -346,22 +346,22 @@ export default function UserMaintenanceDashboard() {
                       </span>
                       <span className="text-xs text-neutral-400 font-medium">Submitted on: {new Date(selectedTicket.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <h2 className="text-base sm:text-lg font-extrabold text-neutral-900 dark:text-white leading-snug">{selectedTicket.title}</h2>
+                    <h2 className="text-base sm:text-lg font-extrabold text-foreground leading-snug">{selectedTicket.title}</h2>
                     <p className="text-xs text-neutral-550 font-bold">
                       Associated item: <span className="text-indigo-650 dark:text-violet-400">{selectedTicket.itemType === 'listing' ? selectedTicket.listing?.title : selectedTicket.product?.name || "Leased Product"}</span>
                     </p>
                   </div>
 
-                  {/* Body Content */}
+                  {}
                   <div className="space-y-4">
                     <div className="space-y-1">
                       <h4 className="text-[10px] font-extrabold uppercase text-neutral-450 tracking-wider">Issue Description</h4>
-                      <p className="text-xs text-neutral-700 dark:text-neutral-300 leading-relaxed bg-neutral-50 dark:bg-neutral-950 p-4 rounded-2xl border border-neutral-150 dark:border-neutral-850 whitespace-pre-wrap">
+                      <p className="text-xs text-muted-foreground leading-relaxed bg-neutral-50 dark:bg-neutral-950 p-4 rounded-2xl border border-neutral-150 dark:border-neutral-850 whitespace-pre-wrap">
                         {selectedTicket.description}
                       </p>
                     </div>
 
-                    {/* Images Carousel Grid */}
+                    {}
                     {selectedTicket.images && selectedTicket.images.length > 0 && (
                       <div className="space-y-2">
                         <h4 className="text-[10px] font-extrabold uppercase text-neutral-455 tracking-wider">Reference Uploads</h4>
@@ -372,7 +372,7 @@ export default function UserMaintenanceDashboard() {
                               href={img}
                               target="_blank"
                               rel="noreferrer"
-                              className="w-24 h-24 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden hover:scale-105 transition-transform"
+                              className="w-24 h-24 rounded-xl border border-border/60 overflow-hidden hover:scale-105 transition-transform"
                             >
                               <img src={img} alt="Reference Attachment" className="w-full h-full object-cover" />
                             </a>
@@ -382,9 +382,9 @@ export default function UserMaintenanceDashboard() {
                     )}
                   </div>
 
-                  {/* Communications / Messages Replies logs */}
-                  <div className="border-t border-neutral-200 dark:border-neutral-800 pt-6 space-y-4">
-                    <h3 className="text-xs font-bold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+                  {}
+                  <div className="border-t border-border/60 pt-6 space-y-4">
+                    <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
                       <MessageSquare className="h-4.5 w-4.5 text-indigo-500" />
                       Activity & Discussion Replies ({selectedTicket.comments.length})
                     </h3>
@@ -412,7 +412,7 @@ export default function UserMaintenanceDashboard() {
                       )}
                     </div>
 
-                    {/* Post Reply Form */}
+                    {}
                     <form onSubmit={handleCommentSubmit} className="flex gap-2 border-t border-neutral-100 dark:border-neutral-800 pt-4">
                       <input
                         type="text"
@@ -446,13 +446,13 @@ export default function UserMaintenanceDashboard() {
 
       </div>
 
-      {/* NEW TICKET FORM MODAL */}
+      {}
       {newTicketOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
-            
+          <div className="w-full max-w-lg bg-card border border-border/60 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-6">
+
             <div className="flex justify-between items-center pb-2 border-b border-neutral-105 dark:border-neutral-850 bg-neutral-50 dark:bg-neutral-950/50 -m-6 mb-0 p-6">
-              <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+              <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                 <Sparkles className="h-4.5 w-4.5 text-violet-500" />
                 File Maintenance Request
               </h3>
@@ -472,14 +472,14 @@ export default function UserMaintenanceDashboard() {
                 </div>
               )}
 
-              {/* Context Selector */}
+              {}
               <div className="space-y-1.5">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-400">Select Active Rental needing service</label>
                 <select
                   required
                   value={selectedContext}
                   onChange={(e) => setSelectedContext(e.target.value)}
-                  className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-350 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                  className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-350 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                 >
                   <option value="">-- Choose item context --</option>
                   <optgroup label="Physical Product Rentals">
@@ -500,7 +500,7 @@ export default function UserMaintenanceDashboard() {
                 <span className="text-[9px] text-neutral-400 block">Select which item context the maintenance logs apply to.</span>
               </div>
 
-              {/* Title */}
+              {}
               <div className="space-y-1.5">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-400">Issue Title Summary</label>
                 <input
@@ -513,7 +513,7 @@ export default function UserMaintenanceDashboard() {
                 />
               </div>
 
-              {/* Description */}
+              {}
               <div className="space-y-1.5">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-400">Describe the problem in detail</label>
                 <textarea
@@ -526,11 +526,11 @@ export default function UserMaintenanceDashboard() {
                 />
               </div>
 
-              {/* Image Uploader */}
+              {}
               <div className="space-y-2">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-400 block">Attach reference images</label>
                 <div className="flex items-center gap-3">
-                  <label className="flex items-center gap-1.5 py-2 px-3 border border-neutral-350 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-950 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 text-xs font-semibold cursor-pointer">
+                  <label className="flex items-center gap-1.5 py-2 px-3 border border-neutral-350 dark:border-neutral-800 rounded-xl bg-neutral-50 dark:bg-neutral-950 text-muted-foreground hover:bg-neutral-100 text-xs font-semibold cursor-pointer">
                     <ImageIcon className="h-4 w-4" />
                     Upload Image
                     <input
@@ -544,7 +544,7 @@ export default function UserMaintenanceDashboard() {
                   <span className="text-[9px] text-neutral-400">Attach photos of the issue to speed up diagnostic processing.</span>
                 </div>
 
-                {/* Preview Grid */}
+                {}
                 {formImages.length > 0 && (
                   <div className="flex flex-wrap gap-2 pt-1.5">
                     {formImages.map((img, idx) => (
@@ -574,7 +574,7 @@ export default function UserMaintenanceDashboard() {
                 <button
                   type="submit"
                   disabled={submittingTicket}
-                  className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
+                  className="flex-1 py-3 bg-primary hover:bg-primary/90 text-white font-extrabold text-xs rounded-xl shadow-lg cursor-pointer disabled:opacity-50"
                 >
                   {submittingTicket ? "Submitting Ticket..." : "Submit Ticket"}
                 </button>

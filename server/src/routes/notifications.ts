@@ -9,7 +9,7 @@ import { protect, authorize } from '../middleware/auth';
 
 const router = Router();
 
-// Secure all routes with auth check
+
 router.use(protect);
 
 router.route('/')

@@ -6,11 +6,7 @@ import { Rental } from '../models/Rental';
 import { Booking } from '../models/Booking';
 import { Notification } from '../models/Notification';
 
-/**
- * @desc    Submit a new maintenance request
- * @route   POST /api/maintenance
- * @access  Private
- */
+
 export const createRequest = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -35,7 +31,7 @@ export const createRequest = async (req: Request, res: Response): Promise<void> 
       comments: []
     };
 
-    // Auto-populate item context links if contract objects are provided
+
     if (itemType === 'product') {
       if (product) {
         maintenanceData.product = product;
@@ -71,11 +67,7 @@ export const createRequest = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get maintenance requests submitted by current customer
- * @route   GET /api/maintenance/my-requests
- * @access  Private
- */
+
 export const getMyRequests = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -100,11 +92,7 @@ export const getMyRequests = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get maintenance requests submitted against vendor's items
- * @route   GET /api/maintenance/vendor-requests
- * @access  Private (Vendor/Admin only)
- */
+
 export const getVendorRequests = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -112,7 +100,7 @@ export const getVendorRequests = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Retrieve vendor's products & listings to filter tickets
+
     const vendorProducts = await Product.find({ vendor: req.user._id }).select('_id');
     const vendorListings = await Listing.find({ vendor: req.user._id }).select('_id');
 
@@ -142,11 +130,7 @@ export const getVendorRequests = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Get all maintenance requests globally (Admin)
- * @route   GET /api/maintenance/admin-requests
- * @access  Private (Admin only)
- */
+
 export const getAdminRequests = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -172,11 +156,7 @@ export const getAdminRequests = async (req: Request, res: Response): Promise<voi
   }
 };
 
-/**
- * @desc    Get detailed single maintenance ticket
- * @route   GET /api/maintenance/:id
- * @access  Private
- */
+
 export const getRequestDetails = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -196,7 +176,7 @@ export const getRequestDetails = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Verify authorized access (Customer, vendor of item, or admin)
+
     const isAdmin = req.user.role === 'admin';
     const isCustomerOwner = (request.user as any).toString() === req.user._id.toString();
 
@@ -221,11 +201,7 @@ export const getRequestDetails = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Update maintenance request status
- * @route   PUT /api/maintenance/:id/status
- * @access  Private (Vendor/Admin only)
- */
+
 export const updateRequestStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -250,7 +226,7 @@ export const updateRequestStatus = async (req: Request, res: Response): Promise<
       return;
     }
 
-    // Check vendor ownership or admin
+
     let isAuthorized = req.user.role === 'admin';
     if (!isAuthorized) {
       if (ticket.product && (ticket.product as any).vendor.toString() === req.user._id.toString()) {
@@ -268,7 +244,7 @@ export const updateRequestStatus = async (req: Request, res: Response): Promise<
     ticket.status = status as any;
     await ticket.save();
 
-    // Trigger Notification to Customer Owner
+
     try {
       await Notification.create({
         user: ticket.user,
@@ -290,11 +266,7 @@ export const updateRequestStatus = async (req: Request, res: Response): Promise<
   }
 };
 
-/**
- * @desc    Add comment reply to maintenance ticket
- * @route   POST /api/maintenance/:id/comments
- * @access  Private
- */
+
 export const addComment = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -317,7 +289,7 @@ export const addComment = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    // Verify authorized access (Customer owner, vendor owner, or admin)
+
     const isAdmin = req.user.role === 'admin';
     const isCustomerOwner = ticket.user.toString() === req.user._id.toString();
 
@@ -342,10 +314,10 @@ export const addComment = async (req: Request, res: Response): Promise<void> => 
 
     await ticket.save();
 
-    // Trigger Notification for Recipient
+
     try {
       const isCommenterCustomer = req.user._id.toString() === ticket.user.toString();
-      const recipient = isCommenterCustomer 
+      const recipient = isCommenterCustomer
         ? ((ticket.product as any)?.vendor || (ticket.listing as any)?.vendor || req.user._id)
         : ticket.user;
 

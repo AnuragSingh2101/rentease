@@ -20,15 +20,15 @@ import reviewRoutes from './routes/reviews';
 import { rateLimiter, securityHeaders, requestLogger } from './middleware/production';
 import { User } from './models/User';
 
-// Load env vars
+
 dotenv.config();
 
-// Connect to database
+
 connectDB().then(() => {
   seedAdminUser();
 });
 
-// Seed default admin helper
+
 const seedAdminUser = async () => {
   try {
     const adminEmail = 'admin@rentease.com';
@@ -54,14 +54,14 @@ app.use(securityHeaders);
 app.use(rateLimiter);
 app.use(requestLogger);
 
-// Body parser with 10mb limit for base64 uploads
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
-// Cookie parser
+
 app.use(cookieParser());
 
-// Enable CORS
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:3000',
@@ -69,7 +69,7 @@ app.use(
   })
 );
 
-// Base route / health check
+
 app.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
@@ -78,7 +78,7 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// Mount routers
+
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingsRoutes);
 app.use('/api/products', productsRoutes);
@@ -94,7 +94,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reviews', reviewRoutes);
 
-// Error handling middleware
+
 app.use((err: any, req: Request, res: Response, next: any) => {
   console.error(err.stack);
   res.status(err.statusCode || 500).json({
@@ -111,9 +111,9 @@ const server = app.listen(PORT, () => {
   );
 });
 
-// Handle unhandled promise rejections
+
 process.on('unhandledRejection', (err: any, promise) => {
   console.error(`[Server Error] Unhandled Rejection: ${err.message}`);
-  // Close server & exit process
+
   server.close(() => process.exit(1));
 });

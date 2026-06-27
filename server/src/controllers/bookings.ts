@@ -3,11 +3,7 @@ import { Booking } from '../models/Booking';
 import { Listing } from '../models/Listing';
 import { Product } from '../models/Product';
 
-/**
- * @desc    Create new booking/reservation
- * @route   POST /api/bookings
- * @access  Private
- */
+
 export const createBooking = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -40,7 +36,7 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
 
       vendorId = listingDoc.vendor;
       totalPrice = listingDoc.price * Number(duration);
-      
+
       const start = new Date(startDate);
       endDate = new Date(start.getTime() + Number(duration) * 24 * 60 * 60 * 1000);
     } else if (bookingType === 'product') {
@@ -56,15 +52,15 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
       }
 
       vendorId = productDoc.vendor;
-      // Total price is deposit + 1st month rent as calculated in UI, or total duration rent.
-      // Let's set it to 1st month rent + deposit * quantity
+
+
       totalPrice = (productDoc.deposit + productDoc.monthlyRent) * Number(quantity);
     } else {
       res.status(400).json({ success: false, message: 'Invalid booking type' });
       return;
     }
 
-    // Prevent booking your own listings
+
     if (vendorId.toString() === req.user._id.toString() && req.user.role !== 'admin') {
       res.status(400).json({ success: false, message: 'You cannot book your own listing' });
       return;
@@ -93,11 +89,7 @@ export const createBooking = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get bookings made by logged-in customer/user
- * @route   GET /api/bookings/my-bookings
- * @access  Private
- */
+
 export const getMyBookings = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -130,11 +122,7 @@ export const getMyBookings = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get bookings received by vendor
- * @route   GET /api/bookings/vendor-bookings
- * @access  Private (Vendor/Admin only)
- */
+
 export const getVendorBookings = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -172,11 +160,7 @@ export const getVendorBookings = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Update booking status (confirm or cancel)
- * @route   PUT /api/bookings/:id/status
- * @access  Private (Vendor/Admin only)
- */
+
 export const updateBookingStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -198,7 +182,7 @@ export const updateBookingStatus = async (req: Request, res: Response): Promise<
       return;
     }
 
-    // Make sure user is owner vendor or admin
+
     if (booking.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to modify this booking' });
       return;

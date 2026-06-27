@@ -1,17 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Routes that require authentication (any logged-in user)
+
 const protectedRoutes = ['/dashboard', '/vendor/dashboard', '/admin/dashboard', '/profile', '/bookings', '/cart', '/checkout'];
 
-// Routes only accessible when NOT logged in
+
 const authOnlyRoutes = ['/login', '/register', '/forgot-password'];
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const { pathname } = request.nextUrl;
 
-  // Redirect unauthenticated users away from protected routes
+
   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
   if (isProtected && !token) {
     const loginUrl = new URL('/login', request.url);
@@ -19,7 +19,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Redirect authenticated users away from auth-only pages
+
   const isAuthOnly = authOnlyRoutes.some((route) => pathname.startsWith(route));
   if (isAuthOnly && token) {
     return NextResponse.redirect(new URL('/', request.url));

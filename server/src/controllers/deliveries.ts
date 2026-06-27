@@ -3,11 +3,7 @@ import { Delivery } from '../models/Delivery';
 import { Rental } from '../models/Rental';
 import { Notification } from '../models/Notification';
 
-/**
- * @desc    Get deliveries received by vendor
- * @route   GET /api/deliveries/vendor
- * @access  Private (Vendor/Admin only)
- */
+
 export const getVendorDeliveries = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -44,11 +40,7 @@ export const getVendorDeliveries = async (req: Request, res: Response): Promise<
   }
 };
 
-/**
- * @desc    Update delivery status & assignment
- * @route   PUT /api/deliveries/:id/status
- * @access  Private (Vendor/Admin only)
- */
+
 export const updateDeliveryStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -70,7 +62,7 @@ export const updateDeliveryStatus = async (req: Request, res: Response): Promise
       return;
     }
 
-    // Verify vendor or admin ownership
+
     if (delivery.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to modify this delivery' });
       return;
@@ -88,7 +80,7 @@ export const updateDeliveryStatus = async (req: Request, res: Response): Promise
 
     await delivery.save();
 
-    // Trigger Notification for Customer Owner
+
     try {
       await Notification.create({
         user: delivery.customer,
@@ -100,22 +92,22 @@ export const updateDeliveryStatus = async (req: Request, res: Response): Promise
     } catch (notifErr) {
       console.error('[Notification Trigger Error] Failed to create delivery alert:', notifErr);
     }
- 
-    // If marked as Delivered, activate the lease on the associated Rental document
+
+
     if (deliveryStatus === 'Delivered') {
       const rental = await Rental.findById(delivery.rental);
       if (rental) {
-        // Activate rental
+
         rental.status = 'Active';
-        
-        // Dynamically adjust start date to today (actual delivery) and compute new end date
+
+
         const today = new Date();
         rental.startDate = today;
-        
+
         const endDate = new Date(today);
         endDate.setMonth(today.getMonth() + rental.tenure);
         rental.endDate = endDate;
-        
+
         await rental.save();
       }
     }
@@ -129,11 +121,7 @@ export const updateDeliveryStatus = async (req: Request, res: Response): Promise
   }
 };
 
-/**
- * @desc    Get deliveries for the logged-in customer
- * @route   GET /api/deliveries/my-deliveries
- * @access  Private
- */
+
 export const getMyDeliveries = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

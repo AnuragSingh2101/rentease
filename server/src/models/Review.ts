@@ -39,7 +39,7 @@ const ReviewSchema = new Schema<IReview>(
   }
 );
 
-// Prevent user from submitting multiple reviews for the same product
+
 ReviewSchema.index({ user: 1, product: 1 }, { unique: true });
 
 export const Review = model<IReview>('Review', ReviewSchema, 'rentease_reviews');

@@ -8,9 +8,9 @@ export interface IBooking extends Document {
   product?: Schema.Types.ObjectId;
   startDate: Date;
   endDate?: Date;
-  duration: number; // in nights (for property) or months (for product)
+  duration: number;
   totalPrice: number;
-  quantity?: number; // for products
+  quantity?: number;
   status: 'pending' | 'confirmed' | 'cancelled';
   createdAt: Date;
   updatedAt: Date;

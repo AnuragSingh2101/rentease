@@ -4,14 +4,14 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
-import { 
-  ShoppingCart, 
-  Trash2, 
-  Plus, 
-  Minus, 
-  ArrowRight, 
-  Sparkles, 
-  AlertCircle, 
+import {
+  ShoppingCart,
+  Trash2,
+  Plus,
+  Minus,
+  ArrowRight,
+  Sparkles,
+  AlertCircle,
   ShieldCheck,
   ChevronLeft,
   Store
@@ -64,7 +64,7 @@ export default function CartPage() {
   const [cart, setCart] = React.useState<Cart | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
-  
+
   const fetchCart = React.useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -131,7 +131,7 @@ export default function CartPage() {
     }
   };
 
-  // Cost calculations
+
   const totalMonthlyRent = cart?.items.reduce((sum, item) => sum + (item.product.monthlyRent * item.quantity), 0) || 0;
   const totalDeposit = cart?.items.reduce((sum, item) => sum + (item.product.deposit * item.quantity), 0) || 0;
   const totalInitialDue = totalMonthlyRent + totalDeposit;
@@ -149,21 +149,21 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        
-        {/* Header Link */}
+
+        {}
         <div className="flex items-center justify-between">
-          <Link href="/products" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-indigo-600 dark:hover:text-violet-400 font-bold transition-colors">
+          <Link href="/products" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-primary font-bold transition-colors">
             <ChevronLeft className="h-4 w-4" />
             Back to Products
           </Link>
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-card px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm">
             <Sparkles className="h-3.5 w-3.5" />
             <span>Secure Rental Checkout</span>
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+        {}
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
           <ShoppingCart className="h-7 w-7 text-indigo-500" />
           Shopping Cart ({cart?.items.length || 0})
         </h1>
@@ -176,49 +176,49 @@ export default function CartPage() {
         )}
 
         {!cart || cart.items.length === 0 ? (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-3xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
             <ShoppingCart className="h-16 w-16 mx-auto text-neutral-300 dark:text-neutral-750 animate-pulse" />
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Your cart is currently empty</h3>
+              <h3 className="text-lg font-bold text-foreground">Your cart is currently empty</h3>
               <p className="text-xs text-neutral-500 dark:text-neutral-455">
                 Browse our catalog of premium furniture, appliances, and electronics to add rental items.
               </p>
             </div>
             <button
               onClick={() => router.push("/products")}
-              className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10"
+              className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2.5 px-6 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10"
             >
               Browse Products Catalog
             </button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Items List */}
+
+            {}
             <div className="lg:col-span-2 space-y-4">
               {cart.items.map((item) => {
                 const product = item.product;
                 const coverImg = product.images?.[0] || "linear-gradient(to right, #3b82f6, #06b6d4)";
                 return (
-                  <div 
+                  <div
                     key={item._id}
-                    className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-5 rounded-2xl flex flex-col sm:flex-row gap-5 items-stretch sm:items-center justify-between shadow-sm hover:shadow-md transition-shadow"
+                    className="bg-card border border-border/60 p-5 rounded-2xl flex flex-col sm:flex-row gap-5 items-stretch sm:items-center justify-between shadow-sm hover:shadow-md transition-shadow"
                   >
                     <div className="flex gap-4 items-center">
-                      {/* Image Thumbnail */}
-                      <div 
-                        className="w-20 h-20 rounded-xl shrink-0 border border-neutral-200 dark:border-neutral-800 overflow-hidden relative flex items-center justify-center text-white"
+                      {}
+                      <div
+                        className="w-20 h-20 rounded-xl shrink-0 border border-border/60 overflow-hidden relative flex items-center justify-center text-white"
                         style={getCoverStyle(coverImg)}
                       >
                         <Store className="h-6 w-6 text-white/30" />
                       </div>
 
-                      {/* Details */}
+                      {}
                       <div className="space-y-1">
-                        <span className="text-[9px] bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full capitalize text-neutral-500 dark:text-neutral-400 font-bold">
+                        <span className="text-[9px] bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full capitalize text-muted-foreground font-bold">
                           {product.category}
                         </span>
-                        <h3 className="text-sm font-extrabold text-neutral-900 dark:text-white line-clamp-1">
+                        <h3 className="text-sm font-extrabold text-foreground line-clamp-1">
                           {product.name}
                         </h3>
                         <div className="flex items-center gap-1.5 pt-0.5">
@@ -236,9 +236,9 @@ export default function CartPage() {
                       </div>
                     </div>
 
-                    {/* Controls & Price Details */}
+                    {}
                     <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-4 pt-4 sm:pt-0 border-t sm:border-t-0 border-neutral-100 dark:border-neutral-850">
-                      {/* Qty Selector */}
+                      {}
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => updateQuantity(item._id, item.quantity, -1, product.availableQuantity)}
@@ -247,7 +247,7 @@ export default function CartPage() {
                         >
                           <Minus className="h-3 w-3" />
                         </button>
-                        <span className="text-xs font-extrabold text-neutral-900 dark:text-white w-6 text-center">
+                        <span className="text-xs font-extrabold text-foreground w-6 text-center">
                           {item.quantity}
                         </span>
                         <button
@@ -259,9 +259,9 @@ export default function CartPage() {
                         </button>
                       </div>
 
-                      {/* Pricing calculations */}
+                      {}
                       <div className="text-right space-y-0.5">
-                        <p className="text-sm font-bold text-neutral-900 dark:text-white">
+                        <p className="text-sm font-bold text-foreground">
                           ₹{(product.monthlyRent * item.quantity).toLocaleString("en-IN")} <span className="text-[10px] text-neutral-450 font-normal">/ mo</span>
                         </p>
                         <p className="text-[10px] text-neutral-455">
@@ -269,7 +269,7 @@ export default function CartPage() {
                         </p>
                       </div>
 
-                      {/* Delete */}
+                      {}
                       <button
                         onClick={() => removeItem(item._id)}
                         className="text-neutral-400 hover:text-red-500 p-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/20 cursor-pointer transition-colors"
@@ -283,10 +283,10 @@ export default function CartPage() {
               })}
             </div>
 
-            {/* Summary Panel */}
+            {}
             <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm space-y-6 sticky top-20">
-                <h3 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider">
+              <div className="bg-card border border-border/60 p-6 rounded-2xl shadow-sm space-y-6 sticky top-20">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
                   Rental Summary
                 </h3>
 
@@ -297,17 +297,17 @@ export default function CartPage() {
                       {cart.items.reduce((sum, item) => sum + item.quantity, 0)} items
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between text-neutral-550 dark:text-neutral-400">
                     <span>Total Monthly Rental</span>
-                    <span className="font-extrabold text-neutral-900 dark:text-white">
+                    <span className="font-extrabold text-foreground">
                       ₹{totalMonthlyRent.toLocaleString("en-IN")}/mo
                     </span>
                   </div>
 
                   <div className="flex justify-between text-neutral-550 dark:text-neutral-400">
                     <span>Total Security Deposit</span>
-                    <span className="font-extrabold text-neutral-900 dark:text-white">
+                    <span className="font-extrabold text-foreground">
                       ₹{totalDeposit.toLocaleString("en-IN")}
                     </span>
                   </div>
@@ -320,7 +320,7 @@ export default function CartPage() {
                       <span className="text-[10px] text-neutral-450 block max-w-[150px] leading-tight">
                         Includes security deposit + first month rent
                       </span>
-                      <span className="text-xl font-extrabold text-indigo-600 dark:text-violet-400">
+                      <span className="text-xl font-extrabold text-primary">
                         ₹{totalInitialDue.toLocaleString("en-IN")}
                       </span>
                     </div>
@@ -337,7 +337,7 @@ export default function CartPage() {
                 <button
                   onClick={() => router.push('/checkout')}
                   disabled={cart.items.length === 0}
-                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-500/15 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="w-full py-3.5 bg-primary hover:bg-primary/90 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-500/15 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <span>Proceed to Delivery & Checkout</span>
                   <ArrowRight className="h-4 w-4" />

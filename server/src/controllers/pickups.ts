@@ -3,11 +3,7 @@ import { Pickup } from '../models/Pickup';
 import { Rental } from '../models/Rental';
 import { Product } from '../models/Product';
 
-/**
- * @desc    Request a return pickup
- * @route   POST /api/pickups
- * @access  Private (Customer only)
- */
+
 export const requestPickup = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -28,19 +24,19 @@ export const requestPickup = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Verify user owns the rental
+
     if (rentalDoc.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to request pickup for this lease' });
       return;
     }
 
-    // Check status
+
     if (rentalDoc.status !== 'Active' && rentalDoc.status !== 'Delivered') {
       res.status(400).json({ success: false, message: 'Only active or delivered rentals can be returned' });
       return;
     }
 
-    // Check if a pickup is already requested/ongoing
+
     const existingPickup = await Pickup.findOne({ rental: rentalId, pickupStatus: { $ne: 'Completed' } });
     if (existingPickup) {
       res.status(400).json({ success: false, message: 'An active return pickup request already exists for this rental' });
@@ -71,11 +67,7 @@ export const requestPickup = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Schedule return pickup
- * @route   PUT /api/pickups/:id/schedule
- * @access  Private (Vendor/Admin only)
- */
+
 export const schedulePickup = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -91,7 +83,7 @@ export const schedulePickup = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    // Verify vendor or admin ownership
+
     if (pickup.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to schedule this pickup' });
       return;
@@ -119,11 +111,7 @@ export const schedulePickup = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Update return pickup status
- * @route   PUT /api/pickups/:id/status
- * @access  Private (Vendor/Admin only)
- */
+
 export const updatePickupStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -145,7 +133,7 @@ export const updatePickupStatus = async (req: Request, res: Response): Promise<v
       return;
     }
 
-    // Verify vendor or admin ownership
+
     if (pickup.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to modify this pickup' });
       return;
@@ -165,7 +153,7 @@ export const updatePickupStatus = async (req: Request, res: Response): Promise<v
 
     await pickup.save();
 
-    // If pickup transitioned to Completed, mark associated rental as Returned and restore stock
+
     if (pickupStatus === 'Completed' && oldStatus !== 'Completed') {
       const rentalDoc = await Rental.findById(pickup.rental);
       if (rentalDoc && rentalDoc.status !== 'Returned') {
@@ -188,11 +176,7 @@ export const updatePickupStatus = async (req: Request, res: Response): Promise<v
   }
 };
 
-/**
- * @desc    Get return pickups for the logged-in customer
- * @route   GET /api/pickups/my-pickups
- * @access  Private
- */
+
 export const getMyPickups = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -220,11 +204,7 @@ export const getMyPickups = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-/**
- * @desc    Get return pickups received by vendor/admin
- * @route   GET /api/pickups/vendor-pickups
- * @access  Private (Vendor/Admin only)
- */
+
 export const getVendorPickups = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

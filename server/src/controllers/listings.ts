@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
 import { Listing } from '../models/Listing';
 
-/**
- * @desc    Get all listings (public)
- * @route   GET /api/listings
- * @access  Public
- */
+
 export const getListings = async (req: Request, res: Response): Promise<void> => {
   try {
     const { category, location, search, page = '1', limit = '8' } = req.query;
@@ -27,7 +23,7 @@ export const getListings = async (req: Request, res: Response): Promise<void> =>
       ];
     }
 
-    // Pagination
+
     const pageNum = Number(page) || 1;
     const limitNum = Number(limit) || 8;
     const skipNum = (pageNum - 1) * limitNum;
@@ -50,11 +46,7 @@ export const getListings = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * @desc    Get single listing (public)
- * @route   GET /api/listings/:id
- * @access  Public
- */
+
 export const getListing = async (req: Request, res: Response): Promise<void> => {
   try {
     const listing = await Listing.findById(req.params.id).populate('vendor', 'name email phone');
@@ -73,21 +65,16 @@ export const getListing = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-/**
- * @desc    Create new listing
- * @route   POST /api/listings
- * @access  Private (Vendor or Admin)
- */
+
 export const createListing = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Check if user is logged in
+
     if (!req.user) {
       res.status(401).json({ success: false, message: 'Not authorized' });
       return;
     }
 
-    // Add vendor field
-    // If admin is creating, allow setting custom vendor, otherwise default to logged in user ID
+
     let vendorId = req.user._id;
     if (req.user.role === 'admin' && req.body.vendor) {
       vendorId = req.body.vendor;
@@ -109,11 +96,7 @@ export const createListing = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Update listing
- * @route   PUT /api/listings/:id
- * @access  Private (Vendor or Admin)
- */
+
 export const updateListing = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -128,7 +111,7 @@ export const updateListing = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Make sure user is listing owner or admin
+
     if (listing.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({
         success: false,
@@ -151,11 +134,7 @@ export const updateListing = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Delete listing
- * @route   DELETE /api/listings/:id
- * @access  Private (Vendor or Admin)
- */
+
 export const deleteListing = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -170,7 +149,7 @@ export const deleteListing = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Make sure user is listing owner or admin
+
     if (listing.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({
         success: false,
@@ -190,11 +169,7 @@ export const deleteListing = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get listings owned by logged in vendor
- * @route   GET /api/listings/my-listings
- * @access  Private (Vendor only)
- */
+
 export const getVendorListings = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

@@ -65,16 +65,16 @@ export default function CheckoutPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Form Fields
+
   const [deliveryAddress, setDeliveryAddress] = React.useState("");
   const [deliveryDate, setDeliveryDate] = React.useState("");
-  
-  // Checkout Processing States
+
+
   const [checkoutLoading, setCheckoutLoading] = React.useState(false);
   const [checkoutSuccess, setCheckoutSuccess] = React.useState(false);
   const [confirmedRentals, setConfirmedRentals] = React.useState<RentalItem[]>([]);
 
-  // Calculate default delivery date (2 days from today)
+
   React.useEffect(() => {
     const defaultDate = new Date();
     defaultDate.setDate(defaultDate.getDate() + 2);
@@ -147,19 +147,19 @@ export default function CheckoutPage() {
     }
   };
 
-  // Pricing & Calculations
+
   const totalMonthlyRent = cart?.items.reduce((sum, item) => sum + (item.product.monthlyRent * item.quantity), 0) || 0;
   const totalDeposit = cart?.items.reduce((sum, item) => sum + (item.product.deposit * item.quantity), 0) || 0;
   const totalInitialDue = totalMonthlyRent + totalDeposit;
 
-  // Minimum date for delivery (Tomorrow)
+
   const getMinDeliveryDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     return tomorrow.toISOString().split("T")[0];
   };
 
-  // Helper to calculate end date preview
+
   const getLeaseEndDate = (tenureMonths: number) => {
     if (!deliveryDate) return "";
     const start = new Date(deliveryDate);
@@ -183,20 +183,20 @@ export default function CheckoutPage() {
 
   if (checkoutSuccess) {
     return (
-      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950/20 py-16 px-4">
-        <div className="max-w-2xl mx-auto bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 space-y-6 shadow-xl animate-in zoom-in duration-300">
+      <div className="min-h-screen bg-muted/20 py-16 px-4">
+        <div className="max-w-2xl mx-auto bg-card border border-border/60 rounded-3xl p-8 space-y-6 shadow-xl animate-in zoom-in duration-300">
           <div className="text-center space-y-2">
             <CheckCircle className="h-16 w-16 mx-auto text-emerald-500 animate-bounce" />
-            <h1 className="text-2xl font-extrabold text-neutral-900 dark:text-white">Rental Bookings Placed!</h1>
-            <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            <h1 className="text-2xl font-extrabold text-foreground">Rental Bookings Placed!</h1>
+            <p className="text-sm text-muted-foreground">
               Your rental requests have been submitted to vendors. Track your shipment and status on your dashboard.
             </p>
           </div>
 
           <div className="p-5 bg-neutral-50 dark:bg-neutral-950 rounded-2xl border border-neutral-150 dark:border-neutral-850 space-y-4 text-xs">
             <h4 className="font-extrabold uppercase text-[10px] text-neutral-400 tracking-wider">Lease Details</h4>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-neutral-600 dark:text-neutral-400">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-muted-foreground">
               <div>
                 <span className="block text-[10px] uppercase font-bold text-neutral-400">Delivery Address</span>
                 <span className="font-semibold text-neutral-800 dark:text-white mt-0.5 block">{deliveryAddress}</span>
@@ -207,26 +207,26 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="border-t border-neutral-200 dark:border-neutral-800 pt-3 space-y-1">
+            <div className="border-t border-border/60 pt-3 space-y-1">
               <span className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">Booked Items</span>
               {confirmedRentals.map((r, idx) => (
                 <div key={idx} className="flex justify-between items-center text-neutral-700 dark:text-neutral-350">
                   <span>{r.quantity}x {cart?.items.find(item => item.product._id === r.product)?.product.name || "Leased Product"} ({r.tenure} Months)</span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">Lease Ends: {new Date(r.endDate).toLocaleDateString()}</span>
+                  <span className="font-semibold text-foreground">Lease Ends: {new Date(r.endDate).toLocaleDateString()}</span>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-neutral-200 dark:border-neutral-800 pt-3 flex justify-between items-center text-xs">
+            <div className="border-t border-border/60 pt-3 flex justify-between items-center text-xs">
               <span className="font-bold text-neutral-750 dark:text-neutral-300">Initial Due Paid (Deposit + 1st Month)</span>
-              <strong className="text-sm text-indigo-600 dark:text-violet-400">₹{totalInitialDue.toLocaleString("en-IN")}</strong>
+              <strong className="text-sm text-primary">₹{totalInitialDue.toLocaleString("en-IN")}</strong>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               onClick={() => router.push("/dashboard")}
-              className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/10 cursor-pointer text-center"
+              className="flex-1 py-3 bg-primary hover:bg-primary/90 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-500/10 cursor-pointer text-center"
             >
               Go to Customer Dashboard
             </button>
@@ -245,21 +245,21 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-8">
-        
-        {/* Navigation Link */}
+
+        {}
         <div className="flex items-center justify-between">
-          <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-indigo-600 dark:hover:text-violet-400 font-bold transition-colors">
+          <Link href="/cart" className="inline-flex items-center gap-1.5 text-xs text-neutral-450 hover:text-primary font-bold transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Shopping Cart
           </Link>
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-850 bg-white dark:bg-neutral-900 px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-850 bg-card px-3 py-1 text-xs text-indigo-650 dark:text-violet-400 backdrop-blur-sm shadow-sm">
             <Truck className="h-3.5 w-3.5" />
             <span>Shipping & Lease Calculations</span>
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-center gap-2">
+        {}
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-2">
           <CreditCard className="h-7 w-7 text-indigo-500" />
           Secure Leased Checkout
         </h1>
@@ -272,31 +272,31 @@ export default function CheckoutPage() {
         )}
 
         {!cart || cart.items.length === 0 ? (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl py-16 text-center max-w-xl mx-auto space-y-4 shadow-sm">
+          <div className="bg-card border border-border/60 rounded-3xl py-16 text-center max-w-xl mx-auto space-y-4 shadow-sm">
             <ShoppingCart className="h-16 w-16 mx-auto text-neutral-300 dark:text-neutral-750" />
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white">Your cart is empty</h3>
+            <h3 className="text-lg font-bold text-foreground">Your cart is empty</h3>
             <button
               onClick={() => router.push("/products")}
-              className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2.5 px-6 rounded-xl cursor-pointer"
+              className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2.5 px-6 rounded-xl cursor-pointer"
             >
               Browse Catalog
             </button>
           </div>
         ) : (
           <form onSubmit={handleCheckoutSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left Column: Form & Lease Details (7 cols) */}
+
+            {}
             <div className="lg:col-span-7 space-y-6">
-              
-              {/* Delivery Settings */}
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm space-y-5">
-                <h3 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+
+              {}
+              <div className="bg-card border border-border/60 p-6 rounded-2xl shadow-sm space-y-5">
+                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                   <Truck className="h-4 w-4 text-indigo-500" />
                   Delivery & Shipping
                 </h3>
 
                 <div className="space-y-4">
-                  {/* Delivery Address */}
+                  {}
                   <div className="space-y-1.5">
                     <label htmlFor="address" className="text-xs font-bold text-neutral-550 dark:text-neutral-300">
                       Shipping Delivery Address
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Delivery Date */}
+                  {}
                   <div className="space-y-1.5">
                     <label htmlFor="deliveryDate" className="text-xs font-bold text-neutral-550 dark:text-neutral-300">
                       Preferred Delivery Date
@@ -337,10 +337,10 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Lease Schedules Details */}
+              {}
               {deliveryDate && (
-                <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm space-y-4">
-                  <h3 className="text-sm font-bold text-neutral-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                <div className="bg-card border border-border/60 p-6 rounded-2xl shadow-sm space-y-4">
+                  <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
                     <Sparkles className="h-4.5 w-4.5 text-indigo-500" />
                     Lease Schedule Preview
                   </h3>
@@ -354,7 +354,7 @@ export default function CheckoutPage() {
                       <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider block">Item Schedules</span>
                       {cart.items.map((item) => (
                         <div key={item._id} className="flex justify-between items-center text-xs">
-                          <span className="text-neutral-500 dark:text-neutral-400">{item.product.name} ({item.tenure} Months)</span>
+                          <span className="text-muted-foreground">{item.product.name} ({item.tenure} Months)</span>
                           <strong className="text-neutral-800 dark:text-white">Ends: {getLeaseEndDate(item.tenure)}</strong>
                         </div>
                       ))}
@@ -364,11 +364,11 @@ export default function CheckoutPage() {
               )}
             </div>
 
-            {/* Right Column: Order Review & Pricing Summary (5 cols) */}
+            {}
             <div className="lg:col-span-5 space-y-6">
-              
-              {/* Order Items Summary */}
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm space-y-4">
+
+              {}
+              <div className="bg-card border border-border/60 p-6 rounded-2xl shadow-sm space-y-4">
                 <h3 className="text-xs font-bold text-neutral-450 uppercase tracking-wider">Order Items</h3>
                 <div className="space-y-3.5 max-h-56 overflow-y-auto pr-1">
                   {cart.items.map((item) => (
@@ -379,7 +379,7 @@ export default function CheckoutPage() {
                           ₹{item.product.monthlyRent}/mo × {item.quantity} · {item.tenure} Months
                         </span>
                       </div>
-                      <span className="font-extrabold text-neutral-900 dark:text-white shrink-0">
+                      <span className="font-extrabold text-foreground shrink-0">
                         ₹{(item.product.monthlyRent * item.quantity).toLocaleString("en-IN")}/mo
                       </span>
                     </div>
@@ -387,10 +387,10 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Pricing Breakdown */}
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm space-y-5">
+              {}
+              <div className="bg-card border border-border/60 p-6 rounded-2xl shadow-sm space-y-5">
                 <h3 className="text-xs font-bold text-neutral-450 uppercase tracking-wider">Price Details</h3>
-                
+
                 <div className="space-y-3.5 text-xs">
                   <div className="flex justify-between text-neutral-600 dark:text-neutral-450">
                     <span>Total Monthly Lease</span>
@@ -401,7 +401,7 @@ export default function CheckoutPage() {
                     <span className="font-semibold text-neutral-800 dark:text-white">₹{totalDeposit.toLocaleString("en-IN")}</span>
                   </div>
 
-                  <div className="border-t border-neutral-200 dark:border-neutral-800 pt-4 space-y-1">
+                  <div className="border-t border-border/60 pt-4 space-y-1">
                     <span className="text-xs font-bold text-neutral-750 dark:text-neutral-300 block uppercase tracking-wide">
                       Total Initial Due Now
                     </span>
@@ -425,7 +425,7 @@ export default function CheckoutPage() {
                   <button
                     type="submit"
                     disabled={checkoutLoading || cart.items.length === 0}
-                    className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-500/15 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-full py-3.5 bg-primary hover:bg-primary/90 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-500/15 flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     {checkoutLoading ? "Confirming Rentals..." : "Place Booking & Confirm Leases"}
                   </button>

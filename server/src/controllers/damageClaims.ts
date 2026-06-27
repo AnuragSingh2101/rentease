@@ -3,11 +3,7 @@ import { DamageClaim } from '../models/DamageClaim';
 import { Rental } from '../models/Rental';
 import { Product } from '../models/Product';
 
-/**
- * @desc    File a new damage claim
- * @route   POST /api/damage-claims
- * @access  Private (Vendor/Admin only)
- */
+
 export const createDamageClaim = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -33,7 +29,7 @@ export const createDamageClaim = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Verify vendor owns the product of this rental
+
     const productDoc = await Product.findById(rentalDoc.product);
     if (!productDoc) {
       res.status(404).json({ success: false, message: 'Associated product not found' });
@@ -45,14 +41,14 @@ export const createDamageClaim = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Check if damage claim already exists for this rental
+
     const existingClaim = await DamageClaim.findOne({ rental: rentalId });
     if (existingClaim) {
       res.status(400).json({ success: false, message: 'A damage claim has already been filed for this rental lease' });
       return;
     }
 
-    // Validate deduction amount against deposit
+
     if (Number(deductedAmount) > rentalDoc.deposit) {
       res.status(400).json({
         success: false,
@@ -82,11 +78,7 @@ export const createDamageClaim = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Update damage claim status (Resolve/Approve/Reject)
- * @route   PUT /api/damage-claims/:id/status
- * @access  Private (Admin only)
- */
+
 export const updateDamageClaimStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -131,11 +123,7 @@ export const updateDamageClaimStatus = async (req: Request, res: Response): Prom
   }
 };
 
-/**
- * @desc    Get damage claims for logged-in customer
- * @route   GET /api/damage-claims/my-claims
- * @access  Private
- */
+
 export const getMyClaims = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -167,11 +155,7 @@ export const getMyClaims = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * @desc    Get damage claims filed by vendor
- * @route   GET /api/damage-claims/vendor-claims
- * @access  Private (Vendor/Admin only)
- */
+
 export const getVendorClaims = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -208,11 +192,7 @@ export const getVendorClaims = async (req: Request, res: Response): Promise<void
   }
 };
 
-/**
- * @desc    Get all damage claims (Admin only)
- * @route   GET /api/damage-claims/admin-claims
- * @access  Private (Admin only)
- */
+
 export const getAdminClaims = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

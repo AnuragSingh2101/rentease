@@ -147,30 +147,30 @@ interface DeliveryItem {
 export default function VendorDashboard() {
   const router = useRouter();
   const [user, setUser] = React.useState<UserData | null>(null);
-  
-  // Tab State
+
+
   const [activeTab, setActiveTab] = React.useState<"properties" | "products" | "bookings" | "rentals" | "deliveries" | "my-orders" | "pickups" | "claims">("properties");
 
-  // Cover image choice types
+
   const [imageType, setImageType] = React.useState<"gradient" | "url" | "upload">("gradient");
   const [productImageType, setProductImageType] = React.useState<"gradient" | "url" | "upload">("gradient");
 
-  // Bookings State
+
   const [bookings, setBookings] = React.useState<BookingItem[]>([]);
   const [bookingsLoading, setBookingsLoading] = React.useState(true);
   const [bookingsError, setBookingsError] = React.useState<string | null>(null);
 
-  // Rentals State (incoming — from customers renting vendor's products)
+
   const [rentals, setRentals] = React.useState<VendorRentalItem[]>([]);
   const [rentalsLoading, setRentalsLoading] = React.useState(true);
   const [rentalsError, setRentalsError] = React.useState<string | null>(null);
 
-  // My Orders State (outgoing — rentals vendor made as a customer)
+
   const [myOrders, setMyOrders] = React.useState<VendorRentalItem[]>([]);
   const [myOrdersLoading, setMyOrdersLoading] = React.useState(true);
   const [myOrdersError, setMyOrdersError] = React.useState<string | null>(null);
 
-  // Deliveries State
+
   const [deliveries, setDeliveries] = React.useState<DeliveryItem[]>([]);
   const [deliveriesLoading, setDeliveriesLoading] = React.useState(true);
   const [deliveriesError, setDeliveriesError] = React.useState<string | null>(null);
@@ -178,7 +178,7 @@ export default function VendorDashboard() {
   const [editingAssignment, setEditingAssignment] = React.useState<{ [key: string]: string }>({});
   const [editingNotes, setEditingNotes] = React.useState<{ [key: string]: string }>({});
 
-  // Return Pickups State
+
   const [vendorPickups, setVendorPickups] = React.useState<any[]>([]);
   const [pickupsLoading, setPickupsLoading] = React.useState(true);
   const [pickupsError, setPickupsError] = React.useState<string | null>(null);
@@ -186,12 +186,12 @@ export default function VendorDashboard() {
   const [pickupAssignment, setPickupAssignment] = React.useState<{ [key: string]: string }>({});
   const [pickupNotes, setPickupNotes] = React.useState<{ [key: string]: string }>({});
 
-  // Damage Claims State
+
   const [vendorClaims, setVendorClaims] = React.useState<any[]>([]);
   const [claimsLoading, setClaimsLoading] = React.useState(true);
   const [claimsError, setClaimsError] = React.useState<string | null>(null);
 
-  // New Claim Form State (modal)
+
   const [claimModalOpen, setClaimModalOpen] = React.useState(false);
   const [claimSubmitting, setClaimSubmitting] = React.useState(false);
   const [claimFormError, setClaimFormError] = React.useState<string | null>(null);
@@ -204,22 +204,22 @@ export default function VendorDashboard() {
     inspectionNotes: ""
   });
 
-  // Listings State
+
   const [listings, setListings] = React.useState<Listing[]>([]);
   const [listingsLoading, setListingsLoading] = React.useState(true);
   const [listingsError, setListingsError] = React.useState<string | null>(null);
 
-  // Products State
+
   const [products, setProducts] = React.useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = React.useState(true);
   const [productsError, setProductsError] = React.useState<string | null>(null);
 
-  // Property Modal State
+
   const [modalOpen, setModalOpen] = React.useState(false);
   const [modalMode, setModalMode] = React.useState<"create" | "edit">("create");
   const [editingId, setEditingId] = React.useState<string | null>(null);
-  
-  // Property Form State
+
+
   const [formData, setFormData] = React.useState({
     title: "",
     description: "",
@@ -231,12 +231,12 @@ export default function VendorDashboard() {
   const [formError, setFormError] = React.useState<string | null>(null);
   const [submitting, setSubmitting] = React.useState(false);
 
-  // Product Modal State
+
   const [productModalOpen, setProductModalOpen] = React.useState(false);
   const [productModalMode, setProductModalMode] = React.useState<"create" | "edit">("create");
   const [editingProductId, setEditingProductId] = React.useState<string | null>(null);
 
-  // Product Form State
+
   const [productFormData, setProductFormData] = React.useState({
     name: "",
     description: "",
@@ -350,7 +350,7 @@ export default function VendorDashboard() {
       }
       const res = await api.get<ApiResponse>("/deliveries/vendor");
       setDeliveries(res.data || []);
-      
+
       const assignments: { [key: string]: string } = {};
       const notes: { [key: string]: string } = {};
       (res.data || []).forEach(d => {
@@ -373,7 +373,7 @@ export default function VendorDashboard() {
     try {
       const res = await api.get<{ success: boolean; data: any[] }>("/pickups/vendor-pickups");
       setVendorPickups(res.data || []);
-      
+
       const assignments: { [key: string]: string } = {};
       const notes: { [key: string]: string } = {};
       (res.data || []).forEach(p => {
@@ -541,7 +541,7 @@ export default function VendorDashboard() {
     router.push("/login");
   };
 
-  // Property Handlers
+
   const handleOpenCreate = () => {
     setModalMode("create");
     setEditingId(null);
@@ -616,7 +616,7 @@ export default function VendorDashboard() {
     }
   };
 
-  // Product Handlers
+
   const handleOpenProductCreate = () => {
     setProductModalMode("create");
     setEditingProductId(null);
@@ -726,12 +726,12 @@ export default function VendorDashboard() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="h-8 w-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  // Combined stats
+
   const totalPropertyRevenue = listings.reduce((sum, item) => sum + (item.price * 5), 0);
   const totalProductRevenue = products.reduce((sum, item) => sum + (item.monthlyRent * 3), 0);
 
@@ -743,18 +743,18 @@ export default function VendorDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950/20 py-8">
+    <div className="min-h-screen bg-muted/20 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm">
+
+        {}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-card border border-border/60 p-6 rounded-2xl shadow-sm">
           <div className="flex items-center gap-4">
             <div className="h-14 w-14 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
               {user.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-white">
+                <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">
                   Vendor Dashboard
                 </h1>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300 border border-violet-100 dark:border-violet-900">
@@ -762,7 +762,7 @@ export default function VendorDashboard() {
                   Vendor Account
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">{user.name} · {user.email}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{user.name} · {user.email}</p>
             </div>
           </div>
           <button
@@ -774,28 +774,28 @@ export default function VendorDashboard() {
           </button>
         </div>
 
-        {/* Stats Grid */}
+        {}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
+            <div key={label} className="bg-card border border-border/60 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
               <div className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
                 <Icon className="h-5.5 w-5.5" />
               </div>
               <div>
-              <p className="text-lg font-extrabold text-neutral-900 dark:text-white">{value}</p>
-                <p className="text-[10px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-medium">{label}</p>
+              <p className="text-lg font-extrabold text-foreground">{value}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground font-medium">{label}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Tab Selection */}
-        <div className="flex border-b border-neutral-200 dark:border-neutral-800 overflow-x-auto whitespace-nowrap pb-1 scrollbar-none gap-2">
+        {}
+        <div className="flex border-b border-border/60 overflow-x-auto whitespace-nowrap pb-1 scrollbar-none gap-2">
           <button
             onClick={() => setActiveTab("properties")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "properties"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -806,7 +806,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("products")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "products"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -817,7 +817,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("bookings")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "bookings"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -828,7 +828,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("rentals")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "rentals"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -839,7 +839,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("deliveries")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "deliveries"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -850,7 +850,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("pickups")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "pickups"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -861,7 +861,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("claims")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "claims"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -872,7 +872,7 @@ export default function VendorDashboard() {
             onClick={() => setActiveTab("my-orders")}
             className={`pb-4 px-6 text-sm font-bold border-b-2 transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === "my-orders"
-                ? "border-indigo-600 text-indigo-600 dark:text-violet-400 dark:border-violet-400"
+                ? "border-indigo-600 text-primary dark:border-violet-400"
                 : "border-transparent text-neutral-450 hover:text-neutral-700 dark:hover:text-neutral-300"
             }`}
           >
@@ -881,17 +881,17 @@ export default function VendorDashboard() {
           </button>
         </div>
 
-        {/* Action Controls & Listing View */}
+        {}
         {activeTab === "properties" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                 <Store className="h-4.5 w-4.5 text-violet-500" />
                 My Listed Properties
               </h2>
               <button
                 onClick={handleOpenCreate}
-                className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-indigo-500/10 cursor-pointer"
+                className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-indigo-500/10 cursor-pointer"
               >
                 <Plus className="h-4 w-4" />
                 Add Property
@@ -907,7 +907,7 @@ export default function VendorDashboard() {
                 {listingsError}
               </div>
             ) : listings.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <Home className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <div className="space-y-1">
                   <p className="font-bold text-neutral-800 dark:text-white text-sm">No properties listed yet</p>
@@ -915,7 +915,7 @@ export default function VendorDashboard() {
                 </div>
                 <button
                   onClick={handleOpenCreate}
-                  className="bg-indigo-50 hover:bg-indigo-100 dark:bg-neutral-850 dark:hover:bg-neutral-850 text-indigo-600 dark:text-violet-400 text-xs font-semibold py-1.5 px-4 rounded-lg cursor-pointer border border-indigo-100 dark:border-neutral-800"
+                  className="bg-indigo-50 hover:bg-indigo-100 dark:bg-neutral-850 dark:hover:bg-neutral-850 text-primary text-xs font-semibold py-1.5 px-4 rounded-lg cursor-pointer border border-indigo-100 dark:border-neutral-800"
                 >
                   Create First Listing
                 </button>
@@ -937,7 +937,7 @@ export default function VendorDashboard() {
                             {listing.rating.toFixed(1)}
                           </span>
                         </div>
-                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white line-clamp-1">{listing.title}</h4>
+                        <h4 className="text-sm font-bold text-foreground line-clamp-1">{listing.title}</h4>
                         <p className="text-xs text-neutral-505 line-clamp-2">{listing.description}</p>
                       </div>
                     </div>
@@ -945,7 +945,7 @@ export default function VendorDashboard() {
                     <div className="p-4 pt-0">
                       <div className="border-t border-neutral-200/50 dark:border-neutral-800 pt-3 flex items-center justify-between">
                         <div>
-                          <span className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                          <span className="text-sm font-extrabold text-foreground">
                             ₹{listing.price.toLocaleString("en-IN")}
                           </span>
                           <span className="text-[10px] text-neutral-400">/ night</span>
@@ -954,14 +954,14 @@ export default function VendorDashboard() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => handleOpenEdit(listing)}
-                            className="p-2 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 transition-colors cursor-pointer"
+                            className="p-2 bg-card hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-border/60 rounded-lg text-muted-foreground transition-colors cursor-pointer"
                             title="Edit Details"
                           >
                             <Edit2 className="h-3.5 w-3.5" />
                           </button>
                           <button
                             onClick={() => handleDelete(listing._id)}
-                            className="p-2 bg-white dark:bg-neutral-900 hover:bg-red-50 dark:hover:bg-red-950/20 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 dark:hover:border-red-900 text-neutral-600 hover:text-red-650 dark:text-neutral-400 dark:hover:text-red-400 transition-colors cursor-pointer"
+                            className="p-2 bg-card hover:bg-red-50 dark:hover:bg-red-950/20 border border-border/60 hover:border-red-200 dark:hover:border-red-900 text-neutral-600 hover:text-red-650 dark:text-neutral-400 dark:hover:text-red-400 transition-colors cursor-pointer"
                             title="Remove Listing"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -977,15 +977,15 @@ export default function VendorDashboard() {
         )}
 
         {activeTab === "products" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                 <Store className="h-4.5 w-4.5 text-violet-500" />
                 My Listed Products
               </h2>
               <button
                 onClick={handleOpenProductCreate}
-                className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-indigo-500/10 cursor-pointer"
+                className="bg-primary hover:bg-primary/90 text-white font-bold text-xs py-2 px-4 rounded-xl flex items-center gap-1.5 transition-all shadow-md shadow-indigo-500/10 cursor-pointer"
               >
                 <Plus className="h-4 w-4" />
                 Add Product
@@ -1001,7 +1001,7 @@ export default function VendorDashboard() {
                 {productsError}
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <Package className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <div className="space-y-1">
                   <p className="font-bold text-neutral-800 dark:text-white text-sm">No products in your catalog yet</p>
@@ -1009,7 +1009,7 @@ export default function VendorDashboard() {
                 </div>
                 <button
                   onClick={handleOpenProductCreate}
-                  className="bg-indigo-50 hover:bg-indigo-100 dark:bg-neutral-850 dark:hover:bg-neutral-850 text-indigo-600 dark:text-violet-400 text-xs font-semibold py-1.5 px-4 rounded-lg cursor-pointer border border-indigo-100 dark:border-neutral-800"
+                  className="bg-indigo-50 hover:bg-indigo-100 dark:bg-neutral-850 dark:hover:bg-neutral-850 text-primary text-xs font-semibold py-1.5 px-4 rounded-lg cursor-pointer border border-indigo-100 dark:border-neutral-800"
                 >
                   List First Product
                 </button>
@@ -1030,7 +1030,7 @@ export default function VendorDashboard() {
                             {product.availableQuantity} in Stock
                           </span>
                         </div>
-                        <h4 className="text-sm font-bold text-neutral-900 dark:text-white line-clamp-1">{product.name}</h4>
+                        <h4 className="text-sm font-bold text-foreground line-clamp-1">{product.name}</h4>
                         <p className="text-xs text-neutral-550 line-clamp-2">{product.description}</p>
                       </div>
                     </div>
@@ -1038,7 +1038,7 @@ export default function VendorDashboard() {
                     <div className="p-4 pt-0">
                       <div className="border-t border-neutral-200/50 dark:border-neutral-800 pt-3 flex items-center justify-between">
                         <div>
-                          <span className="text-sm font-extrabold text-neutral-900 dark:text-white">
+                          <span className="text-sm font-extrabold text-foreground">
                             ₹{product.monthlyRent.toLocaleString("en-IN")}
                           </span>
                           <span className="text-[10px] text-neutral-455">/ mo</span>
@@ -1047,14 +1047,14 @@ export default function VendorDashboard() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => handleOpenProductEdit(product)}
-                            className="p-2 bg-white dark:bg-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 transition-colors cursor-pointer"
+                            className="p-2 bg-card hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-border/60 rounded-lg text-muted-foreground transition-colors cursor-pointer"
                             title="Edit Product"
                           >
                             <Edit2 className="h-3.5 w-3.5" />
                           </button>
                           <button
                             onClick={() => handleProductDelete(product._id)}
-                            className="p-2 bg-white dark:bg-neutral-900 hover:bg-red-50 dark:hover:bg-red-950/20 border border-neutral-200 dark:border-neutral-800 hover:border-red-200 dark:hover:border-red-900 text-neutral-600 hover:text-red-650 dark:text-neutral-400 dark:hover:text-red-400 transition-colors cursor-pointer"
+                            className="p-2 bg-card hover:bg-red-50 dark:hover:bg-red-950/20 border border-border/60 hover:border-red-200 dark:hover:border-red-900 text-neutral-600 hover:text-red-650 dark:text-neutral-400 dark:hover:text-red-400 transition-colors cursor-pointer"
                             title="Remove Product"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
@@ -1070,8 +1070,8 @@ export default function VendorDashboard() {
         )}
 
         {activeTab === "bookings" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
-            <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
+            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <Calendar className="h-4.5 w-4.5 text-violet-500" />
               Customer Reservations & Rentals Received
             </h2>
@@ -1085,7 +1085,7 @@ export default function VendorDashboard() {
                 {bookingsError}
               </div>
             ) : bookings.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <Calendar className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <div className="space-y-1">
                   <p className="font-bold text-neutral-800 dark:text-white text-sm">No reservations received yet</p>
@@ -1096,7 +1096,7 @@ export default function VendorDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-200 dark:border-neutral-800 text-neutral-400 font-bold uppercase tracking-wider">
+                    <tr className="border-b border-border/60 text-neutral-400 font-bold uppercase tracking-wider">
                       <th className="py-3 px-4">Customer Details</th>
                       <th className="py-3 px-4">Item Type</th>
                       <th className="py-3 px-4">Item Booked</th>
@@ -1116,28 +1116,28 @@ export default function VendorDashboard() {
                         </td>
                         <td className="py-3.5 px-4">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            booking.bookingType === 'listing' 
-                              ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300' 
+                            booking.bookingType === 'listing'
+                              ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300'
                               : 'bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300'
                           }`}>
                             {booking.bookingType === 'listing' ? 'Property' : 'Product'}
                           </span>
                         </td>
-                        <td className="py-3.5 px-4 font-medium text-neutral-900 dark:text-white">
+                        <td className="py-3.5 px-4 font-medium text-foreground">
                           {booking.bookingType === 'listing' ? booking.listing?.title : booking.product?.name}
                         </td>
-                        <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400">
+                        <td className="py-3.5 px-4 text-muted-foreground">
                           <div>Starts: {new Date(booking.startDate).toLocaleDateString()}</div>
-                          <div>Duration: <strong className="text-neutral-700 dark:text-neutral-300">{booking.duration} {booking.bookingType === 'listing' ? 'Nights' : 'Months'}</strong></div>
+                          <div>Duration: <strong className="text-muted-foreground">{booking.duration} {booking.bookingType === 'listing' ? 'Nights' : 'Months'}</strong></div>
                           {booking.bookingType === 'product' && <div>Qty: {booking.quantity || 1}</div>}
                         </td>
-                        <td className="py-3.5 px-4 font-bold text-neutral-900 dark:text-white">
+                        <td className="py-3.5 px-4 font-bold text-foreground">
                           ₹{booking.totalPrice?.toLocaleString("en-IN")}
                         </td>
                         <td className="py-3.5 px-4">
                           <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            booking.status === 'confirmed' 
-                              ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400' 
+                            booking.status === 'confirmed'
+                              ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400'
                               : booking.status === 'cancelled'
                               ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400'
                               : 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400'
@@ -1176,8 +1176,8 @@ export default function VendorDashboard() {
         )}
 
         {activeTab === "rentals" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
-            <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
+            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <ShoppingBag className="h-4.5 w-4.5 text-violet-500" />
               Incoming Product Leases & Rentals
             </h2>
@@ -1191,7 +1191,7 @@ export default function VendorDashboard() {
                 {rentalsError}
               </div>
             ) : rentals.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <ShoppingBag className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <div className="space-y-1">
                   <p className="font-bold text-neutral-800 dark:text-white text-sm">No rentals received yet</p>
@@ -1202,7 +1202,7 @@ export default function VendorDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-200 dark:border-neutral-800 text-neutral-400 font-bold uppercase tracking-wider">
+                    <tr className="border-b border-border/60 text-neutral-400 font-bold uppercase tracking-wider">
                       <th className="py-3 px-4">Customer Details</th>
                       <th className="py-3 px-4">Product Name</th>
                       <th className="py-3 px-4">Lease Details</th>
@@ -1220,7 +1220,7 @@ export default function VendorDashboard() {
                           case "Approved": return "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
                           case "Delivered": return "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400";
                           case "Active": return "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400";
-                          case "Returned": return "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400";
+                          case "Returned": return "bg-neutral-100 dark:bg-neutral-800 text-muted-foreground";
                           case "Cancelled": return "bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400";
                           default: return "bg-neutral-50 dark:bg-neutral-800 text-neutral-600";
                         }
@@ -1233,19 +1233,19 @@ export default function VendorDashboard() {
                             <div className="text-[10px] text-neutral-500 font-normal">{rental.user?.email}</div>
                             {rental.user?.phone && <div className="text-[10px] text-neutral-500 font-normal">{rental.user?.phone}</div>}
                           </td>
-                          <td className="py-3.5 px-4 font-medium text-neutral-900 dark:text-white">
+                          <td className="py-3.5 px-4 font-medium text-foreground">
                             {rental.product?.name}
                           </td>
-                          <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-400">
+                          <td className="py-3.5 px-4 text-muted-foreground">
                             <div>Delivery: {new Date(rental.deliveryDate).toLocaleDateString()}</div>
                             <div>Lease: {new Date(rental.startDate).toLocaleDateString()} to {new Date(rental.endDate).toLocaleDateString()}</div>
-                            <div>Duration: <strong className="text-neutral-700 dark:text-neutral-300">{rental.tenure} Months</strong></div>
+                            <div>Duration: <strong className="text-muted-foreground">{rental.tenure} Months</strong></div>
                             <div>Qty: {rental.quantity}</div>
                           </td>
                           <td className="py-3.5 px-4 font-medium text-neutral-800 dark:text-white max-w-[150px] truncate" title={rental.deliveryAddress}>
                             {rental.deliveryAddress}
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-neutral-900 dark:text-white">
+                          <td className="py-3.5 px-4 font-bold text-foreground">
                             ₹{rental.totalPrice?.toLocaleString("en-IN")}
                           </td>
                           <td className="py-3.5 px-4">
@@ -1278,8 +1278,8 @@ export default function VendorDashboard() {
         )}
 
         {activeTab === "deliveries" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
-            <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
+            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
               <Truck className="h-4.5 w-4.5 text-violet-500" />
               Delivery & Order Fulfillment Tracker
             </h2>
@@ -1293,7 +1293,7 @@ export default function VendorDashboard() {
                 {deliveriesError}
               </div>
             ) : deliveries.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <Truck className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700 animate-bounce" />
                 <div className="space-y-1">
                   <p className="font-bold text-neutral-800 dark:text-white text-sm">No scheduled deliveries</p>
@@ -1304,7 +1304,7 @@ export default function VendorDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse text-xs">
                   <thead>
-                    <tr className="border-b border-neutral-200 dark:border-neutral-800 text-neutral-400 font-bold uppercase tracking-wider">
+                    <tr className="border-b border-border/60 text-neutral-400 font-bold uppercase tracking-wider">
                       <th className="py-3 px-4">Customer Details</th>
                       <th className="py-3 px-4">Rental Item</th>
                       <th className="py-3 px-4">Fulfillment Details</th>
@@ -1333,7 +1333,7 @@ export default function VendorDashboard() {
                             {delivery.customer?.phone && <div className="text-[10px] text-neutral-500 font-normal">{delivery.customer?.phone}</div>}
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-bold text-neutral-900 dark:text-white">{delivery.rental?.product?.name || "Leased Product"}</div>
+                            <div className="font-bold text-foreground">{delivery.rental?.product?.name || "Leased Product"}</div>
                             <div className="text-[10px] text-neutral-500">Qty: {delivery.rental?.quantity || 1} · Tenure: {delivery.rental?.tenure || 1} Months</div>
                           </td>
                           <td className="py-3.5 px-4 text-neutral-500 dark:text-neutral-450">
@@ -1394,12 +1394,12 @@ export default function VendorDashboard() {
           </div>
         )}
 
-        {/* Property Modal Dialog Form */}
+        {}
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
+            <div className="w-full max-w-lg bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
               <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-850 flex items-center justify-between bg-neutral-50 dark:bg-neutral-950/50">
-                <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+                <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                   <Sparkles className="h-4.5 w-4.5 text-violet-500" />
                   {modalMode === "create" ? "Add New Property Escapes" : "Modify Property Details"}
                 </h3>
@@ -1419,7 +1419,7 @@ export default function VendorDashboard() {
                   </div>
                 )}
 
-                {/* Title */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Property Title</label>
                   <input
@@ -1432,7 +1432,7 @@ export default function VendorDashboard() {
                   />
                 </div>
 
-                {/* Description */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Description</label>
                   <textarea
@@ -1446,7 +1446,7 @@ export default function VendorDashboard() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Location */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Location</label>
                     <input
@@ -1459,7 +1459,7 @@ export default function VendorDashboard() {
                     />
                   </div>
 
-                  {/* Price */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Rent Price (₹/Night)</label>
                     <input
@@ -1475,13 +1475,13 @@ export default function VendorDashboard() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  {/* Category */}
+                  {}
                   <div className="space-y-1.5 col-span-2">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Category</label>
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -1490,12 +1490,12 @@ export default function VendorDashboard() {
                   </div>
                 </div>
 
-                {/* Visual Cover Type Selection */}
+                {}
                 <div className="space-y-1.5 pt-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Cover Media Type</label>
                   <div className="flex gap-4">
                     {["gradient", "url", "upload"].map((type) => (
-                      <label key={type} className="flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-neutral-700 dark:text-neutral-300 select-none">
+                      <label key={type} className="flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-muted-foreground select-none">
                         <input
                           type="radio"
                           name="propertyImageType"
@@ -1516,7 +1516,7 @@ export default function VendorDashboard() {
                       <select
                         value={formData.image.startsWith('linear-gradient') ? formData.image : GRADIENTS[0].value}
                         onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                       >
                         {GRADIENTS.map((g) => (
                           <option key={g.value} value={g.value}>{g.label}</option>
@@ -1533,7 +1533,7 @@ export default function VendorDashboard() {
                         placeholder="Paste image URL (e.g. https://images.unsplash.com/...)"
                         value={formData.image.startsWith('linear-gradient') ? "" : formData.image}
                         onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                       />
                     </div>
                   )}
@@ -1554,23 +1554,23 @@ export default function VendorDashboard() {
                             reader.readAsDataURL(file);
                           }
                         }}
-                        className="w-full py-2 px-3 border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none rounded-xl"
+                        className="w-full py-2 px-3 border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none rounded-xl"
                       />
                     </div>
                   )}
                 </div>
 
-                {/* Visual Preview */}
+                {}
                 <div className="space-y-1.5 pt-2">
                   <label className="text-[9px] uppercase font-bold text-neutral-400">Card Cover Preview</label>
-                  <div className="h-16 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden relative flex items-center justify-center text-white font-bold text-xs shadow-inner" style={getCoverStyle(formData.image)}>
+                  <div className="h-16 rounded-xl border border-border/60 overflow-hidden relative flex items-center justify-center text-white font-bold text-xs shadow-inner" style={getCoverStyle(formData.image)}>
                     <div className="bg-neutral-950/40 absolute inset-0 flex items-center justify-center">
                       <span className="drop-shadow-md">{formData.title || "Untitled Escapes"}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-850">
                   <button
                     type="button"
@@ -1582,7 +1582,7 @@ export default function VendorDashboard() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white text-xs font-bold py-2 px-5 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10 disabled:opacity-50"
+                    className="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 px-5 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10 disabled:opacity-50"
                   >
                     {submitting ? "Saving..." : "Save Listing"}
                   </button>
@@ -1592,13 +1592,13 @@ export default function VendorDashboard() {
           </div>
         )}
 
-        {/* Product Modal Dialog Form */}
+        {}
         {productModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
-              
+            <div className="w-full max-w-lg bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-150">
+
               <div className="px-6 py-4 border-b border-neutral-100 dark:border-neutral-850 flex items-center justify-between bg-neutral-50 dark:bg-neutral-950/50">
-                <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+                <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                   <Sparkles className="h-4.5 w-4.5 text-violet-500" />
                   {productModalMode === "create" ? "Add Product to Catalog" : "Modify Catalog Product"}
                 </h3>
@@ -1618,7 +1618,7 @@ export default function VendorDashboard() {
                   </div>
                 )}
 
-                {/* Name */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Product Name</label>
                   <input
@@ -1627,11 +1627,11 @@ export default function VendorDashboard() {
                     placeholder="e.g. Ergonomic Office Desk Chair"
                     value={productFormData.name}
                     onChange={(e) => setProductFormData({ ...productFormData, name: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                   />
                 </div>
 
-                {/* Description */}
+                {}
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Description</label>
                   <textarea
@@ -1640,12 +1640,12 @@ export default function VendorDashboard() {
                     placeholder="Details about components, materials, dimensions..."
                     value={productFormData.description}
                     onChange={(e) => setProductFormData({ ...productFormData, description: e.target.value })}
-                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors resize-none"
+                    className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors resize-none"
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  {/* Monthly Rent */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Rent (₹/Mo)</label>
                     <input
@@ -1655,11 +1655,11 @@ export default function VendorDashboard() {
                       placeholder="Rent"
                       value={productFormData.monthlyRent}
                       onChange={(e) => setProductFormData({ ...productFormData, monthlyRent: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                     />
                   </div>
 
-                  {/* Deposit */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Deposit (₹)</label>
                     <input
@@ -1669,11 +1669,11 @@ export default function VendorDashboard() {
                       placeholder="Deposit"
                       value={productFormData.deposit}
                       onChange={(e) => setProductFormData({ ...productFormData, deposit: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                     />
                   </div>
 
-                  {/* Quantity */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Available Qty</label>
                     <input
@@ -1683,19 +1683,19 @@ export default function VendorDashboard() {
                       placeholder="Quantity"
                       value={productFormData.availableQuantity}
                       onChange={(e) => setProductFormData({ ...productFormData, availableQuantity: Number(e.target.value) })}
-                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                      className="w-full py-2 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
-                  {/* Category */}
+                  {}
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase font-extrabold text-neutral-400">Category</label>
                     <select
                       value={productFormData.category}
                       onChange={(e) => setProductFormData({ ...productFormData, category: e.target.value })}
-                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                      className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                     >
                       {PRODUCT_CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -1704,7 +1704,7 @@ export default function VendorDashboard() {
                   </div>
                 </div>
 
-                {/* Product Cover Selection */}
+                {}
                 <div className="space-y-1.5 pt-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400">Cover Media Type</label>
                   <div className="flex gap-4">
@@ -1730,7 +1730,7 @@ export default function VendorDashboard() {
                       <select
                         value={productFormData.image.startsWith('linear-gradient') ? productFormData.image : GRADIENTS[0].value}
                         onChange={(e) => setProductFormData({ ...productFormData, image: e.target.value })}
-                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                       >
                         {GRADIENTS.map((g) => (
                           <option key={g.value} value={g.value}>{g.label}</option>
@@ -1747,7 +1747,7 @@ export default function VendorDashboard() {
                         placeholder="Paste image URL (e.g. https://images.unsplash.com/...)"
                         value={productFormData.image.startsWith('linear-gradient') ? "" : productFormData.image}
                         onChange={(e) => setProductFormData({ ...productFormData, image: e.target.value })}
-                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none transition-colors"
+                        className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none transition-colors"
                       />
                     </div>
                   )}
@@ -1768,16 +1768,16 @@ export default function VendorDashboard() {
                             reader.readAsDataURL(file);
                           }
                         }}
-                        className="w-full py-2 px-3 border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs focus:border-indigo-500 focus:outline-none rounded-xl"
+                        className="w-full py-2 px-3 border border-neutral-300 dark:border-neutral-800 bg-card text-foreground text-xs focus:border-indigo-500 focus:outline-none rounded-xl"
                       />
                     </div>
                   )}
                 </div>
 
-                {/* Rental Tenure Options — flexible input */}
+                {}
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-400 block">Rental Tenure Options (months)</label>
-                  {/* Selected tenure tags */}
+                  {}
                   <div className="flex flex-wrap gap-2 min-h-[32px]">
                     {productFormData.tenureOptions.length === 0 && (
                       <span className="text-[10px] text-neutral-400 italic">No tenures added yet</span>
@@ -1799,7 +1799,7 @@ export default function VendorDashboard() {
                       </span>
                     ))}
                   </div>
-                  {/* Quick presets + custom input */}
+                  {}
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-[10px] text-neutral-400 font-bold uppercase">Quick add:</span>
                     {[1, 2, 3, 6, 9, 12, 18, 24, 36].filter(m => !productFormData.tenureOptions.includes(m)).map((months) => (
@@ -1807,7 +1807,7 @@ export default function VendorDashboard() {
                         key={months}
                         type="button"
                         onClick={() => handleTenureToggle(months)}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-600 dark:hover:text-violet-400 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
+                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-primary border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
                       >
                         +{months}mo
                       </button>
@@ -1841,7 +1841,7 @@ export default function VendorDashboard() {
                             input.value = '';
                           }
                         }}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white cursor-pointer transition-colors"
+                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-primary hover:bg-primary/90 text-white cursor-pointer transition-colors"
                       >
                         Add
                       </button>
@@ -1850,17 +1850,17 @@ export default function VendorDashboard() {
                   <p className="text-[10px] text-neutral-400">Customers can only choose from the months you set here.</p>
                 </div>
 
-                {/* Visual Preview */}
+                {}
                 <div className="space-y-1.5 pt-2">
                   <label className="text-[9px] uppercase font-bold text-neutral-400">Card Cover Preview</label>
-                  <div className="h-16 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden relative flex items-center justify-center text-white font-bold text-xs shadow-inner" style={getCoverStyle(productFormData.image)}>
+                  <div className="h-16 rounded-xl border border-border/60 overflow-hidden relative flex items-center justify-center text-white font-bold text-xs shadow-inner" style={getCoverStyle(productFormData.image)}>
                     <div className="bg-neutral-950/40 absolute inset-0 flex items-center justify-center">
                       <span className="drop-shadow-md">{productFormData.name || "Untitled Product"}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-neutral-100 dark:border-neutral-850">
                   <button
                     type="button"
@@ -1872,7 +1872,7 @@ export default function VendorDashboard() {
                   <button
                     type="submit"
                     disabled={productSubmitting}
-                    className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white text-xs font-bold py-2 px-5 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10 disabled:opacity-50"
+                    className="bg-primary hover:bg-primary/90 text-white text-xs font-bold py-2 px-5 rounded-xl transition-all cursor-pointer shadow-md shadow-indigo-500/10 disabled:opacity-50"
                   >
                     {productSubmitting ? "Saving..." : "Save Product"}
                   </button>
@@ -1883,10 +1883,10 @@ export default function VendorDashboard() {
         )}
 
         {activeTab === "my-orders" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <ShoppingBag className="h-4.5 w-4.5 text-violet-500" />
                   Products I've Rented
                 </h2>
@@ -1903,7 +1903,7 @@ export default function VendorDashboard() {
                 {myOrdersError}
               </div>
             ) : myOrders.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <ShoppingBag className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <p className="font-bold text-neutral-800 dark:text-white text-sm">No rentals yet</p>
                 <p className="text-xs text-neutral-500">Browse the product catalog and rent items from other vendors.</p>
@@ -1917,16 +1917,16 @@ export default function VendorDashboard() {
                       case "Approved":  return "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
                       case "Delivered": return "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400";
                       case "Active":    return "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400";
-                      case "Returned":  return "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400";
+                      case "Returned":  return "bg-neutral-100 dark:bg-neutral-800 text-muted-foreground";
                       case "Cancelled": return "bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400";
                       default:          return "bg-neutral-50 dark:bg-neutral-800 text-neutral-600";
                     }
                   };
                   const cover = order.product?.images?.[0] || "linear-gradient(to right bottom, #6366f1, #a855f7)";
                   return (
-                    <div key={order._id} className="flex gap-4 p-4 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-neutral-50/50 dark:bg-neutral-950/20">
+                    <div key={order._id} className="flex gap-4 p-4 border border-border/60 rounded-xl bg-neutral-50/50 dark:bg-neutral-950/20">
                       <div
-                        className="w-20 h-20 rounded-xl shrink-0 border border-neutral-200 dark:border-neutral-800"
+                        className="w-20 h-20 rounded-xl shrink-0 border border-border/60"
                         style={getCoverStyle(cover)}
                       />
                       <div className="flex-grow flex flex-col justify-between space-y-1.5">
@@ -1935,7 +1935,7 @@ export default function VendorDashboard() {
                             <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300">
                               {order.product?.category || "Product"}
                             </span>
-                            <h4 className="text-xs font-bold text-neutral-900 dark:text-white mt-1">
+                            <h4 className="text-xs font-bold text-foreground mt-1">
                               {(order as any).product?.name || "Leased Product"} &nbsp;
                               <span className="font-normal text-neutral-500">×{order.quantity}</span>
                             </h4>
@@ -1945,10 +1945,10 @@ export default function VendorDashboard() {
                           </span>
                         </div>
                         <div className="text-[10px] text-neutral-500 border-t border-neutral-100 dark:border-neutral-800 pt-1.5 grid grid-cols-2 gap-x-4 gap-y-0.5">
-                          <span>Tenure: <strong className="text-neutral-700 dark:text-neutral-300">{order.tenure} months</strong></span>
-                          <span>Due: <strong className="text-neutral-700 dark:text-neutral-300">₹{order.totalPrice?.toLocaleString("en-IN")}</strong></span>
-                          <span>Delivery: <strong className="text-neutral-700 dark:text-neutral-300">{new Date(order.deliveryDate).toLocaleDateString()}</strong></span>
-                          <span>Ends: <strong className="text-neutral-700 dark:text-neutral-300">{new Date(order.endDate).toLocaleDateString()}</strong></span>
+                          <span>Tenure: <strong className="text-muted-foreground">{order.tenure} months</strong></span>
+                          <span>Due: <strong className="text-muted-foreground">₹{order.totalPrice?.toLocaleString("en-IN")}</strong></span>
+                          <span>Delivery: <strong className="text-muted-foreground">{new Date(order.deliveryDate).toLocaleDateString()}</strong></span>
+                          <span>Ends: <strong className="text-muted-foreground">{new Date(order.endDate).toLocaleDateString()}</strong></span>
                           <span className="col-span-2 truncate">Address: {order.deliveryAddress}</span>
                         </div>
                       </div>
@@ -1962,10 +1962,10 @@ export default function VendorDashboard() {
 
         {/* PICKUPS TAB VIEW */}
         {activeTab === "pickups" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <Truck className="h-4.5 w-4.5 text-violet-500" />
                   Lease Return Pickups
                 </h2>
@@ -1982,7 +1982,7 @@ export default function VendorDashboard() {
                 {pickupsError}
               </div>
             ) : vendorPickups.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <Truck className="h-12 w-12 mx-auto text-neutral-350 dark:text-neutral-750" />
                 <p className="font-bold text-neutral-800 dark:text-white text-sm">No return requests</p>
                 <p className="text-xs text-neutral-500">No active leases are currently awaiting return collection.</p>
@@ -1996,7 +1996,7 @@ export default function VendorDashboard() {
                     <div key={pickup._id} className="p-5 border border-neutral-200 dark:border-neutral-850 bg-neutral-50/50 dark:bg-neutral-950/20 rounded-2xl flex flex-col md:flex-row gap-5 justify-between">
                       {/* Left: Product & Client Details */}
                       <div className="flex gap-4 items-start flex-grow">
-                        <div className="w-16 h-16 rounded-xl border border-neutral-200 dark:border-neutral-800 shrink-0 overflow-hidden" style={getCoverStyle(cover)} />
+                        <div className="w-16 h-16 rounded-xl border border-border/60 shrink-0 overflow-hidden" style={getCoverStyle(cover)} />
                         <div className="space-y-1.5 flex-grow min-w-0">
                           <div className="flex items-center gap-2">
                             <span className="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300">
@@ -2008,13 +2008,13 @@ export default function VendorDashboard() {
                               {pickup.pickupStatus}
                             </span>
                           </div>
-                          <h4 className="text-sm font-extrabold text-neutral-900 dark:text-white truncate">
+                          <h4 className="text-sm font-extrabold text-foreground truncate">
                             {pickup.rental?.product?.name || "Physical Return Item"}
                           </h4>
                           <div className="text-[10px] text-neutral-500 space-y-1">
-                            <p>Customer: <strong className="text-neutral-700 dark:text-neutral-300">{pickup.customer?.name} ({pickup.customer?.email})</strong></p>
-                            <p>Address: <strong className="text-neutral-700 dark:text-neutral-300">{pickup.pickupAddress}</strong></p>
-                            <p>Proposed Handover: <strong className="text-neutral-700 dark:text-neutral-300">{new Date(pickup.pickupDate).toLocaleDateString()}</strong></p>
+                            <p>Customer: <strong className="text-muted-foreground">{pickup.customer?.name} ({pickup.customer?.email})</strong></p>
+                            <p>Address: <strong className="text-muted-foreground">{pickup.pickupAddress}</strong></p>
+                            <p>Proposed Handover: <strong className="text-muted-foreground">{new Date(pickup.pickupDate).toLocaleDateString()}</strong></p>
                           </div>
                         </div>
                       </div>
@@ -2028,17 +2028,17 @@ export default function VendorDashboard() {
                               placeholder="Assign Driver Name..."
                               value={pickupAssignment[pickup._id] || ""}
                               onChange={(e) => setPickupAssignment({ ...pickupAssignment, [pickup._id]: e.target.value })}
-                              className="w-1/2 py-1.5 px-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-[11px] focus:outline-none"
+                              className="w-1/2 py-1.5 px-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-[11px] focus:outline-none"
                             />
                             <input
                               type="text"
                               placeholder="Log/Status Notes..."
                               value={pickupNotes[pickup._id] || ""}
                               onChange={(e) => setPickupNotes({ ...pickupNotes, [pickup._id]: e.target.value })}
-                              className="w-1/2 py-1.5 px-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-[11px] focus:outline-none"
+                              className="w-1/2 py-1.5 px-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-[11px] focus:outline-none"
                             />
                           </div>
-                          
+
                           <div className="flex gap-2">
                             <button
                               onClick={() => handleSchedulePickup(pickup._id)}
@@ -2047,7 +2047,7 @@ export default function VendorDashboard() {
                             >
                               Schedule Pickup
                             </button>
-                            
+
                             <select
                               value={pickup.pickupStatus}
                               disabled={!isScheduled || updatingPickupId === pickup._id}
@@ -2093,10 +2093,10 @@ export default function VendorDashboard() {
 
         {/* DAMAGE CLAIMS TAB VIEW */}
         {activeTab === "claims" && (
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <FileText className="h-4.5 w-4.5 text-red-500" />
                   Reported Damage Claims
                 </h2>
@@ -2113,7 +2113,7 @@ export default function VendorDashboard() {
                 {claimsError}
               </div>
             ) : vendorClaims.length === 0 ? (
-              <div className="text-center py-16 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl space-y-3">
+              <div className="text-center py-16 border border-dashed border-border/60 rounded-xl space-y-3">
                 <FileText className="h-12 w-12 mx-auto text-neutral-300 dark:text-neutral-700" />
                 <p className="font-bold text-neutral-800 dark:text-white text-sm">No damage claims reported</p>
                 <p className="text-xs text-neutral-500">You haven't reported any item damages for returned rentals.</p>
@@ -2132,7 +2132,7 @@ export default function VendorDashboard() {
                   };
                   return (
                     <div key={claim._id} className="p-4 border border-neutral-200 dark:border-neutral-850 bg-neutral-55/40 dark:bg-neutral-950/20 rounded-2xl flex gap-4 items-start">
-                      <div className="w-14 h-14 rounded-xl border border-neutral-200 dark:border-neutral-800 shrink-0 overflow-hidden" style={getCoverStyle(claim.rental?.product?.images?.[0] || "")} />
+                      <div className="w-14 h-14 rounded-xl border border-border/60 shrink-0 overflow-hidden" style={getCoverStyle(claim.rental?.product?.images?.[0] || "")} />
                       <div className="flex-grow min-w-0 space-y-1.5">
                         <div className="flex items-center justify-between gap-2">
                           <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold uppercase bg-red-50 text-red-800 dark:bg-red-950/20 dark:text-red-400`}>
@@ -2142,7 +2142,7 @@ export default function VendorDashboard() {
                             {claim.status}
                           </span>
                         </div>
-                        <h4 className="text-xs font-bold text-neutral-900 dark:text-white truncate">
+                        <h4 className="text-xs font-bold text-foreground truncate">
                           {claim.rental?.product?.name || "Product Damage Claim"}
                         </h4>
                         <p className="text-[11px] text-neutral-600 dark:text-neutral-450 font-medium">"{claim.description}"</p>
@@ -2167,13 +2167,13 @@ export default function VendorDashboard() {
 
       </div>
 
-      {/* DAMAGE CLAIM REPORT MODAL */}
+      {}
       {claimModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-          <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-5">
-            
+          <div className="w-full max-w-md bg-card border border-border/60 rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 p-6 space-y-5">
+
             <div className="flex justify-between items-center pb-2 border-b border-neutral-100 dark:border-neutral-850">
-              <h3 className="font-extrabold text-neutral-900 dark:text-white text-sm flex items-center gap-2">
+              <h3 className="font-extrabold text-foreground text-sm flex items-center gap-2">
                 <FileText className="h-4.5 w-4.5 text-red-500" />
                 Report Product Damage Claim
               </h3>
@@ -2193,7 +2193,7 @@ export default function VendorDashboard() {
                 </div>
               )}
 
-              {/* Severity Selection */}
+              {}
               <div className="space-y-1">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-400 block">Damage Severity</label>
                 <div className="grid grid-cols-3 gap-2">
@@ -2214,7 +2214,7 @@ export default function VendorDashboard() {
                 </div>
               </div>
 
-              {/* Description */}
+              {}
               <div className="space-y-1">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-455 block">Damage Description</label>
                 <textarea
@@ -2223,12 +2223,12 @@ export default function VendorDashboard() {
                   placeholder="Detail the scratches, broken parts, or functional failure discovered during collection..."
                   value={claimFormData.description}
                   onChange={(e) => setClaimFormData({ ...claimFormData, description: e.target.value })}
-                  className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-red-500 focus:outline-none resize-none"
+                  className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-red-500 focus:outline-none resize-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Deducted Deposit */}
+                {}
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455 block">Deduct Deposit (₹)</label>
                   <input
@@ -2236,11 +2236,11 @@ export default function VendorDashboard() {
                     min={0}
                     value={claimFormData.deductedAmount}
                     onChange={(e) => setClaimFormData({ ...claimFormData, deductedAmount: Number(e.target.value) || 0 })}
-                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-red-550 focus:outline-none"
+                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-red-550 focus:outline-none"
                   />
                 </div>
 
-                {/* Extra Penalty */}
+                {}
                 <div className="space-y-1">
                   <label className="text-[10px] uppercase font-extrabold text-neutral-455 block">Extra Penalty Fee (₹)</label>
                   <input
@@ -2248,12 +2248,12 @@ export default function VendorDashboard() {
                     min={0}
                     value={claimFormData.penaltyAmount}
                     onChange={(e) => setClaimFormData({ ...claimFormData, penaltyAmount: Number(e.target.value) || 0 })}
-                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-red-550 focus:outline-none"
+                    className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-red-550 focus:outline-none"
                   />
                 </div>
               </div>
 
-              {/* Inspection Notes */}
+              {}
               <div className="space-y-1">
                 <label className="text-[10px] uppercase font-extrabold text-neutral-455 block">Inspection Notes (Optional)</label>
                 <input
@@ -2261,7 +2261,7 @@ export default function VendorDashboard() {
                   placeholder="Remarks on collection inspection..."
                   value={claimFormData.inspectionNotes}
                   onChange={(e) => setClaimFormData({ ...claimFormData, inspectionNotes: e.target.value })}
-                  className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white text-xs focus:border-red-550 focus:outline-none"
+                  className="w-full py-2 px-3 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-foreground text-xs focus:border-red-550 focus:outline-none"
                 />
               </div>
 

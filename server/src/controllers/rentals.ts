@@ -5,11 +5,7 @@ import { Cart } from '../models/Cart';
 import { Delivery } from '../models/Delivery';
 import { Notification } from '../models/Notification';
 
-/**
- * @desc    Create new rental bookings from checkout
- * @route   POST /api/rentals
- * @access  Private
- */
+
 export const createRentals = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -31,14 +27,14 @@ export const createRentals = async (req: Request, res: Response): Promise<void> 
 
     const createdRentals = [];
 
-    // Verify all items first before writing to DB
+
     for (const item of items) {
       const productDoc = await Product.findById(item.product);
       if (!productDoc) {
         res.status(404).json({ success: false, message: `Product not found: ${item.product}` });
         return;
       }
-      // Prevent a vendor from renting their own product
+
       if (productDoc.vendor.toString() === req.user._id.toString() && req.user.role !== 'admin') {
         res.status(400).json({ success: false, message: `You cannot rent your own product: ${productDoc.name}` });
         return;
@@ -52,21 +48,21 @@ export const createRentals = async (req: Request, res: Response): Promise<void> 
       }
     }
 
-    // Process bookings and update stock
+
     for (const item of items) {
       const productDoc = await Product.findById(item.product);
       if (!productDoc) continue;
 
-      // Decrement stock
+
       productDoc.availableQuantity -= Number(item.quantity);
       await productDoc.save();
 
-      // Calculate start and end dates
+
       const startDate = new Date(deliveryDate);
       const endDate = new Date(startDate);
       endDate.setMonth(startDate.getMonth() + Number(item.tenure));
 
-      // Calculate pricing
+
       const monthlyRent = productDoc.monthlyRent;
       const deposit = productDoc.deposit;
       const totalPrice = (monthlyRent + deposit) * Number(item.quantity);
@@ -86,7 +82,7 @@ export const createRentals = async (req: Request, res: Response): Promise<void> 
         status: 'Pending'
       });
 
-      // Create a corresponding Delivery record for delivery management tracking
+
       await Delivery.create({
         rental: rental._id,
         vendor: productDoc.vendor,
@@ -99,7 +95,7 @@ export const createRentals = async (req: Request, res: Response): Promise<void> 
       createdRentals.push(rental);
     }
 
-    // Clear the user's cart
+
     const cart = await Cart.findOne({ user: req.user._id });
     if (cart) {
       cart.items = [];
@@ -115,11 +111,7 @@ export const createRentals = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get rentals made by logged-in customer
- * @route   GET /api/rentals/my-rentals
- * @access  Private
- */
+
 export const getMyRentals = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -144,11 +136,7 @@ export const getMyRentals = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-/**
- * @desc    Get rentals received by vendor
- * @route   GET /api/rentals/vendor-rentals
- * @access  Private
- */
+
 export const getVendorRentals = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -156,7 +144,7 @@ export const getVendorRentals = async (req: Request, res: Response): Promise<voi
       return;
     }
 
-    // Admin sees all rentals; vendor sees only rentals for their own products
+
     let rentalFilter: any = {};
     if (req.user.role !== 'admin') {
       const vendorProducts = await Product.find({ vendor: req.user._id }).select('_id');
@@ -189,11 +177,7 @@ export const getVendorRentals = async (req: Request, res: Response): Promise<voi
   }
 };
 
-/**
- * @desc    Update rental status
- * @route   PUT /api/rentals/:id/status
- * @access  Private
- */
+
 export const updateRentalStatus = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -215,7 +199,7 @@ export const updateRentalStatus = async (req: Request, res: Response): Promise<v
       return;
     }
 
-    // Verify vendor ownership
+
     const productDoc = await Product.findById(rental.product);
     if (!productDoc) {
       res.status(404).json({ success: false, message: 'Associated product not found' });
@@ -231,13 +215,13 @@ export const updateRentalStatus = async (req: Request, res: Response): Promise<v
     const isReturningOrCancelling = ['Returned', 'Cancelled'].includes(status);
     const wasRestocked = ['Returned', 'Cancelled'].includes(oldStatus);
 
-    // Stock replenishment check
+
     if (isReturningOrCancelling && !wasRestocked) {
-      // Return stock
+
       productDoc.availableQuantity += rental.quantity;
       await productDoc.save();
     } else if (!isReturningOrCancelling && wasRestocked) {
-      // Re-claim stock if moving back to active status
+
       if (productDoc.availableQuantity < rental.quantity) {
         res.status(400).json({
           success: false,
@@ -252,7 +236,7 @@ export const updateRentalStatus = async (req: Request, res: Response): Promise<v
     rental.status = status as any;
     await rental.save();
 
-    // Trigger Notification for User
+
     try {
       await Notification.create({
         user: rental.user,
@@ -274,11 +258,7 @@ export const updateRentalStatus = async (req: Request, res: Response): Promise<v
   }
 };
 
-/**
- * @desc    Extend rental duration
- * @route   POST /api/rentals/:id/extend
- * @access  Private
- */
+
 export const extendRental = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -299,7 +279,7 @@ export const extendRental = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // Verify ownership
+
     if (rental.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({ success: false, message: 'Not authorized to extend this rental' });
       return;
@@ -316,12 +296,12 @@ export const extendRental = async (req: Request, res: Response): Promise<void> =
 
     const extraPaidAmount = rental.monthlyRent * Number(extendedByMonths) * rental.quantity;
 
-    // Update rental fields
+
     rental.endDate = newEndDate;
     rental.tenure += Number(extendedByMonths);
     rental.totalPrice += extraPaidAmount;
 
-    // Initialize extensionHistory if not present
+
     if (!rental.extensionHistory) {
       rental.extensionHistory = [];
     }

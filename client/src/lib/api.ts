@@ -9,11 +9,11 @@ interface RequestOptions {
 async function request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const url = `${BASE_URL}${endpoint}`;
 
-  // Build headers
+
   const headers = new Headers(options.headers as HeadersInit | undefined);
   headers.set('Content-Type', 'application/json');
 
-  // Attach Bearer token from localStorage (primary auth path)
+
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('rentease_token');
     if (token) {
@@ -24,7 +24,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
   const config: RequestInit = {
     method: options.method || 'GET',
     headers,
-    credentials: 'include', // Always send cookies (httpOnly token fallback)
+    credentials: 'include',
   };
 
   if (options.bodyData !== undefined) {

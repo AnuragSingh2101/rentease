@@ -4,7 +4,7 @@ export interface IRental extends Document {
   user: Schema.Types.ObjectId;
   product: Schema.Types.ObjectId;
   quantity: number;
-  tenure: number; // in months
+  tenure: number;
   deliveryDate: Date;
   deliveryAddress: string;
   startDate: Date;

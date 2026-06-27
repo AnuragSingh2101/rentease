@@ -57,7 +57,7 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-// Hash password before saving
+
 UserSchema.pre<IUser>('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -72,25 +72,25 @@ UserSchema.pre<IUser>('save', async function (next) {
   }
 });
 
-// Compare password
+
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.password || '');
 };
 
-// Generate and hash password reset token
+
 UserSchema.methods.getResetPasswordToken = function (): string {
-  // Generate token
+
   const resetToken = crypto.randomBytes(20).toString('hex');
 
-  // Hash token and set to resetPasswordToken field
+
   this.resetPasswordToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
 
-  // Set expire — 10 minutes
+
   this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
 
   return resetToken;

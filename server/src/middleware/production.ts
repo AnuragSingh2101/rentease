@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
-// 1. IP Rate Limiter
+
 const ipRequestMap = new Map<string, { count: number; resetTime: number }>();
-const LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-const MAX_REQUESTS = 300; // max requests per window
+const LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const MAX_REQUESTS = 300;
 
 export const rateLimiter = (req: Request, res: Response, next: NextFunction): void => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -36,7 +36,7 @@ export const rateLimiter = (req: Request, res: Response, next: NextFunction): vo
   next();
 };
 
-// 2. Security Headers Middleware
+
 export const securityHeaders = (req: Request, res: Response, next: NextFunction): void => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
@@ -45,7 +45,7 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
   next();
 };
 
-// 3. Request Logging Middleware
+
 export const requestLogger = (req: Request, res: Response, next: NextFunction): void => {
   const start = Date.now();
   res.on('finish', () => {

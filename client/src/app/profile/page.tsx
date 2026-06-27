@@ -68,12 +68,12 @@ export default function ProfilePage() {
   };
 
   const inputBase =
-    "w-full py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 text-sm text-neutral-900 dark:text-white transition-colors";
+    "w-full py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50 text-sm text-foreground transition-colors";
 
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="h-8 w-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -81,20 +81,20 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        {/* Back */}
-        <Link href={getDashboardLink()} className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-indigo-600 dark:hover:text-violet-400 transition-colors">
+        {}
+        <Link href={getDashboardLink()} className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-primary transition-colors">
           <ArrowLeft className="h-4 w-4" />
           Back to Dashboard
         </Link>
 
-        {/* Profile Info */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
+        {}
+        <div className="bg-card border border-border/60 rounded-2xl p-6">
           <div className="flex items-center gap-4 mb-6">
             <div className="h-16 w-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
               {user.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-neutral-900 dark:text-white">{user.name}</h1>
+              <h1 className="text-xl font-bold text-foreground">{user.name}</h1>
               <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
                 {user.role}
               </span>
@@ -107,33 +107,33 @@ export default function ProfilePage() {
               <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
                 <User className="h-4 w-4 text-neutral-400 shrink-0" />
                 <div>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400">Full Name</p>
-                  <p className="text-sm font-semibold text-neutral-900 dark:text-white">{user.name}</p>
+                  <p className="text-xs text-muted-foreground">Full Name</p>
+                  <p className="text-sm font-semibold text-foreground">{user.name}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
                 <Mail className="h-4 w-4 text-neutral-400 shrink-0" />
                 <div>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400">Email Address</p>
-                  <p className="text-sm font-semibold text-neutral-900 dark:text-white">{user.email}</p>
+                  <p className="text-xs text-muted-foreground">Email Address</p>
+                  <p className="text-sm font-semibold text-foreground">{user.email}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 dark:bg-neutral-800/50">
                 <Phone className="h-4 w-4 text-neutral-400 shrink-0" />
                 <div>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400">Phone Number</p>
-                  <p className="text-sm font-semibold text-neutral-900 dark:text-white">{user.phone || "Not set"}</p>
+                  <p className="text-xs text-muted-foreground">Phone Number</p>
+                  <p className="text-sm font-semibold text-foreground">{user.phone || "Not set"}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Change Password */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
+        {}
+        <div className="bg-card border border-border/60 rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-6">
-            <Lock className="h-5 w-5 text-indigo-600 dark:text-violet-400" />
-            <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Change Password</h2>
+            <Lock className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-bold text-foreground">Change Password</h2>
           </div>
 
           {pwSuccess && (
@@ -151,7 +151,7 @@ export default function ProfilePage() {
           )}
 
           <form onSubmit={handleSubmit(onChangePassword)} className="space-y-4">
-            {/* Current Password */}
+            {}
             <div className="space-y-1">
               <label className="text-xs font-bold text-neutral-400 uppercase">Current Password</label>
               <div className="relative">
@@ -169,7 +169,7 @@ export default function ProfilePage() {
               {errors.currentPassword && <p className="text-xs text-red-500 mt-1">{errors.currentPassword.message}</p>}
             </div>
 
-            {/* New Password */}
+            {}
             <div className="space-y-1">
               <label className="text-xs font-bold text-neutral-400 uppercase">New Password</label>
               <div className="relative">
@@ -187,7 +187,7 @@ export default function ProfilePage() {
               {errors.newPassword && <p className="text-xs text-red-500 mt-1">{errors.newPassword.message}</p>}
             </div>
 
-            {/* Confirm Password */}
+            {}
             <div className="space-y-1">
               <label className="text-xs font-bold text-neutral-400 uppercase">Confirm New Password</label>
               <div className="relative">
@@ -208,7 +208,7 @@ export default function ProfilePage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
+              className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer"
             >
               {isSubmitting ? "Updating..." : "Update Password"}
             </button>

@@ -1,34 +1,30 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product';
 
-/**
- * @desc    Get all products (public)
- * @route   GET /api/products
- * @access  Public
- */
+
 export const getProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const { category, minRent, maxRent, availability, search, sort, page = '1', limit = '8' } = req.query;
     const query: any = {};
 
-    // Category Filter
+
     if (category && category !== 'All') {
       query.category = category;
     }
 
-    // Monthly Rent Range Filter
+
     if (minRent || maxRent) {
       query.monthlyRent = {};
       if (minRent) query.monthlyRent.$gte = Number(minRent);
       if (maxRent) query.monthlyRent.$lte = Number(maxRent);
     }
 
-    // Availability Filter
+
     if (availability === 'true') {
       query.availableQuantity = { $gt: 0 };
     }
 
-    // Keyword Search
+
     if (search) {
       query.$or = [
         { name: { $regex: search as string, $options: 'i' } },
@@ -36,15 +32,15 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
       ];
     }
 
-    // Sorting Options
-    let sortQuery: any = { createdAt: -1 }; // default newest
+
+    let sortQuery: any = { createdAt: -1 };
     if (sort === 'priceAsc') {
       sortQuery = { monthlyRent: 1 };
     } else if (sort === 'priceDesc') {
       sortQuery = { monthlyRent: -1 };
     }
 
-    // Pagination
+
     const pageNum = Number(page) || 1;
     const limitNum = Number(limit) || 8;
     const skipNum = (pageNum - 1) * limitNum;
@@ -68,11 +64,7 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-/**
- * @desc    Get single product details (public)
- * @route   GET /api/products/:id
- * @access  Public
- */
+
 export const getProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     const product = await Product.findById(req.params.id).populate('vendor', 'name email phone');
@@ -91,11 +83,7 @@ export const getProduct = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-/**
- * @desc    Create new product listing
- * @route   POST /api/products
- * @access  Private (Vendor or Admin)
- */
+
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -124,11 +112,7 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Update product details
- * @route   PUT /api/products/:id
- * @access  Private (Vendor or Admin)
- */
+
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -143,7 +127,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Check ownership
+
     if (product.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({
         success: false,
@@ -166,11 +150,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Delete product
- * @route   DELETE /api/products/:id
- * @access  Private (Vendor or Admin)
- */
+
 export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -185,7 +165,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
       return;
     }
 
-    // Check ownership
+
     if (product.vendor.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       res.status(403).json({
         success: false,
@@ -205,11 +185,7 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-/**
- * @desc    Get products owned by logged in vendor
- * @route   GET /api/products/my-products
- * @access  Private (Vendor only)
- */
+
 export const getVendorProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

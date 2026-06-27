@@ -107,14 +107,14 @@ export default function CustomerDashboard() {
     }
 
     const parsed = JSON.parse(stored) as UserData;
-    // Role guard — allow customer, user, and vendor (vendors can also rent products)
+
     if (parsed.role === "admin") {
       router.push("/admin/dashboard");
       return;
     }
     setUser(parsed);
 
-    // Fetch listings statistics and highlights
+
     const fetchHighlights = async () => {
       try {
         interface ListingsRes {
@@ -184,7 +184,7 @@ export default function CustomerDashboard() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="h-8 w-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+        <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -198,18 +198,17 @@ export default function CustomerDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950/20 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        
-        {/* Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 rounded-2xl shadow-sm">
+    <div className="min-h-screen bg-muted/20 py-8 md:py-12">
+      <div className="page-container space-y-8">
+
+        <div className="saas-card flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6">
           <div className="flex items-center gap-4">
-            <div className="h-14 w-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+            <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground text-xl font-bold shadow-sm">
               {user.name.charAt(0).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-white">
+                <h1 className="text-xl sm:text-2xl font-extrabold text-foreground">
                   Welcome, {user.name.split(" ")[0]}!
                 </h1>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900">
@@ -217,7 +216,7 @@ export default function CustomerDashboard() {
                   Customer Account
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400">{user.email}</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>
           <button
@@ -229,22 +228,22 @@ export default function CustomerDashboard() {
           </button>
         </div>
 
-        {/* Stats Grid */}
+        {}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {stats.map(({ label, value, icon: Icon, color }) => (
-            <div key={label} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
+            <div key={label} className="bg-card border border-border/60 rounded-2xl p-5 flex items-center gap-4 shadow-sm">
               <div className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
                 <Icon className="h-5.5 w-5.5" />
               </div>
               <div>
-                <p className="text-xl font-extrabold text-neutral-900 dark:text-white">{value}</p>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">{label}</p>
+                <p className="text-xl font-extrabold text-foreground">{value}</p>
+                <p className="text-xs text-muted-foreground font-medium">{label}</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Quick Actions Grid */}
+        {}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/listings"
@@ -257,50 +256,50 @@ export default function CustomerDashboard() {
 
           <Link
             href="/listings"
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
+            className="bg-card border border-border/60 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
           >
-            <Calendar className="h-8 w-8 mb-3 text-indigo-600 dark:text-violet-400 group-hover:scale-110 transition-transform" />
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">Bookings Manager</h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">View upcoming stays and invoices</p>
+            <Calendar className="h-8 w-8 mb-3 text-primary group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-bold text-foreground mb-1">Bookings Manager</h3>
+            <p className="text-xs text-muted-foreground">View upcoming stays and invoices</p>
           </Link>
 
           <Link
             href="/dashboard/maintenance"
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
+            className="bg-card border border-border/60 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
           >
-            <Wrench className="h-8 w-8 mb-3 text-indigo-600 dark:text-violet-400 group-hover:scale-110 transition-transform" />
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">Support & Repairs</h3>
+            <Wrench className="h-8 w-8 mb-3 text-primary group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-bold text-foreground mb-1">Support & Repairs</h3>
             <p className="text-xs text-neutral-505 dark:text-neutral-400 font-medium">Submit and track maintenance requests</p>
           </Link>
 
           <Link
             href="/profile"
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
+            className="bg-card border border-border/60 rounded-2xl p-6 hover:border-indigo-300 dark:hover:border-indigo-700 transition-all group"
           >
-            <Settings className="h-8 w-8 mb-3 text-indigo-600 dark:text-violet-400 group-hover:scale-110 transition-transform" />
-            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-1">Profile Settings</h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">Update phone, email, and password</p>
+            <Settings className="h-8 w-8 mb-3 text-primary group-hover:scale-110 transition-transform" />
+            <h3 className="text-lg font-bold text-foreground mb-1">Profile Settings</h3>
+            <p className="text-xs text-muted-foreground">Update phone, email, and password</p>
           </Link>
         </div>
 
-        {/* Recent Additions / Highlights */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6">
+        {}
+        <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                 <Sparkles className="h-4.5 w-4.5 text-indigo-500" />
                 Featured Escapes
               </h2>
               <p className="text-xs text-neutral-500">Handpicked properties available to rent today</p>
             </div>
-            <Link href="/listings" className="text-xs font-bold text-indigo-600 dark:text-violet-400 hover:underline">
+            <Link href="/listings" className="text-xs font-bold text-primary hover:underline">
               View all listings &rarr;
             </Link>
           </div>
 
           {loading ? (
             <div className="py-12 flex justify-center">
-              <div className="h-6 w-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+              <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : recentListings.length === 0 ? (
             <div className="text-center py-12 text-neutral-400 text-xs">
@@ -316,7 +315,7 @@ export default function CustomerDashboard() {
                 >
                   <div className="h-28 w-full" style={getCoverStyle(listing.image)} />
                   <div className="p-3.5 space-y-1.5">
-                    <h4 className="text-xs font-bold text-neutral-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-violet-400 line-clamp-1 transition-colors">
+                    <h4 className="text-xs font-bold text-foreground group-hover:text-indigo-600 dark:group-hover:text-violet-400 line-clamp-1 transition-colors">
                       {listing.title}
                     </h4>
                     <div className="flex items-center justify-between text-[11px] text-neutral-500">
@@ -324,7 +323,7 @@ export default function CustomerDashboard() {
                         <MapPin className="h-3 w-3 text-indigo-500" />
                         {listing.location}
                       </span>
-                      <span className="font-extrabold text-neutral-900 dark:text-white">
+                      <span className="font-extrabold text-foreground">
                         ₹{listing.price.toLocaleString("en-IN")}
                       </span>
                     </div>
@@ -335,13 +334,13 @@ export default function CustomerDashboard() {
           )}
         </div>
 
-        {/* Bookings & Stays Grid */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
-          {/* Properties Stays */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 shadow-sm">
+
+          {}
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 shadow-sm">
             <div className="space-y-1">
-              <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+              <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                 <Calendar className="h-4.5 w-4.5 text-indigo-600" />
                 Property Reservations
               </h2>
@@ -350,7 +349,7 @@ export default function CustomerDashboard() {
 
             {bookingsLoading ? (
               <div className="py-8 flex justify-center">
-                <div className="h-6 w-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             ) : propertyBookings.length === 0 ? (
               <div className="text-center py-12 text-neutral-500 text-xs border border-dashed border-neutral-200 dark:border-neutral-850 rounded-xl space-y-2">
@@ -373,8 +372,8 @@ export default function CustomerDashboard() {
                               {itemCategory}
                             </span>
                             <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold capitalize ${
-                              booking.status === 'confirmed' 
-                                ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400' 
+                              booking.status === 'confirmed'
+                                ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400'
                                 : booking.status === 'cancelled'
                                 ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400'
                                 : 'bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400'
@@ -382,7 +381,7 @@ export default function CustomerDashboard() {
                               {booking.status}
                             </span>
                           </div>
-                          <h4 className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1 mt-1">{itemTitle}</h4>
+                          <h4 className="text-xs font-bold text-foreground line-clamp-1 mt-1">{itemTitle}</h4>
                         </div>
                         <div className="flex items-center justify-between text-[10px] text-neutral-500 border-t border-neutral-100 dark:border-neutral-800 pt-1.5">
                           <span>Starts: {new Date(booking.startDate).toLocaleDateString()} ({booking.duration} Nights)</span>
@@ -396,11 +395,11 @@ export default function CustomerDashboard() {
             )}
           </div>
 
-          {/* Product Rentals */}
-          <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-6 shadow-sm">
+          {}
+          <div className="bg-card border border-border/60 rounded-2xl p-6 space-y-6 shadow-sm">
             <div className="flex justify-between items-center">
               <div className="space-y-1">
-                <h2 className="text-lg font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                   <ShoppingBag className="h-4.5 w-4.5 text-violet-600" />
                   Product Leases (Rentals)
                 </h2>
@@ -413,7 +412,7 @@ export default function CustomerDashboard() {
 
             {rentalsLoading ? (
               <div className="py-8 flex justify-center">
-                <div className="h-6 w-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                <div className="h-6 w-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             ) : rentals.length === 0 ? (
               <div className="text-center py-12 text-neutral-500 text-xs border border-dashed border-neutral-200 dark:border-neutral-850 rounded-xl space-y-2">
@@ -433,7 +432,7 @@ export default function CustomerDashboard() {
                       case "Approved": return "bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400";
                       case "Delivered": return "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400";
                       case "Active": return "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400";
-                      case "Returned": return "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400";
+                      case "Returned": return "bg-neutral-100 dark:bg-neutral-800 text-muted-foreground";
                       case "Cancelled": return "bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400";
                       default: return "bg-neutral-50 dark:bg-neutral-800 text-neutral-600";
                     }
@@ -452,7 +451,7 @@ export default function CustomerDashboard() {
                               {rental.status}
                             </span>
                           </div>
-                          <h4 className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1 mt-1">{itemTitle} (Qty: {rental.quantity})</h4>
+                          <h4 className="text-xs font-bold text-foreground line-clamp-1 mt-1">{itemTitle} (Qty: {rental.quantity})</h4>
                         </div>
                         <div className="text-[10px] text-neutral-500 border-t border-neutral-100 dark:border-neutral-800 pt-1.5 space-y-1">
                           <div className="flex justify-between">
@@ -474,23 +473,23 @@ export default function CustomerDashboard() {
 
         </div>
 
-        {/* Account Info Summary */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
+        {}
+        <div className="bg-card border border-border/60 rounded-2xl p-6">
           <div className="flex items-center gap-3 mb-4">
-            <User className="h-5 w-5 text-indigo-600 dark:text-violet-400" />
-            <h2 className="text-lg font-bold text-neutral-900 dark:text-white">Account Details</h2>
+            <User className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-bold text-foreground">Account Details</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <p className="text-neutral-500 dark:text-neutral-400 mb-1 font-medium">Full Name</p>
+              <p className="text-muted-foreground mb-1 font-medium">Full Name</p>
               <p className="font-bold text-neutral-800 dark:text-neutral-250">{user.name}</p>
             </div>
             <div>
-              <p className="text-neutral-500 dark:text-neutral-400 mb-1 font-medium">Registered Email</p>
+              <p className="text-muted-foreground mb-1 font-medium">Registered Email</p>
               <p className="font-bold text-neutral-800 dark:text-neutral-250">{user.email}</p>
             </div>
             <div>
-              <p className="text-neutral-500 dark:text-neutral-400 mb-1 font-medium">Contact Phone</p>
+              <p className="text-muted-foreground mb-1 font-medium">Contact Phone</p>
               <p className="font-bold text-neutral-800 dark:text-neutral-250">{user.phone || "Not provided"}</p>
             </div>
           </div>

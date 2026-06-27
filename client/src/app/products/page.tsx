@@ -52,7 +52,7 @@ export default function ProductsPage() {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Filters State
+
   const [search, setSearch] = React.useState("");
   const [category, setCategory] = React.useState("All");
   const [minRent, setMinRent] = React.useState("");
@@ -63,7 +63,7 @@ export default function ProductsPage() {
   const [totalPages, setTotalPages] = React.useState(1);
   const [totalCount, setTotalCount] = React.useState(0);
 
-  // Temporary filter holders for min/max inputs to prevent excessive fetching on type
+
   const [tempMinRent, setTempMinRent] = React.useState("");
   const [tempMaxRent, setTempMaxRent] = React.useState("");
 
@@ -116,7 +116,7 @@ export default function ProductsPage() {
     fetchProducts();
   }, [fetchProducts]);
 
-  // Debounced search / filter update trigger
+
   const applyRangeFilters = (e: React.FormEvent) => {
     e.preventDefault();
     setMinRent(tempMinRent);
@@ -147,14 +147,14 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-neutral-50/50 dark:bg-neutral-950/20 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-10">
-        
-        {/* Header Hero Section */}
+
+        {}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 px-3 py-1 text-xs text-indigo-600 dark:text-violet-400 backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 px-3 py-1 text-xs text-primary backdrop-blur-sm shadow-sm">
             <Sparkles className="h-3.5 w-3.5" />
             <span>Premium Appliances & Furniture Rentals</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-foreground tracking-tight">
             Rent Anything You Need
           </h1>
           <p className="text-sm sm:text-base text-neutral-550 dark:text-neutral-400">
@@ -162,7 +162,7 @@ export default function ProductsPage() {
           </p>
         </div>
 
-        {/* Categories Tabs Selector */}
+        {}
         <div className="flex justify-center border-b border-neutral-200 dark:border-neutral-850 pb-4">
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none scroll-smooth max-w-full">
             {CATEGORIES.map((cat) => (
@@ -175,7 +175,7 @@ export default function ProductsPage() {
                 className={`px-5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all duration-300 cursor-pointer ${
                   category === cat
                     ? "bg-indigo-600 dark:bg-violet-600 text-white shadow-lg shadow-indigo-500/20 scale-105"
-                    : "bg-white dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800"
+                    : "bg-card text-muted-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-border/60"
                 }`}
               >
                 {cat}
@@ -184,26 +184,26 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {/* Main Interface Layout */}
+        {}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          
-          {/* Left Column: Sidebar Filters */}
+
+          {}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-5 rounded-2xl shadow-sm space-y-6">
+            <div className="bg-card border border-border/60 p-5 rounded-2xl shadow-sm space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                   <Filter className="h-4 w-4 text-indigo-500" />
                   Filter Options
                 </h3>
                 <button
                   onClick={handleReset}
-                  className="text-xs text-neutral-400 hover:text-indigo-600 dark:hover:text-violet-400 font-semibold transition-colors cursor-pointer"
+                  className="text-xs text-neutral-400 hover:text-primary font-semibold transition-colors cursor-pointer"
                 >
                   Clear All
                 </button>
               </div>
 
-              {/* Keyword Search */}
+              {}
               <div className="space-y-2">
                 <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider">Search Keywords</label>
                 <div className="relative">
@@ -221,7 +221,7 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Rent Range form */}
+              {}
               <form onSubmit={applyRangeFilters} className="space-y-3">
                 <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider block">Monthly Rent (₹)</label>
                 <div className="grid grid-cols-2 gap-2">
@@ -248,7 +248,7 @@ export default function ProductsPage() {
                 </button>
               </form>
 
-              {/* Availability Filter */}
+              {}
               <div className="pt-4 border-t border-neutral-100 dark:border-neutral-850 space-y-2">
                 <label className="flex items-center gap-2.5 cursor-pointer group">
                   <input
@@ -260,13 +260,13 @@ export default function ProductsPage() {
                     }}
                     className="h-4 w-4 rounded border-neutral-300 text-indigo-650 focus:ring-indigo-500 bg-neutral-50 dark:bg-neutral-950 dark:border-neutral-800"
                   />
-                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors select-none">
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-neutral-900 dark:group-hover:text-white transition-colors select-none">
                     Only In-Stock / Available
                   </span>
                 </label>
               </div>
 
-              {/* Sort Selector */}
+              {}
               <div className="pt-4 border-t border-neutral-100 dark:border-neutral-850 space-y-2">
                 <label className="text-xs font-bold text-neutral-400 uppercase tracking-wider block">Sort By</label>
                 <select
@@ -285,11 +285,11 @@ export default function ProductsPage() {
             </div>
           </div>
 
-          {/* Right Column: Products Grid & Pagination */}
+          {}
           <div className="lg:col-span-3 space-y-8">
-            
-            {/* Top Toolbar / Status */}
-            <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
+
+            {}
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
               <p>
                 Showing <span className="font-bold text-neutral-800 dark:text-white">{products.length}</span> of{" "}
                 <span className="font-bold text-neutral-800 dark:text-white">{totalCount}</span> items
@@ -299,7 +299,7 @@ export default function ProductsPage() {
               </p>
             </div>
 
-            {/* Main Products Grid */}
+            {}
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: 6 }).map((_, idx) => (
@@ -318,17 +318,17 @@ export default function ProductsPage() {
                 </button>
               </div>
             ) : products.length === 0 ? (
-              <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
+              <div className="bg-card border border-border/60 rounded-2xl py-20 text-center max-w-xl mx-auto space-y-4 shadow-sm">
                 <Package className="h-14 w-14 mx-auto text-neutral-300 dark:text-neutral-700 animate-pulse" />
                 <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-neutral-900 dark:text-white">No products match your criteria</h3>
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  <h3 className="text-lg font-bold text-foreground">No products match your criteria</h3>
+                  <p className="text-xs text-muted-foreground">
                     Try checking a different category, clearing price filters, or searching for alternative names.
                   </p>
                 </div>
                 <button
                   onClick={handleReset}
-                  className="bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 text-white font-semibold text-xs py-2 px-5 rounded-xl transition-colors cursor-pointer"
+                  className="bg-primary hover:bg-primary/90 text-white font-semibold text-xs py-2 px-5 rounded-xl transition-colors cursor-pointer"
                 >
                   Reset Filters
                 </button>
@@ -342,29 +342,29 @@ export default function ProductsPage() {
                     <Link
                       href={`/products/${product._id}`}
                       key={product._id}
-                      className="group bg-white dark:bg-neutral-900 border border-neutral-200/60 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col h-full"
+                      className="group bg-card border border-border/60 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 flex flex-col h-full"
                     >
-                      {/* Image Preview Area */}
+                      {}
                       <div
                         className="w-full h-44 relative shrink-0 transition-all duration-300 flex items-center justify-center text-white"
                         style={getCoverStyle(firstImage)}
                       >
                         <div className="absolute inset-0 bg-neutral-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                          <span className="bg-white/95 dark:bg-neutral-950/95 text-neutral-900 dark:text-white text-[11px] font-bold px-3.5 py-2 rounded-xl shadow-sm transform scale-95 group-hover:scale-100 transition-transform duration-350">
+                          <span className="bg-white/95 dark:bg-neutral-950/95 text-foreground text-[11px] font-bold px-3.5 py-2 rounded-xl shadow-sm transform scale-95 group-hover:scale-100 transition-transform duration-350">
                             Rent & Options
                           </span>
                         </div>
-                        <div className="absolute top-3 left-3 bg-white/95 dark:bg-neutral-950/95 text-neutral-900 dark:text-white text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        <div className="absolute top-3 left-3 bg-white/95 dark:bg-neutral-950/95 text-foreground text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
                           {product.category}
                         </div>
                         <Store className="h-10 w-10 text-white/40 drop-shadow-md" />
                       </div>
 
-                      {/* Info Details */}
+                      {}
                       <div className="p-4 flex flex-col flex-grow justify-between gap-4">
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
-                            <span className="text-[10px] bg-neutral-100 dark:bg-neutral-850 px-2 py-0.5 rounded-full capitalize text-neutral-500 dark:text-neutral-400 font-semibold">
+                            <span className="text-[10px] bg-neutral-100 dark:bg-neutral-850 px-2 py-0.5 rounded-full capitalize text-muted-foreground font-semibold">
                               {product.tenureOptions?.length || 0} Tenure Modes
                             </span>
                             {isAvailable ? (
@@ -376,18 +376,18 @@ export default function ProductsPage() {
                               <span className="text-[10px] text-red-500 font-bold">Out of Stock</span>
                             )}
                           </div>
-                          <h3 className="text-sm font-bold text-neutral-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-violet-400 line-clamp-1 transition-colors">
+                          <h3 className="text-sm font-bold text-foreground group-hover:text-indigo-600 dark:group-hover:text-violet-400 line-clamp-1 transition-colors">
                             {product.name}
                           </h3>
-                          <p className="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2">
+                          <p className="text-xs text-muted-foreground line-clamp-2">
                             {product.description}
                           </p>
                         </div>
 
-                        {/* Price Details */}
+                        {}
                         <div className="border-t border-neutral-100 dark:border-neutral-800 pt-3.5 flex items-center justify-between">
                           <div>
-                            <span className="text-base font-extrabold text-neutral-900 dark:text-white">
+                            <span className="text-base font-extrabold text-foreground">
                               ₹{product.monthlyRent.toLocaleString("en-IN")}
                             </span>
                             <span className="text-[10px] text-neutral-400"> / mo</span>
@@ -406,17 +406,17 @@ export default function ProductsPage() {
               </div>
             )}
 
-            {/* Pagination Controls */}
+            {}
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-4 pt-6 border-t border-neutral-100 dark:border-neutral-850">
                 <button
                   onClick={handlePrevPage}
                   disabled={page === 1}
-                  className="p-2 border border-neutral-300 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  className="p-2 border border-neutral-300 dark:border-neutral-800 rounded-xl bg-card hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4 text-neutral-700 dark:text-white" />
                 </button>
-                <div className="flex items-center gap-1.5 text-xs text-neutral-600 dark:text-neutral-400">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                     <button
                       key={p}
@@ -424,7 +424,7 @@ export default function ProductsPage() {
                       className={`px-3 py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                         page === p
                           ? "bg-indigo-600 dark:bg-violet-600 text-white"
-                          : "hover:bg-neutral-150 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300"
+                          : "hover:bg-neutral-150 dark:hover:bg-neutral-800 text-muted-foreground"
                       }`}
                     >
                       {p}
@@ -434,7 +434,7 @@ export default function ProductsPage() {
                 <button
                   onClick={handleNextPage}
                   disabled={page === totalPages}
-                  className="p-2 border border-neutral-300 dark:border-neutral-800 rounded-xl bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  className="p-2 border border-neutral-300 dark:border-neutral-800 rounded-xl bg-card hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
                 >
                   <ChevronRight className="h-4 w-4 text-neutral-700 dark:text-white" />
                 </button>

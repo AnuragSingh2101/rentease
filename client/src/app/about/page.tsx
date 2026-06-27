@@ -3,31 +3,31 @@ import { Home, Users, ShieldCheck, Star, Compass, Package } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950/20 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-muted/20 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-16">
 
-        {/* Hero */}
+        {}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 px-4 py-1.5 text-xs text-indigo-600 dark:text-violet-400 backdrop-blur-sm shadow-sm">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-indigo-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 px-4 py-1.5 text-xs text-primary backdrop-blur-sm shadow-sm">
             <Home className="h-3.5 w-3.5" />
             <span>About RentEase</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight">
             Renting made{" "}
             <span className="bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent">
               simple
             </span>
           </h1>
-          <p className="text-base text-neutral-500 dark:text-neutral-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             RentEase is a full-featured rental marketplace connecting customers with verified vendors
             for property stays and monthly product leases — all in one place.
           </p>
         </div>
 
-        {/* Mission */}
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-8 space-y-4 shadow-sm">
-          <h2 className="text-xl font-extrabold text-neutral-900 dark:text-white">Our Mission</h2>
-          <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        {}
+        <div className="bg-card border border-border/60 rounded-3xl p-8 space-y-4 shadow-sm">
+          <h2 className="text-xl font-extrabold text-foreground">Our Mission</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
             We believe access to quality homes and products shouldn&apos;t require ownership. RentEase
             bridges the gap between people who have space and things to share, and those who need
             them — offering transparent pricing, secure transactions, and a seamless experience from
@@ -35,7 +35,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Features Grid */}
+        {}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
@@ -83,31 +83,31 @@ export default function AboutPage() {
           ].map(({ icon: Icon, title, description, color }) => (
             <div
               key={title}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 space-y-3 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-card border border-border/60 rounded-2xl p-6 space-y-3 shadow-sm hover:shadow-md transition-shadow"
             >
               <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${color}`}>
                 <Icon className="h-5 w-5" />
               </div>
-              <h3 className="text-sm font-bold text-neutral-900 dark:text-white">{title}</h3>
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              <h3 className="text-sm font-bold text-foreground">{title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 {description}
               </p>
             </div>
           ))}
         </div>
 
-        {/* CTA */}
+        {}
         <div className="text-center space-y-4">
-          <h2 className="text-2xl font-extrabold text-neutral-900 dark:text-white">
+          <h2 className="text-2xl font-extrabold text-foreground">
             Ready to get started?
           </h2>
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="text-sm text-muted-foreground">
             Sign up as a customer to browse rentals, or as a vendor to list your properties and products.
           </p>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link
               href="/register"
-              className="rounded-xl bg-indigo-600 hover:bg-indigo-500 dark:bg-violet-600 dark:hover:bg-violet-500 px-6 py-3 text-sm font-bold text-white shadow-md shadow-indigo-500/15 transition-all"
+              className="rounded-xl bg-primary hover:bg-primary/90 px-6 py-3 text-sm font-bold text-white shadow-md shadow-indigo-500/15 transition-all"
             >
               Create an Account
             </Link>

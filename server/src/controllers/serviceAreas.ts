@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
 import { ServiceArea } from '../models/ServiceArea';
 
-/**
- * @desc    Get all service areas
- * @route   GET /api/service-areas
- * @access  Public
- */
+
 export const getServiceAreas = async (req: Request, res: Response): Promise<void> => {
   try {
     const areas = await ServiceArea.find().sort({ createdAt: -1 });
@@ -19,11 +15,7 @@ export const getServiceAreas = async (req: Request, res: Response): Promise<void
   }
 };
 
-/**
- * @desc    Create a new service area
- * @route   POST /api/service-areas
- * @access  Private (Admin only)
- */
+
 export const createServiceArea = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user || req.user.role !== 'admin') {
@@ -55,11 +47,7 @@ export const createServiceArea = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Update a service area
- * @route   PUT /api/service-areas/:id
- * @access  Private (Admin only)
- */
+
 export const updateServiceArea = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user || req.user.role !== 'admin') {
@@ -94,11 +82,7 @@ export const updateServiceArea = async (req: Request, res: Response): Promise<vo
   }
 };
 
-/**
- * @desc    Delete a service area
- * @route   DELETE /api/service-areas/:id
- * @access  Private (Admin only)
- */
+
 export const deleteServiceArea = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user || req.user.role !== 'admin') {

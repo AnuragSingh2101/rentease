@@ -9,11 +9,11 @@ import { protect, authorize } from '../middleware/auth';
 
 const router = Router();
 
-// Public route to list service areas
+
 router.route('/')
   .get(getServiceAreas);
 
-// Secure admin-only routes
+
 router.use(protect);
 router.use(authorize('admin'));
 

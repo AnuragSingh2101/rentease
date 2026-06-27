@@ -2,11 +2,7 @@ import { Request, Response } from 'express';
 import { Cart } from '../models/Cart';
 import { Product } from '../models/Product';
 
-/**
- * @desc    Get current user's cart
- * @route   GET /api/cart
- * @access  Private
- */
+
 export const getCart = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -32,11 +28,7 @@ export const getCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Add product to cart
- * @route   POST /api/cart
- * @access  Private
- */
+
 export const addToCart = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -57,7 +49,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Prevent a vendor from adding their own product to cart
+
     if (product.vendor.toString() === req.user._id.toString() && req.user.role !== 'admin') {
       res.status(400).json({ success: false, message: 'You cannot add your own product to cart' });
       return;
@@ -68,7 +60,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
       cart = await Cart.create({ user: req.user._id, items: [] });
     }
 
-    // Check if item already exists with the same product and tenure
+
     const itemIndex = cart.items.findIndex(
       (item) => item.product.toString() === productId.toString() && item.tenure === Number(tenure)
     );
@@ -99,11 +91,7 @@ export const addToCart = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- * @desc    Update cart item quantity or tenure
- * @route   PUT /api/cart/items/:itemId
- * @access  Private
- */
+
 export const updateCartItem = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -149,11 +137,7 @@ export const updateCartItem = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Remove item from cart
- * @route   DELETE /api/cart/items/:itemId
- * @access  Private
- */
+
 export const removeFromCart = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
@@ -185,11 +169,7 @@ export const removeFromCart = async (req: Request, res: Response): Promise<void>
   }
 };
 
-/**
- * @desc    Clear entire cart
- * @route   DELETE /api/cart
- * @access  Private
- */
+
 export const clearCart = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {

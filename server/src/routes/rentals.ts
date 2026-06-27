@@ -10,7 +10,7 @@ import { protect, authorize } from '../middleware/auth';
 
 const router = Router();
 
-// Secure all routes
+
 router.use(protect);
 
 router.route('/')
@@ -19,7 +19,7 @@ router.route('/')
 router.route('/my-rentals')
   .get(getMyRentals);
 
-// Only vendors and admins can access vendor-rentals
+
 router.route('/vendor-rentals')
   .get(authorize('vendor', 'admin'), getVendorRentals);
 

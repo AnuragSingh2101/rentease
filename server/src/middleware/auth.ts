@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User, IUser } from '../models/User';
 
-// Extend Express Request type to include user
+
 declare global {
   namespace Express {
     interface Request {
@@ -24,19 +24,19 @@ export const protect = async (
 ): Promise<void> => {
   let token: string | undefined;
 
-  // 1. Check for token in Authorization header
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  // 2. Fallback to token in cookies
+
   else if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
   }
 
-  // Check if token exists
+
   if (!token) {
     res.status(401).json({
       success: false,
@@ -46,13 +46,13 @@ export const protect = async (
   }
 
   try {
-    // Verify token
+
     const decoded = jwt.verify(
       token,
       process.env.JWT_SECRET || 'rentease_jwt_secret_key_123456_change_me_in_prod'
     ) as DecodedToken;
 
-    // Get user from the token
+
     const user = await User.findById(decoded.id);
 
     if (!user) {
@@ -63,7 +63,7 @@ export const protect = async (
       return;
     }
 
-    // Attach user to request
+
     req.user = user;
     next();
   } catch (error) {
@@ -74,7 +74,7 @@ export const protect = async (
   }
 };
 
-// Grant access to specific roles
+
 export const authorize = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user || !roles.includes(req.user.role)) {
