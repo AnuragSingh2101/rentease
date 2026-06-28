@@ -1,19 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastProvider } from "@/components/toast";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import PageTransition from "@/components/page-transition";
+import { MouseSpotlight } from "@/components/spotlight";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const interTight = Inter_Tight({
+  variable: "--font-inter-tight",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -30,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300`}
+        className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300`}
         suppressHydrationWarning
       >
         <ThemeProvider
@@ -42,6 +48,7 @@ export default function RootLayout({
           <ToastProvider>
             <div className="relative flex min-h-screen flex-col">
               <div className="pointer-events-none fixed inset-0 saas-mesh-bg -z-10" aria-hidden />
+              <MouseSpotlight />
               <Navbar />
               <main className="flex-1">
                 <PageTransition>{children}</PageTransition>
@@ -54,4 +61,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
