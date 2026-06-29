@@ -244,6 +244,7 @@ export default function Home() {
       </section>
 
       {/* API Status */}
+      
       <section className="page-container pb-16 pt-4">
         <Card className="mx-auto max-w-md p-5 text-center">
           <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Server Connection</p>
