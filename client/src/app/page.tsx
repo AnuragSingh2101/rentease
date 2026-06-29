@@ -88,7 +88,10 @@ export default function Home() {
       } catch {}
     }
 
-    fetch("http://localhost:5000/")
+    const rootUrl = process.env.NEXT_PUBLIC_API_URL?.endsWith('/api')
+      ? process.env.NEXT_PUBLIC_API_URL.slice(0, -4)
+      : process.env.NEXT_PUBLIC_API_URL;
+    fetch(rootUrl!)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to connect");
         return res.json();

@@ -1,4 +1,9 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const getBaseUrl = () => {
+  const url = process.env.NEXT_PUBLIC_API_URL || '';
+  if (!url) return '';
+  return url.endsWith('/api') ? url : `${url}/api`;
+};
+const BASE_URL = getBaseUrl();
 
 interface RequestOptions {
   method?: string;

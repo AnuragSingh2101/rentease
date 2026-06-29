@@ -529,7 +529,10 @@ export default function VendorDashboard() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api"}/auth/logout`, {
+      const apiBase = process.env.NEXT_PUBLIC_API_URL?.endsWith('/api')
+        ? process.env.NEXT_PUBLIC_API_URL
+        : `${process.env.NEXT_PUBLIC_API_URL}/api`;
+      await fetch(`${apiBase}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
