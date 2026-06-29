@@ -1802,16 +1802,21 @@ export default function VendorDashboard() {
                   {}
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-[10px] text-neutral-400 font-bold uppercase">Quick add:</span>
-                    {[1, 2, 3, 6, 9, 12, 18, 24, 36].filter(m => !productFormData.tenureOptions.includes(m)).map((months) => (
-                      <button
-                        key={months}
-                        type="button"
-                        onClick={() => handleTenureToggle(months)}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-primary border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
-                      >
-                        +{months}mo
-                      </button>
-                    ))}
+                    {[1, 2, 3, 6, 9, 12, 18, 24, 36].reduce<React.ReactNode[]>((acc, months) => {
+                      if (!productFormData.tenureOptions.includes(months)) {
+                        acc.push(
+                          <button
+                            key={months}
+                            type="button"
+                            onClick={() => handleTenureToggle(months)}
+                            className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-primary border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
+                          >
+                            +{months}mo
+                          </button>
+                        );
+                      }
+                      return acc;
+                    }, [])}
                     <div className="flex items-center gap-1 ml-1">
                       <input
                         type="number"

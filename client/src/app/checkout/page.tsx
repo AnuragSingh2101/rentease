@@ -209,8 +209,8 @@ export default function CheckoutPage() {
 
             <div className="border-t border-border/60 pt-3 space-y-1">
               <span className="block text-[10px] uppercase font-bold text-neutral-400 mb-1">Booked Items</span>
-              {confirmedRentals.map((r, idx) => (
-                <div key={idx} className="flex justify-between items-center text-neutral-700 dark:text-neutral-350">
+              {confirmedRentals.map((r) => (
+                <div key={r.product} className="flex justify-between items-center text-neutral-700 dark:text-neutral-350">
                   <span>{r.quantity}x {cart?.items.find(item => item.product._id === r.product)?.product.name || "Leased Product"} ({r.tenure} Months)</span>
                   <span className="font-semibold text-foreground">Lease Ends: {new Date(r.endDate).toLocaleDateString()}</span>
                 </div>

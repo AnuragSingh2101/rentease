@@ -346,7 +346,7 @@ export default function ProductDetailPage({ params }: PageProps) {
               <div className="flex justify-center gap-2.5">
                 {product.images.map((img, idx) => (
                   <button
-                    key={idx}
+                    key={img}
                     onClick={() => setActiveImageIndex(idx)}
                     className={`h-4.5 w-12 rounded-lg border-2 transition-all cursor-pointer ${
                       activeImageIndex === idx

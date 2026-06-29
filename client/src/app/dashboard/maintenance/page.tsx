@@ -366,9 +366,9 @@ export default function UserMaintenanceDashboard() {
                       <div className="space-y-2">
                         <h4 className="text-[10px] font-extrabold uppercase text-neutral-455 tracking-wider">Reference Uploads</h4>
                         <div className="flex flex-wrap gap-3">
-                          {selectedTicket.images.map((img, idx) => (
+                          {selectedTicket.images.map((img) => (
                             <a
-                              key={idx}
+                              key={img}
                               href={img}
                               target="_blank"
                               rel="noreferrer"
@@ -547,8 +547,8 @@ export default function UserMaintenanceDashboard() {
                 {}
                 {formImages.length > 0 && (
                   <div className="flex flex-wrap gap-2 pt-1.5">
-                    {formImages.map((img, idx) => (
-                      <div key={idx} className="relative w-16 h-16 rounded-lg border border-neutral-300 overflow-hidden group">
+                    {formImages.map((img) => (
+                      <div key={img} className="relative w-16 h-16 rounded-lg border border-neutral-300 overflow-hidden group">
                         <img src={img} alt="Thumbnail Preview" className="w-full h-full object-cover" />
                         <button
                           type="button"

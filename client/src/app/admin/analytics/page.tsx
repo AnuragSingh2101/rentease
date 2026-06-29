@@ -4,10 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from "recharts";
+import dynamic from "next/dynamic";
+
+const RevenueChart = dynamic(() => import("../../../components/analytics-charts").then((mod) => mod.RevenueChart), { ssr: false });
+const RolesChart = dynamic(() => import("../../../components/analytics-charts").then((mod) => mod.RolesChart), { ssr: false });
+const UtilizationChart = dynamic(() => import("../../../components/analytics-charts").then((mod) => mod.UtilizationChart), { ssr: false });
 import {
   ShieldCheck, ArrowLeft, RefreshCw, TrendingUp, Users, DollarSign,
   Activity, Award, Clock, Wrench, ShieldAlert, Sparkles, PieChartIcon, BarChart2
@@ -200,30 +201,7 @@ export default function AdminAnalytics() {
                   <h3 className="font-extrabold text-neutral-800 dark:text-white text-sm">Monthly Revenue Trends & Volume</h3>
                 </div>
 
-                {mounted && (
-                  <div className="h-72 w-full text-xs font-semibold">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={data.monthlyRevenue} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:hidden" />
-                        <CartesianGrid strokeDasharray="3 3" stroke="#262626" className="hidden dark:block" />
-                        <XAxis dataKey="month" stroke="#888888" fontSize={10} tickLine={false} />
-                        <YAxis yAxisId="left" stroke="#6366f1" fontSize={10} tickLine={false} />
-                        <YAxis yAxisId="right" orientation="right" stroke="#10b981" fontSize={10} tickLine={false} />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: "#171717",
-                            border: "none",
-                            borderRadius: "12px",
-                            color: "#ffffff"
-                          }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: "10px" }} />
-                        <Line yAxisId="left" type="monotone" dataKey="Revenue" name="Revenue (₹)" stroke="#6366f1" strokeWidth={2.5} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                        <Line yAxisId="right" type="monotone" dataKey="Rentals" name="Contracts Count" stroke="#10b981" strokeWidth={2} dot={{ r: 3 }} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
+                {mounted && <RevenueChart data={data.monthlyRevenue} />}
               </div>
 
               {}
@@ -233,28 +211,7 @@ export default function AdminAnalytics() {
                   <h3 className="font-extrabold text-neutral-800 dark:text-white text-sm">Account Roles Distribution</h3>
                 </div>
 
-                {mounted && (
-                  <div className="h-48 w-full flex items-center justify-center text-xs">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={data.userDistribution}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={55}
-                          outerRadius={75}
-                          paddingAngle={3}
-                          dataKey="value"
-                        >
-                          {data.userDistribution.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                          ))}
-                        </Pie>
-                        <Tooltip />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
+                {mounted && <RolesChart data={data.userDistribution} />}
 
                 <div className="grid grid-cols-3 gap-2 text-[10px] text-center pt-2">
                   {data.userDistribution.map((role, index) => (
@@ -273,32 +230,7 @@ export default function AdminAnalytics() {
                   <h3 className="font-extrabold text-neutral-800 dark:text-white text-sm">Product Category Utilization Rates</h3>
                 </div>
 
-                {mounted && (
-                  <div className="h-72 w-full text-xs font-semibold">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data.productUtilization} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" className="dark:hidden" />
-                        <CartesianGrid strokeDasharray="3 3" stroke="#262626" className="hidden dark:block" />
-                        <XAxis dataKey="category" stroke="#888888" fontSize={10} tickLine={false} />
-                        <YAxis stroke="#888888" fontSize={10} tickLine={false} label={{ value: 'Utilization (%)', angle: -90, position: 'insideLeft', offset: 5 }} />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: "#171717",
-                            border: "none",
-                            borderRadius: "12px",
-                            color: "#ffffff"
-                          }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: "10px" }} />
-                        <Bar dataKey="Utilization" name="Utilization Rate (%)" fill="#10b981" radius={[8, 8, 0, 0]}>
-                          {data.productUtilization.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.Utilization > 50 ? "#3b82f6" : "#10b981"} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
+                {mounted && <UtilizationChart data={data.productUtilization} />}
 
                 <div className="p-4 border border-dashed border-border/60 rounded-xl bg-neutral-50/20 dark:bg-neutral-950/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
                   <div className="space-y-0.5">

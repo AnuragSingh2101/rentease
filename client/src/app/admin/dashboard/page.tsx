@@ -1339,8 +1339,8 @@ export default function AdminDashboard() {
                                 {ticket.comments.length === 0 ? (
                                   <p className="text-[11px] italic text-neutral-400 pl-4 border-l border-neutral-200">No replies in this thread yet.</p>
                                 ) : (
-                                  ticket.comments.map((comment, index) => (
-                                    <div key={index} className="text-[11px] pl-3 border-l border-indigo-400 dark:border-violet-500 space-y-0.5">
+                                  ticket.comments.map((comment) => (
+                                    <div key={comment._id} className="text-[11px] pl-3 border-l border-indigo-400 dark:border-violet-500 space-y-0.5">
                                       <p className="text-[10px] text-neutral-400">
                                         <strong className="text-neutral-700 dark:text-neutral-200">{comment.name}</strong> · {new Date(comment.createdAt).toLocaleDateString()}
                                       </p>
@@ -1586,9 +1586,14 @@ export default function AdminDashboard() {
                     className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   >
                     <option value={currentUser._id}>Self (Default Admin)</option>
-                    {usersList.filter(u => u.role === "vendor").map((u) => (
-                      <option key={u._id} value={u._id}>{u.name} (Vendor: {u.email})</option>
-                    ))}
+                    {usersList.reduce<React.ReactNode[]>((acc, u) => {
+                      if (u.role === "vendor") {
+                        acc.push(
+                          <option key={u._id} value={u._id}>{u.name} (Vendor: {u.email})</option>
+                        );
+                      }
+                      return acc;
+                    }, [])}
                   </select>
                 </div>
 
@@ -1770,16 +1775,21 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-[10px] text-neutral-400 font-bold uppercase">Quick add:</span>
-                    {[1, 2, 3, 6, 9, 12, 18, 24, 36].filter(m => !productForm.tenureOptions.includes(m)).map((months) => (
-                      <button
-                        key={months}
-                        type="button"
-                        onClick={() => handleAdminTenureToggle(months)}
-                        className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-650 dark:hover:text-violet-400 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
-                      >
-                        +{months}mo
-                      </button>
-                    ))}
+                    {[1, 2, 3, 6, 9, 12, 18, 24, 36].reduce<React.ReactNode[]>((acc, months) => {
+                      if (!productForm.tenureOptions.includes(months)) {
+                        acc.push(
+                          <button
+                            key={months}
+                            type="button"
+                            onClick={() => handleAdminTenureToggle(months)}
+                            className="text-[10px] font-bold px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-muted-foreground hover:bg-indigo-50 dark:hover:bg-indigo-950/30 hover:text-indigo-650 dark:hover:text-violet-400 border border-neutral-200 dark:border-neutral-700 transition-colors cursor-pointer"
+                          >
+                            +{months}mo
+                          </button>
+                        );
+                      }
+                      return acc;
+                    }, [])}
                     <div className="flex items-center gap-1 ml-1">
                       <input
                         type="number"
@@ -1826,9 +1836,14 @@ export default function AdminDashboard() {
                     className="w-full py-2.5 px-3.5 rounded-xl border border-neutral-300 dark:border-neutral-800 bg-card text-neutral-900 text-xs focus:border-indigo-500 focus:outline-none dark:text-white transition-colors"
                   >
                     <option value={currentUser._id}>Self (Default Admin)</option>
-                    {usersList.filter(u => u.role === "vendor").map((u) => (
-                      <option key={u._id} value={u._id}>{u.name} (Vendor: {u.email})</option>
-                    ))}
+                    {usersList.reduce<React.ReactNode[]>((acc, u) => {
+                      if (u.role === "vendor") {
+                        acc.push(
+                          <option key={u._id} value={u._id}>{u.name} (Vendor: {u.email})</option>
+                        );
+                      }
+                      return acc;
+                    }, [])}
                   </select>
                 </div>
 
