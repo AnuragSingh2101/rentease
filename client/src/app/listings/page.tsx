@@ -198,7 +198,7 @@ export default function ListingsPage() {
                 setSelectedCategory("All");
                 setPage(1);
               }}
-              className="bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-850 dark:hover:bg-neutral-800 text-neutral-700 dark:text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-all duration-200 cursor-pointer"
+              className="bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-neutral-700 dark:text-white font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 text-sm transition-all duration-200 cursor-pointer"
             >
               <SlidersHorizontal className="h-4 w-4" />
               Reset All Filters
@@ -374,8 +374,14 @@ export default function ListingsPage() {
 
         {}
         {selectedListing && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm">
-            <div className="w-full max-w-2xl bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col">
+          <div
+            onClick={() => setSelectedListing(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col"
+            >
 
               {}
               <div

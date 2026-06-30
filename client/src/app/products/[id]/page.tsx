@@ -314,7 +314,9 @@ export default function ProductDetailPage({ params }: PageProps) {
                 style={getCoverStyle(activeGradient)}
               >
                 <div className="absolute inset-0 bg-neutral-950/10" />
-                <Store className="h-20 w-20 text-white/30 drop-shadow-lg" />
+                {!activeGradient.startsWith("http") && !activeGradient.startsWith("/") && (
+                  <Store className="h-20 w-20 text-white/30 drop-shadow-lg" />
+                )}
 
                 {}
                 {product.images && product.images.length > 1 && (

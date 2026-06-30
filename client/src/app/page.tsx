@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Search, MapPin, Calendar, Users, Star, Shield, Zap, Sparkles, ArrowRight } from "lucide-react";
+import { Search, MapPin, Calendar, Users, Star, Shield, Zap, Sparkles, ArrowRight, X, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,7 @@ interface Listing {
   rating: number;
   image: string;
   category: string;
+  description: string;
 }
 
 const MOCK_LISTINGS: Listing[] = [
@@ -27,6 +28,7 @@ const MOCK_LISTINGS: Listing[] = [
     rating: 4.9,
     image: "linear-gradient(135deg, oklch(0.511 0.209 280), oklch(0.607 0.22 301))",
     category: "Trending",
+    description: "Experience a luxurious stay at this stunning glass villa featuring breathtaking floor-to-ceiling panoramic views of the Kasauli valley, premium modern furnishings, a spacious private deck, and top-tier amenities.",
   },
   {
     id: "2",
@@ -36,6 +38,7 @@ const MOCK_LISTINGS: Listing[] = [
     rating: 4.85,
     image: "linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.65 0.14 200))",
     category: "Beachfront",
+    description: "A gorgeous contemporary beachfront condo located in Goa. Offers direct beach access, an exquisite infinity pool overlooking the ocean, private balcony, modern kitchen, and full smart home automation.",
   },
   {
     id: "3",
@@ -45,6 +48,7 @@ const MOCK_LISTINGS: Listing[] = [
     rating: 4.75,
     image: "linear-gradient(135deg, oklch(0.65 0.18 55), oklch(0.75 0.15 85))",
     category: "Cabins",
+    description: "Escape to this enchanting wood cabin nestled among pine forests in Manali. Features a rustic brick fireplace, loft bedroom, outdoor bonfire pit, and cozy interiors perfect for couples or solo travelers.",
   },
   {
     id: "4",
@@ -54,6 +58,7 @@ const MOCK_LISTINGS: Listing[] = [
     rating: 4.92,
     image: "linear-gradient(135deg, oklch(0.6 0.2 350), oklch(0.55 0.22 15))",
     category: "Heritage",
+    description: "Discover the charm of Pondicherry in this restored heritage building loft. Featuring high arches, vintage wooden beams, minimalist modern decor, high-speed Wi-Fi, and a quiet private courtyard.",
   },
 ];
 
@@ -76,9 +81,23 @@ const FEATURES = [
 ];
 
 export default function Home() {
-  const [apiStatus, setApiStatus] = React.useState<"checking" | "connected" | "disconnected">("checking");
-  const [apiVersion, setApiVersion] = React.useState<string | null>(null);
   const [user, setUser] = React.useState<{ name: string; role: string } | null>(null);
+  const [selectedListing, setSelectedListing] = React.useState<Listing | null>(null);
+  const [bookingSuccess, setBookingSuccess] = React.useState(false);
+  const [bookingDays, setBookingDays] = React.useState(3);
+
+  const handleBook = () => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("rentease_token") : null;
+    if (!token) {
+      window.location.href = "/login";
+      return;
+    }
+    setBookingSuccess(true);
+    setTimeout(() => {
+      setBookingSuccess(false);
+      setSelectedListing(null);
+    }, 2500);
+  };
 
   React.useEffect(() => {
     const stored = localStorage.getItem("rentease_user");
@@ -87,20 +106,6 @@ export default function Home() {
         setUser(JSON.parse(stored));
       } catch {}
     }
-
-    const rootUrl = process.env.NEXT_PUBLIC_API_URL?.endsWith('/api')
-      ? process.env.NEXT_PUBLIC_API_URL.slice(0, -4)
-      : process.env.NEXT_PUBLIC_API_URL;
-    fetch(rootUrl!)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to connect");
-        return res.json();
-      })
-      .then((data) => {
-        setApiStatus("connected");
-        setApiVersion(data.version || "1.0.0");
-      })
-      .catch(() => setApiStatus("disconnected"));
   }, []);
 
   return (
@@ -193,12 +198,12 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {MOCK_LISTINGS.map((listing) => (
-              <Card key={listing.id} className="group overflow-hidden saas-card-hover p-0 gap-0">
+              <Card key={listing.id} onClick={() => setSelectedListing(listing)} className="group overflow-hidden saas-card-hover p-0 gap-0 cursor-pointer">
                 <div className="relative h-48 transition-transform duration-300 group-hover:scale-[1.02]" style={{ background: listing.image }}>
                   <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-background text-foreground text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm">
+                    <button className="opacity-0 group-hover:opacity-100 transition-opacity bg-background text-foreground text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer">
                       View Details
-                    </span>
+                    </button>
                   </div>
                   <Badge variant="outline" className="absolute top-3 left-3 bg-background/90 backdrop-blur-sm uppercase text-[10px]">
                     {listing.category}
@@ -246,30 +251,113 @@ export default function Home() {
         </div>
       </section>
 
-      {/* API Status */}
-      
-      <section className="page-container pb-16 pt-4">
-        <Card className="mx-auto max-w-md p-5 text-center">
-          <p className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Server Connection</p>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <span className={`h-2 w-2 rounded-full ${
-              apiStatus === "connected" ? "bg-emerald-500" :
-              apiStatus === "checking" ? "bg-amber-500 animate-pulse" :
-              "bg-red-500"
-            }`} />
-            <span className="text-sm font-medium">
-              {apiStatus === "connected" ? `Connected (v${apiVersion})` :
-               apiStatus === "checking" ? "Verifying connection..." :
-               "Disconnected"}
-            </span>
+      {/* Details Modal */}
+      {selectedListing && (
+        <div
+          onClick={() => setSelectedListing(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-neutral-950/60 backdrop-blur-sm"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-2xl bg-card border border-border/60 rounded-2xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] flex flex-col"
+          >
+            {/* Cover Image */}
+            <div
+              className="w-full h-52 relative shrink-0"
+              style={{ background: selectedListing.image }}
+            >
+              <button
+                onClick={() => setSelectedListing(null)}
+                className="absolute top-4 right-4 bg-neutral-950/40 hover:bg-neutral-950/65 text-white p-2 rounded-full transition-colors cursor-pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-neutral-950/95 text-foreground text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+                {selectedListing.category}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto space-y-6 flex-grow text-left">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1 text-sm font-bold text-amber-500">
+                    <Star className="h-4 w-4 fill-current" />
+                    {selectedListing.rating.toFixed(1)}
+                  </span>
+                  <span className="text-neutral-300 dark:text-neutral-700">|</span>
+                  <span className="text-sm font-semibold text-muted-foreground flex items-center gap-1">
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    {selectedListing.location}
+                  </span>
+                </div>
+                <h2 className="text-xl font-extrabold text-foreground">
+                  {selectedListing.title}
+                </h2>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold text-neutral-400 uppercase tracking-wider">About this space</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {selectedListing.description}
+                </p>
+              </div>
+
+              {/* Booking Options */}
+              <div className="bg-primary/5 dark:bg-neutral-950 p-4 rounded-xl border border-primary/10 dark:border-neutral-850 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">Rental Duration</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    {[3, 6, 12].map((d) => (
+                      <button
+                        key={d}
+                        onClick={() => setBookingDays(d)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          bookingDays === d
+                            ? "bg-primary text-white"
+                            : "bg-white dark:bg-neutral-900 border border-neutral-250/70 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50"
+                        }`}
+                      >
+                        {d} Months
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-[10px] text-neutral-400 block uppercase font-medium">Estimated Rent</span>
+                  <p className="text-sm font-extrabold text-primary">
+                    ₹{(selectedListing.price * bookingDays).toLocaleString("en-IN")}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions Footer */}
+            <div className="p-4 bg-neutral-50 dark:bg-neutral-950/60 border-t border-neutral-100 dark:border-neutral-850 shrink-0 flex items-center justify-between gap-4">
+              <button
+                onClick={() => setSelectedListing(null)}
+                className="px-4 py-2 border border-neutral-300 dark:border-neutral-800 text-neutral-700 dark:text-white text-xs font-semibold rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+
+              {bookingSuccess ? (
+                <div className="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 px-4 py-2.5 rounded-lg flex items-center gap-2 text-xs font-bold border border-emerald-200 dark:border-emerald-900/40 animate-pulse">
+                  <CheckCircle2 className="h-4.5 w-4.5 text-emerald-500" />
+                  Booking Request Sent!
+                </div>
+              ) : (
+                <button
+                  onClick={handleBook}
+                  className="bg-primary hover:bg-primary/90 text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer shadow-md shadow-indigo-500/15"
+                >
+                  Reserve Now
+                </button>
+              )}
+            </div>
           </div>
-          {apiStatus === "disconnected" && (
-            <p className="text-xs text-muted-foreground mt-2">
-              Start the backend with <code className="rounded bg-muted px-1.5 py-0.5 text-foreground">npm run dev</code>
-            </p>
-          )}
-        </Card>
-      </section>
+        </div>
+      )}
     </div>
   );
 }

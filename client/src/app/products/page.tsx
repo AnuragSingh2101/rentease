@@ -197,7 +197,7 @@ export default function ProductsPage() {
                 </h3>
                 <button
                   onClick={handleReset}
-                  className="text-xs text-neutral-400 hover:text-primary font-semibold transition-colors cursor-pointer"
+                  className="text-xs text-muted-foreground hover:text-primary dark:hover:text-violet-400 font-semibold transition-colors cursor-pointer"
                 >
                   Clear All
                 </button>
@@ -357,7 +357,9 @@ export default function ProductsPage() {
                         <div className="absolute top-3 left-3 bg-white/95 dark:bg-neutral-950/95 text-foreground text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
                           {product.category}
                         </div>
-                        <Store className="h-10 w-10 text-white/40 drop-shadow-md" />
+                        {!firstImage.startsWith("http") && !firstImage.startsWith("/") && (
+                          <Store className="h-10 w-10 text-white/40 drop-shadow-md" />
+                        )}
                       </div>
 
                       {}
