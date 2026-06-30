@@ -166,21 +166,21 @@ export default function Home() {
                 <MapPin className="h-4 w-4 text-primary shrink-0" />
                 <div className="text-left flex-1">
                   <label className="saas-label">Where to?</label>
-                  <Input placeholder="Search destinations..." className="border-0 shadow-none px-0 h-8 focus-visible:ring-0" />
+                  <input placeholder="Search destinations..." className="w-full bg-transparent border-0 outline-none px-0 h-8 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground" />
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 md:border-r border-border/60 md:px-4 pb-3 md:pb-0 border-b md:border-b-0">
                 <Calendar className="h-4 w-4 text-primary shrink-0" />
                 <div className="text-left flex-1">
                   <label className="saas-label">Dates</label>
-                  <Input placeholder="Check-in / Check-out" className="border-0 shadow-none px-0 h-8 focus-visible:ring-0" />
+                  <input placeholder="Check-in / Check-out" className="w-full bg-transparent border-0 outline-none px-0 h-8 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground" />
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-1 md:px-4">
                 <Users className="h-4 w-4 text-primary shrink-0" />
                 <div className="text-left flex-1">
                   <label className="saas-label">Guests</label>
-                  <Input placeholder="How many?" className="border-0 shadow-none px-0 h-8 focus-visible:ring-0" />
+                  <input placeholder="How many?" className="w-full bg-transparent border-0 outline-none px-0 h-8 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground" />
                 </div>
               </div>
               <Button className="md:ml-3 h-11 px-6 rounded-xl shrink-0">
