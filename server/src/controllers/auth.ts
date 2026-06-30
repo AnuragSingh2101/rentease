@@ -50,6 +50,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, email, phone, password, role } = req.body;
 
+    if (role === 'admin') {
+      res.status(400).json({ success: false, message: 'Registration as admin is not allowed' });
+      return;
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400).json({ success: false, message: 'A user with this email already exists' });
@@ -278,6 +283,12 @@ export const updateUserRole = async (req: Request, res: Response): Promise<void>
       return;
     }
 
+    const primaryAdminEmail = process.env.ADMIN_EMAIL || 'sysadmin_re_8f3d@rentease.com';
+    if (user.email === primaryAdminEmail) {
+      res.status(403).json({ success: false, message: 'The primary admin role cannot be modified' });
+      return;
+    }
+
     user.role = role;
     await user.save();
 
@@ -301,6 +312,11 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
+    const primaryAdminEmail = process.env.ADMIN_EMAIL || 'sysadmin_re_8f3d@rentease.com';
+    if (user.email === primaryAdminEmail) {
+      res.status(403).json({ success: false, message: 'The primary admin account cannot be deleted' });
+      return;
+    }
 
     if (user._id.toString() === req.user!._id.toString()) {
       res.status(400).json({ success: false, message: 'You cannot delete your own admin account' });

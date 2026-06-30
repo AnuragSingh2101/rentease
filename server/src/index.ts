@@ -31,17 +31,23 @@ connectDB().then(() => {
 
 const seedAdminUser = async () => {
   try {
-    const adminEmail = 'admin@rentease.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'sysadmin_re_8f3d@rentease.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'p@ss_9K2x#L8!wZp5_reAdmin';
+
+    if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD) {
+      console.warn('[Seed Warning] ADMIN_EMAIL or ADMIN_PASSWORD not set in environment. Using default secure credentials.');
+    }
+
     const adminExists = await User.findOne({ email: adminEmail });
     if (!adminExists) {
       await User.create({
         name: 'Default Admin',
         email: adminEmail,
-        password: 'adminpassword123',
+        password: adminPassword,
         role: 'admin',
         phone: '+919999999999'
       });
-      console.log('[Seed] Default Admin user created: admin@rentease.com / adminpassword123');
+      console.log(`[Seed] Default Admin user created: ${adminEmail}`);
     }
   } catch (err) {
     console.error('[Seed Error] Failed to seed default admin user:', err);
