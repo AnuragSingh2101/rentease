@@ -2,14 +2,16 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Search, MapPin, Calendar, Users, Star, Shield, Zap, Sparkles, ArrowRight, X, CheckCircle2 } from "lucide-react";
+import { Search, MapPin, Calendar, Users, Star, Shield, Zap, Sparkles, ArrowRight, X, CheckCircle2, User, ShieldCheck, Mail, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { api } from "@/lib/api";
+import { SkeletonListingCard } from "@/components/skeleton-loader";
 
 interface Listing {
-  id: string;
+  _id: string;
   title: string;
   location: string;
   price: number;
@@ -17,50 +19,25 @@ interface Listing {
   image: string;
   category: string;
   description: string;
+  vendor?: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
 }
 
-const MOCK_LISTINGS: Listing[] = [
-  {
-    id: "1",
-    title: "Serene glass villa overlooking the valley",
-    location: "Kasauli, Himachal Pradesh",
-    price: 12000,
-    rating: 4.9,
-    image: "linear-gradient(135deg, oklch(0.511 0.209 280), oklch(0.607 0.22 301))",
-    category: "Trending",
-    description: "Experience a luxurious stay at this stunning glass villa featuring breathtaking floor-to-ceiling panoramic views of the Kasauli valley, premium modern furnishings, a spacious private deck, and top-tier amenities.",
-  },
-  {
-    id: "2",
-    title: "Luxury Beachfront Condo with Infinity Pool",
-    location: "Goa, India",
-    price: 18500,
-    rating: 4.85,
-    image: "linear-gradient(135deg, oklch(0.55 0.18 250), oklch(0.65 0.14 200))",
-    category: "Beachfront",
-    description: "A gorgeous contemporary beachfront condo located in Goa. Offers direct beach access, an exquisite infinity pool overlooking the ocean, private balcony, modern kitchen, and full smart home automation.",
-  },
-  {
-    id: "3",
-    title: "Cozy A-frame Wooden Cabin in the Woods",
-    location: "Manali, Himachal Pradesh",
-    price: 6800,
-    rating: 4.75,
-    image: "linear-gradient(135deg, oklch(0.65 0.18 55), oklch(0.75 0.15 85))",
-    category: "Cabins",
-    description: "Escape to this enchanting wood cabin nestled among pine forests in Manali. Features a rustic brick fireplace, loft bedroom, outdoor bonfire pit, and cozy interiors perfect for couples or solo travelers.",
-  },
-  {
-    id: "4",
-    title: "Minimalist Heritage Loft in Historic District",
-    location: "Pondicherry, India",
-    price: 9200,
-    rating: 4.92,
-    image: "linear-gradient(135deg, oklch(0.6 0.2 350), oklch(0.55 0.22 15))",
-    category: "Heritage",
-    description: "Discover the charm of Pondicherry in this restored heritage building loft. Featuring high arches, vintage wooden beams, minimalist modern decor, high-speed Wi-Fi, and a quiet private courtyard.",
-  },
-];
+const getCoverStyle = (image: string) => {
+  if (!image) return {};
+  if (image.startsWith("linear-gradient") || image.startsWith("gradient")) {
+    return { background: image };
+  }
+  return {
+    backgroundImage: `url(${image})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat"
+  };
+};
 
 const FEATURES = [
   {
@@ -82,21 +59,36 @@ const FEATURES = [
 
 export default function Home() {
   const [user, setUser] = React.useState<{ name: string; role: string } | null>(null);
+  const [listings, setListings] = React.useState<Listing[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const [selectedListing, setSelectedListing] = React.useState<Listing | null>(null);
   const [bookingSuccess, setBookingSuccess] = React.useState(false);
   const [bookingDays, setBookingDays] = React.useState(3);
 
-  const handleBook = () => {
+  const handleBook = async () => {
+    if (!selectedListing) return;
+
     const token = typeof window !== "undefined" ? localStorage.getItem("rentease_token") : null;
     if (!token) {
       window.location.href = "/login";
       return;
     }
-    setBookingSuccess(true);
-    setTimeout(() => {
-      setBookingSuccess(false);
-      setSelectedListing(null);
-    }, 2500);
+
+    try {
+      await api.post("/bookings", {
+        bookingType: "listing",
+        listing: selectedListing._id,
+        startDate: new Date(),
+        duration: bookingDays
+      });
+      setBookingSuccess(true);
+      setTimeout(() => {
+        setBookingSuccess(false);
+        setSelectedListing(null);
+      }, 2500);
+    } catch (err) {
+      alert("Failed to create booking: " + (err instanceof Error ? err.message : "Error"));
+    }
   };
 
   React.useEffect(() => {
@@ -106,6 +98,23 @@ export default function Home() {
         setUser(JSON.parse(stored));
       } catch {}
     }
+
+    const fetchTrendingListings = async () => {
+      try {
+        interface ApiResponse {
+          success: boolean;
+          data: Listing[];
+        }
+        const res = await api.get<ApiResponse>("/listings?category=Trending&limit=4");
+        setListings(res.data || []);
+      } catch (err) {
+        console.error("Failed to fetch trending listings:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrendingListings();
   }, []);
 
   return (
@@ -197,39 +206,49 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {MOCK_LISTINGS.map((listing) => (
-              <Card key={listing.id} onClick={() => setSelectedListing(listing)} className="group overflow-hidden saas-card-hover p-0 gap-0 cursor-pointer">
-                <div className="relative h-48 transition-transform duration-300 group-hover:scale-[1.02]" style={{ background: listing.image }}>
-                  <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
-                    <button className="opacity-0 group-hover:opacity-100 transition-opacity bg-background text-foreground text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer">
-                      View Details
-                    </button>
+            {loading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonListingCard key={i} />
+              ))
+            ) : listings.length === 0 ? (
+              <div className="col-span-full text-center py-10 text-muted-foreground">
+                No trending experiences available.
+              </div>
+            ) : (
+              listings.map((listing) => (
+                <Card key={listing._id} onClick={() => setSelectedListing(listing)} className="group overflow-hidden saas-card-hover p-0 gap-0 cursor-pointer">
+                  <div className="relative h-48 transition-transform duration-300 group-hover:scale-[1.02]" style={getCoverStyle(listing.image)}>
+                    <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
+                      <button className="opacity-0 group-hover:opacity-100 transition-opacity bg-background text-foreground text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm cursor-pointer">
+                        View Details
+                      </button>
+                    </div>
+                    <Badge variant="outline" className="absolute top-3 left-3 bg-background/90 backdrop-blur-sm uppercase text-[10px]">
+                      {listing.category}
+                    </Badge>
                   </div>
-                  <Badge variant="outline" className="absolute top-3 left-3 bg-background/90 backdrop-blur-sm uppercase text-[10px]">
-                    {listing.category}
-                  </Badge>
-                </div>
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs text-muted-foreground flex items-center gap-1 truncate">
-                      <MapPin className="h-3 w-3 text-primary shrink-0" />
-                      {listing.location}
-                    </span>
-                    <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-500 shrink-0">
-                      <Star className="h-3.5 w-3.5 fill-current" />
-                      {listing.rating}
-                    </span>
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1 truncate">
+                        <MapPin className="h-3 w-3 text-primary shrink-0" />
+                        {listing.location}
+                      </span>
+                      <span className="flex items-center gap-0.5 text-xs font-semibold text-amber-500 shrink-0">
+                        <Star className="h-3.5 w-3.5 fill-current" />
+                        {listing.rating}
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+                      {listing.title}
+                    </h3>
+                    <div className="saas-divider pt-3 flex items-baseline gap-1">
+                      <span className="text-lg font-bold text-foreground">₹{listing.price.toLocaleString("en-IN")}</span>
+                      <span className="text-xs text-muted-foreground">/ night</span>
+                    </div>
                   </div>
-                  <h3 className="text-sm font-semibold text-foreground line-clamp-1 group-hover:text-primary transition-colors">
-                    {listing.title}
-                  </h3>
-                  <div className="saas-divider pt-3 flex items-baseline gap-1">
-                    <span className="text-lg font-bold text-foreground">₹{listing.price.toLocaleString("en-IN")}</span>
-                    <span className="text-xs text-muted-foreground">/ night</span>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -264,7 +283,7 @@ export default function Home() {
             {/* Cover Image */}
             <div
               className="w-full h-52 relative shrink-0"
-              style={{ background: selectedListing.image }}
+              style={getCoverStyle(selectedListing.image)}
             >
               <button
                 onClick={() => setSelectedListing(null)}
@@ -302,6 +321,34 @@ export default function Home() {
                   {selectedListing.description}
                 </p>
               </div>
+
+              {/* Host/Vendor Information */}
+              {selectedListing.vendor && (
+                <div className="bg-neutral-50 dark:bg-neutral-950 p-4 rounded-xl border border-neutral-200/50 dark:border-neutral-850 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <User className="h-4.5 w-4.5 text-primary" />
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                      Host Information
+                    </h4>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
+                      <span>Name: <strong className="text-neutral-700 dark:text-white">{selectedListing.vendor.name}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Mail className="h-3.5 w-3.5" />
+                      <span>{selectedListing.vendor.email}</span>
+                    </div>
+                    {selectedListing.vendor.phone && (
+                      <div className="flex items-center gap-2 sm:col-span-2">
+                        <Phone className="h-3.5 w-3.5" />
+                        <span>{selectedListing.vendor.phone}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Booking Options */}
               <div className="bg-primary/5 dark:bg-neutral-950 p-4 rounded-xl border border-primary/10 dark:border-neutral-850 flex flex-col sm:flex-row items-center justify-between gap-4">
